@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // Image
 import Logo from "../../assets/images/Logo-img/wealth-Elite-Logo.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../../components/button";
+import { postData } from "../../services/api";
+import { toastError, toastSuccess } from "../../utils/toster";
+import { UserContext } from "../../utils/UseContext/useContext";
 
 const Login = () => {
   const {
@@ -13,8 +16,31 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+  const {setAuthLocal,AuthLocal} = useContext(UserContext)
+  const navigate = useNavigate()
+
+  const [loading, setloading] = useState(false)
+
+  const onSubmit = async (data) => {
+    try {
+      setloading(true)
+      const payload = {
+        email: data?.email,
+        password: data?.password,
+      };
+      let response = await postData("/admin/login", payload);
+      console.log('response: ', response);
+      if (response?.admin_uid) {
+        toastSuccess(response?.message);
+        sessionStorage.setItem("Auth", response?.admin_uid);
+        setAuthLocal(response?.admin_uid)
+        setloading(false)
+        navigate("/")
+      }
+    } catch (error) {
+      toastError(error?.message);
+      setloading(false)
+    }
   };
 
   return (
@@ -97,8 +123,9 @@ const Login = () => {
           </div>
           {/* Submit Button */}
           <Button
+          disabled={loading}
             btn_class={"text-white bg-blue-color border-0 w-100 mt-5"}
-            btn_title={"Login"}
+            btn_title={loading?"loging...":"Login"}
           />
         </form>
       </div>
