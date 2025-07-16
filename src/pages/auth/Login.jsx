@@ -29,7 +29,6 @@ const Login = () => {
         password: data?.password,
       };
       let response = await postData("/admin/login", payload);
-      console.log('response: ', response);
       if (response?.admin_uid) {
         toastSuccess(response?.message);
         sessionStorage.setItem("Auth", response?.admin_uid);

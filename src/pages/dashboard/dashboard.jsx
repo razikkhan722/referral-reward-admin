@@ -499,11 +499,10 @@ const Dashboard = () => {
   const GetAdminUid = sessionStorage.getItem("Auth");
 
   // UseState's
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
   const [activeTab, setActiveTab] = useState("tab1");
   const [selectedFilter, setSelectedFilter] = useState("Refers & Acceptances");
   const [ErrorTableData, setErrorTableData] = useState();
+  const [PrtcpntTableData, setPrtcpntTableData] = useState();
   const [DashStatData, setDashStatData] = useState();
 
   //   json with Data
@@ -514,10 +513,10 @@ const Dashboard = () => {
       onClick: () => setSelectedFilter("Refers & Acceptances"),
     },
     { label: "Games", onClick: () => setSelectedFilter("Games") },
-    {
-      label: "Product Purchases",
-      onClick: () => setSelectedFilter("Product Purchases"),
-    },
+    // {
+    //   label: "Product Purchases",
+    //   onClick: () => setSelectedFilter("Product Purchases"),
+    // },
     { label: "Redemptions", onClick: () => setSelectedFilter("Redemptions") },
   ];
   const Sortitem = [
@@ -573,16 +572,46 @@ const Dashboard = () => {
       color: "dot-purple",
     },
   ];
+  const ReferTableHeading = [
+  { label: "Ranking", accessor: "rank" },
+  { label: "Name", accessor: "username" },
+  { label: "Email", accessor: "email" },
+  { label: "Mobile", accessor: "mobile_number" },
+  { label: "Referral Code", accessor: "referral_code" },
+  { label: "Referrals", accessor: "total_referrals", isBadge: true },
+  {
+    label: "Successful Referrals",
+    accessor: "successful_referrals",
+    isGreenBadge: true,
+  },
+  { label: "Earnings", accessor: "referral_earning" },
+  { label: "Total Earnings", accessor: "total_earnings" },
+];
+const GameTableHeading = [
+  { label: "Ranking", accessor: "rank" },
+  { label: "Name", accessor: "username" },
+  { label: "Email", accessor: "email" },
+  { label: "Game", accessor: "game_name" },
+  { label: "Number of plays", accessor: "num_play" },
+  { label: "Last Played Date", accessor: "last_play_date" },
+  { label: "Earnings via Game", accessor: "earning_game" },
+  { label: "Total earnings", accessor: "total_earning" },
+];
+const PurchaseTableHeading = [
+  { label: "Ranking", accessor: "rank" },
+  { label: "Name", accessor: "username" },
+  { label: "Email", accessor: "email" },
+  { label: "Product Purchased", accessor: "productPurchased" },
+  { label: "Amount", accessor: "amount" },
+  { label: "Coupon code", accessor: "couponCode" },
+  { label: "Referral code (If any)", accessor: "referralCode" },
+];
 
   // to show Channel Performance Data
-  //   const ChanlData =
-  //     JSON?.parse(
-  //       DashStatData?.part8?.replace(/'/g, '"')?.replace(/\bNone\b/g, "null")
-  //     ) || [];
   const ChanlData = (() => {
     try {
       return (
-        JSON.parse(
+        JSON?.parse(
           DashStatData?.part8?.replace(/'/g, '"')?.replace(/\bNone\b/g, "null")
         ) || []
       );
@@ -641,8 +670,9 @@ const Dashboard = () => {
         payload
       );
       if (prtcpResp?.data) {
-        const Decrpt = await DecryptFunction(responseState?.data);
-        console.log("Decrpt: ", Decrpt);
+        const Decrpt = await DecryptFunction(prtcpResp?.data);
+        console.log('Decrpt: ', Decrpt);
+        setPrtcpntTableData(Decrpt)
       }
     } catch (error) {
       console.log("error: ", error);
@@ -652,6 +682,34 @@ const Dashboard = () => {
   useEffect(() => {
     HandleDashBoardAPI();
   }, []);
+
+
+  // ------------------------------------
+      const [currentErrorPage, setCurrentErrorPage] = useState(1);
+      const [rowsPerErrorPage, setRowsPerErrorPage] = useState(5);
+  
+      // Pagination Function Start Here
+      // const totalPages = Math.ceil(ParticipantsData.length / rowsPerErrorPage);
+      const totalErrorPages = Math?.ceil(ErrorTableData?.length / rowsPerErrorPage);
+  
+      const handleErrorPrevious = () => {
+          if (currentErrorPage > 1) setCurrentErrorPage(prev => prev - 1);
+      };
+  
+      const handleErrorNext = () => {
+          if (currentErrorPage < totalPages) setCurrentErrorPage(prev => prev + 1);
+      };
+  
+      const handleRowsPerErrorPageChange = (e) => {
+          setRowsPerErrorPage(Number(e.target.value));
+          setCurrentErrorPage(1); // reset to first page
+      };
+  
+      const ErrorTablePgntData = ErrorTableData?.slice(
+          (currentErrorPage - 1) * rowsPerErrorPage,
+          currentErrorPage * rowsPerErrorPage
+      );
+
 
   return (
     <>
@@ -1343,30 +1401,30 @@ const Dashboard = () => {
             {selectedFilter === "Refers & Acceptances" && (
               <DashboardTable
                 tabelHeading={ReferTableHeading}
-                tableData={ReferTableData}
+                tableData={PrtcpntTableData?.part1}
               />
             )}
 
             {selectedFilter === "Games" && (
               <DashboardTable
                 tabelHeading={GameTableHeading}
-                tableData={GameTableData}
+                tableData={PrtcpntTableData?.part3}
               />
             )}
 
-            {selectedFilter === "Product Purchases" && (
+            {selectedFilter === "Redemptions" && (
               <DashboardTable
                 tabelHeading={RedemptionTableHeading}
                 tableData={RedemptionTableData}
               />
             )}
 
-            {selectedFilter === "Redemptions" && (
+            {/* {selectedFilter === "Product Purchases" && (
               <DashboardTable
                 tabelHeading={PurchaseTableHeading}
-                tableData={PurchaseTableData}
+                tableData={PrtcpntTableData?.part2}
               />
-            )}
+            )} */}
           </div>
 
           {/* Error Table Start Here */}
@@ -1417,7 +1475,7 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {ErrorTableData?.map((item, index) => (
+                  {ErrorTablePgntData?.map((item, index) => (
                     <tr key={index}>
                       <td className="font-14 montserrat-semibold py-3 px-3">
                         {item?.username}
@@ -1457,6 +1515,32 @@ const Dashboard = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+            {/* Pagination for Error table */}
+            <div className='row gy-2 d-flex align-items-center m-3'>
+                <div className='col-lg-7 d-flex justify-content-end gap-4 '>
+                    <button className='text-gray-color border-gray border-radiu-8 px-3 py-2 bg-transparent font-14 poppins-medium'
+                        disabled={currentErrorPage === 1}
+                        onClick={handleErrorPrevious}>
+                        Previous</button>
+                    <button className='border-0 border-radiu-8 bg-blue-color text-white px-3 py-2 font-14 poppins-medium'
+                        disabled={currentErrorPage === totalErrorPages}
+                        onClick={handleErrorNext}>
+                        Next</button>
+                </div>
+                <div className='col-lg-5 d-flex align-items-center justify-content-end gap-2'>
+                    <label className='font-14 poppins-medium'>Rows per page</label>
+                    <select
+                        className='form-select border-gray border-radiu-8 bg-transparent w-auto font-14 poppins-medium text-gray-color'
+                        value={rowsPerErrorPage}
+                        onChange={handleRowsPerErrorPageChange}
+                    >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={15}>15</option>
+                        <option value={20}>20</option>
+                    </select>
+                </div>
             </div>
           </div>
         </div>

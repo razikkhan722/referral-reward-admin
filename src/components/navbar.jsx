@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -29,9 +29,17 @@ const NavBar = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+const [base64String, setBase64String] = useState('');
   const onSubmit = (data) => {
-    console.log("Submitted Data:", data);
+    const file = data?.file[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64String(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log('filedfdfdsfd: ', file);
   };
   return (
     <>
@@ -305,7 +313,9 @@ const NavBar = () => {
                   <PiUploadSimpleBold className="font-16 me-3" />
                 </div>
                 Upload
-                <input type="file" id="formFile" />
+                <input type="file" id="formFile"
+                {...register("file")}
+                />
               </label>
             </div>
             <Button

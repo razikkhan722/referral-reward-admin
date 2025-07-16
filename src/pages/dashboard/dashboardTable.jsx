@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const DashboardTable = ({ tabelHeading = [], tableData = [] }) => {
     // UseState's
     const [currentPage, setCurrentPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     // Pagination Function Start Here
     // const totalPages = Math.ceil(ParticipantsData.length / rowsPerPage);
