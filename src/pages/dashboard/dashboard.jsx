@@ -650,11 +650,11 @@ const Dashboard = () => {
     return (
         <>
             <NavBar />
-            <div className='bg-light-blue-color py-5'>
+            <div className='bg-light-blue-color pt-62'>
                 <div className='container'>
                     <div className='d-flex align-items-center justify-content-between'>
-                        <div>
-                            <p className='mb-0 text-blue-color montserrat-semibold font-24'>Dashboard</p>
+                        <div className='dashboard-inner'>
+                            <h2 className='mb-8 text-blue-color montserrat-semibold font-24'>Dashboard</h2>
                             <p className='mb-0 text-blue-color montserrat-medium font-12'>An overview of recent data of customers info, product details and analysis</p>
                         </div>
                         <div className='bg-light-white-1-color filter-btn px-3 py-2 d-flex justify-content-between align-items-center'>
@@ -667,11 +667,11 @@ const Dashboard = () => {
                     <div className='row my-4'>
                         {DashboardCardData.map((card, index) => (
                             <div key={index} className="col-12 col-sm-6 col-lg-3 mb-4">
-                                <div className="dashboard-card border-radius-12 bg-light-white-color px-4 py-4 h-100">
+                                <div className="dashboard-card border-radius-12 bg-light-white-color px-4 py-3 h-100">
                                     <div className="d-flex justify-content-between align-items-end">
-                                        <p className="font-34 text-blue-color montserrat-semibold mb-0">
+                                        <h3 className="font-34 text-blue-color montserrat-semibold mb-0">
                                             {card.count}
-                                        </p>
+                                        </h3>
                                         <img src={card.img} alt={card.label} />
                                     </div>
                                     <p className="font-16 text-uppercase mb-0 pt-2 text-blue-color montserrat-semibold">
@@ -710,13 +710,13 @@ const Dashboard = () => {
                         <div className='col-lg-9 col-12'>
                             <div className='border-radius-12 bg-light-white-color p-3'>
                                 <div className='d-flex justify-content-between align-items-center'>
-                                    <p className='font-18 montserrat-medium text-blue-color mb-0'>Best Performance Services / Products</p>
+                                    <h3 className='font-18 montserrat-medium text-blue-color mb-0'>Best Performance Services / Products</h3>
                                     <div className='d-flex gap-3 align-items-center'>
-                                        <div className='pause-btn text-muted-blue-color rounded-3 p-2 px-4 font-12 montserrat-medium'>
+                                        <div className='pause-btn text-muted-blue-color rounded-3 px-4 font-12 montserrat-medium'>
                                             <span className={`live-circle d-inline-block rounded-circle bg-muted-blue-color me-1`}>
                                             </span>
                                             Pause</div>
-                                        <div className='live-btn rounded-3 text-live-green-color py-2 px-4 font-12 montserrat-medium'>
+                                        <div className='live-btn rounded-3 text-live-green-color px-4 font-12 montserrat-medium'>
                                             <span className={`live-circle d-inline-block rounded-circle bg-live-green-color me-1`}>
                                             </span>
                                             Live</div>
@@ -770,7 +770,7 @@ const Dashboard = () => {
                                         </p>
                                     </div>
 
-                                    <div className='text-end font-14 montserrat-medium text-white bg-purple-color px-3 py-2 graph-filter d-flex align-items-center justify-content-end mt-2 mt-md-0 mx-3 mx-md-0'>
+                                    <div className='text-end font-14 montserrat-medium text-white bg-purple-color px-3 py-2 graph-filter d-flex align-items-center justify-content-end mt-2 mt-md-0 mx-3 mx-md-0 pointer-coursor'>
                                         Filter
                                         {/* <img src={Filter} className='ms-2' alt="Filter" /> */}
                                         <PiFadersHorizontal className='text-white ms-2 font-24' />
@@ -801,7 +801,7 @@ const Dashboard = () => {
                                         {earningsData.map((item, index) => (
                                             <div
                                                 key={index}
-                                                className={`col-6 py-3 border-white border-2 ${index < 2 ? 'border-bottom' : ''} ${index % 2 === 0 ? 'border-end' : ''}`}
+                                                className={`col-6 py-3 px-2 border-white border-2 ${index < 2 ? 'border-bottom' : ''} ${index % 2 === 0 ? 'border-end' : ''}`}
                                             >
                                                 <div className="montserrat-bold font-14 text-blue-color">
                                                     {item.value} <span>({item.percent})</span>
@@ -1049,25 +1049,25 @@ const Dashboard = () => {
                                     {ScheduleData.map((offer, index) => (
                                         <div key={index} className='schedule-card d-flex justify-content-between border-radius-8 mb-2'>
                                             <div className='p-3'>
-                                                <p className='font-12 montserrat-regular text-blue-color mb-1'>
+                                                <p className='font-12 montserrat-regular text-blue-color mb-12'>
                                                     Offer Title: <span className='montserrat-semibold'>{offer.title}</span>
                                                 </p>
-                                                <p className='font-12 montserrat-regular text-blue-color mb-1'>
+                                                <p className='font-12 montserrat-regular text-blue-color mb-12'>
                                                     Offer Type: <span className='montserrat-semibold'>{offer.type}</span>
                                                 </p>
-                                                <p className='font-12 montserrat-regular text-blue-color mb-1'>
+                                                <p className='font-12 montserrat-regular text-blue-color mb-12'>
                                                     Status: <span className='montserrat-semibold'>{offer.status}</span>
                                                 </p>
-                                                <p className='font-12 montserrat-regular text-blue-color mb-1'>
+                                                <p className='font-12 montserrat-regular text-blue-color mb-0'>
                                                     Date: <span className='montserrat-semibold'>{offer.date}</span>
                                                 </p>
                                             </div>
 
                                             <div className="schedule-right-side d-flex flex-column justify-content-evenly align-items-center">
-                                                <div className="border-bottom border-white px-2 d-flex align-items-center pb-2">
+                                                <div className="border-bottom border-white px-2 d-flex align-items-center pb-12">
                                                     <PiPencilSimple className='font-20 text-blue-color' />
                                                 </div>
-                                                <div className="border-bottom border-white px-2 d-flex align-items-center pb-2">
+                                                <div className="border-bottom border-white px-2 d-flex align-items-center pb-12">
                                                     {offer.isLive ? (
                                                         <PiPlayCircle className='text-success font-20' />
                                                     ) : (
