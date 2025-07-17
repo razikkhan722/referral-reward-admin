@@ -7,8 +7,6 @@ import Login from "../../pages/auth/Login";
 import Forgot from "../../pages/auth/Forgot";
 import PushupNotification from "../../pages/pushupNotification/pushupNotification";
 
-
-
 // import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
