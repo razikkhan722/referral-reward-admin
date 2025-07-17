@@ -17,7 +17,7 @@ import { PiExport, PiFadersHorizontal, PiPencilSimple, PiUploadSimpleBold } from
 import { GrAttachment } from 'react-icons/gr';
 import { RiDeleteBin7Line } from 'react-icons/ri';
 import { GoPlus } from 'react-icons/go';
-import { useForm , Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 // import { BsArrowsAngleExpand } from 'react-icons/bs';
 import { CgArrowsExpandRight } from 'react-icons/cg';
 import EarningsTable from '../../components/earningsTable';
@@ -295,20 +295,20 @@ const ReferralsRewards = () => {
                                             <option value="Cash">Cash</option>
                                             <option value="Custom">Custom</option>
                                         </select> */}
-                                       <Controller
-  name="rewardType1"
-  control={control}
-  rules={{ required: true }}
-  render={({ field, fieldState }) => (
-    <CustomDropdown
-      label="Reward Type"
-      options={["Meteor", "Star", "Cash", "Custom"]}
-      value={field.value}
-      onChange={field.onChange}
-      error={fieldState.error}
-    />
-  )}
-/>
+                                        <Controller
+                                            name="rewardType1"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field, fieldState }) => (
+                                                <CustomDropdown
+                                                    label="Reward Type"
+                                                    options={["Meteor", "Star", "Cash", "Custom"]}
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    error={fieldState.error}
+                                                />
+                                            )}
+                                        />
 
                                     </div>
                                     <div className='col-lg-6 mb-3'>
@@ -332,19 +332,19 @@ const ReferralsRewards = () => {
                                             ="Custom">Custom</option>
                                         </select> */}
                                         <Controller
-  name="rewardType2"
-  control={control}
-  rules={{ required: true }}
-  render={({ field, fieldState }) => (
-    <CustomDropdown
-      label="Reward Type"
-      options={["Meteor", "Star", "Cash", "Custom"]}
-      value={field.value}
-      onChange={field.onChange}
-      error={fieldState.error}
-    />
-  )}
-/>
+                                            name="rewardType2"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field, fieldState }) => (
+                                                <CustomDropdown
+                                                    label="Reward Type"
+                                                    options={["Meteor", "Star", "Cash", "Custom"]}
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    error={fieldState.error}
+                                                />
+                                            )}
+                                        />
 
                                     </div>
                                     <div className='col-lg-6 mb-3'>
@@ -368,49 +368,49 @@ const ReferralsRewards = () => {
                                             <option value="Custom">Custom</option>
                                         </select> */}
                                         <Controller
-  name="rewardCondition"
-  control={control}
-  rules={{ required: true }}
-  render={({ field, fieldState }) => (
-    <CustomDropdown
-      label="Reward Condition"
-      options={[
-        "On Sign up",
-        "On 10 referrals",
-        "When all referred users spend ₹5000 total",
-        "On Monthly Leaderboard Ranking",
-        "Custom",
-      ]}
-      value={field.value}
-      onChange={field.onChange}
-      error={fieldState.error}
-    />
-  )}
-/>
+                                            name="rewardCondition"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field, fieldState }) => (
+                                                <CustomDropdown
+                                                    label="Reward Condition"
+                                                    options={[
+                                                        "On Sign up",
+                                                        "On 10 referrals",
+                                                        "When all referred users spend ₹5000 total",
+                                                        "On Monthly Leaderboard Ranking",
+                                                        "Custom",
+                                                    ]}
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    error={fieldState.error}
+                                                />
+                                            )}
+                                        />
 
                                     </div>
 
                                     <div className='col-lg-12 mb-3'>
                                         <Controller
-  name="rewardBenefit"
-  control={control}
-  rules={{ required: true }}
-  render={({ field, fieldState }) => (
-    <CustomDropdown
-      label="What Referrer will get on successfully completing the condition"
-      options={[
-        "X % Discount on particular product",
-        "Early access to a sale or product drop",
-        "Double reward points",
-        "Free upgrade to a premium plan",
-        "Custom",
-      ]}
-      value={field.value}
-      onChange={field.onChange}
-      error={fieldState.error}
-    />
-  )}
-/>
+                                            name="rewardBenefit"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field, fieldState }) => (
+                                                <CustomDropdown
+                                                    label="What Referrer will get on successfully completing the condition"
+                                                    options={[
+                                                        "X % Discount on particular product",
+                                                        "Early access to a sale or product drop",
+                                                        "Double reward points",
+                                                        "Free upgrade to a premium plan",
+                                                        "Custom",
+                                                    ]}
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    error={fieldState.error}
+                                                />
+                                            )}
+                                        />
 
                                         {/* <label className="form-label font-12 montserrat-medium text-blue-color">What Referrrer will get on successfully completing the condition</label>
                                         <select class="form-select text-blue-color rounded-3 border-0 py-2" aria-label="Default select example">
