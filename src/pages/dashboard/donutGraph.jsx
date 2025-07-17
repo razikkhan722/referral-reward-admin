@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-const DonutChart = () => {
+const DonutChart = ({grpData}) => {
     // console.log('DonutChartData: ', DonutChartData);
 
     //   const weeklyData = DonutChartData?.week?.data || [];
@@ -15,6 +15,7 @@ const DonutChart = () => {
     const chartRef = useRef(null);
 
     useEffect(() => {
+        if (!grpData) return;
         if (chartRef.current) {
             const chart = Highcharts.chart(chartRef.current, {
                 chart: {
@@ -87,21 +88,21 @@ const DonutChart = () => {
                     colorByPoint: true,
                     data: [{
                         name: 'Purchases',
-                        y: 12.6
+                        y: Number(grpData?.part9)
                     }, {
                         name: 'Signups',
-                        y: 20.6
+                        y: Number(grpData?.part10)
                     }, {
                         name: 'Milestones',
-                        y: 12.0
+                        y: Number(grpData?.part11)
                     }, {
                         name: 'Referrals',
-                        y: 30.4
+                        y: Number(grpData?.part12)
                     }]
                 }]
             });
         }
-    }, []);
+    }, [grpData]);
 
     return (
         <div className="highcharts-figure">

@@ -29,9 +29,17 @@ const NavBar = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+// const [base64String, setBase64String] = useState('');
   const onSubmit = (data) => {
-    console.log("Submitted Data:", data);
+    const file = data?.file[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // setBase64String(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log('filedfdfdsfd: ', file);
   };
   return (
     <>
@@ -310,7 +318,9 @@ const NavBar = () => {
                   <PiUploadSimpleBold className="font-16" />
                 </div>
                 Upload
-                <input type="file" id="formFile" />
+                <input type="file" id="formFile"
+                {...register("file")}
+                />
               </label>
             </div>
             <Button
