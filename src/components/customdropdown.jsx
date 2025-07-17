@@ -21,7 +21,12 @@ const CustomDropdown = ({
           {label}
         </label>
       )}
-      <Dropdown onSelect={(eventKey) => onChange(eventKey)}>
+      <Dropdown onSelect={(eventKey) => onChange(eventKey)}
+        {...registerSpecial("referrer_reward_type", {
+                        required: "Reward Type is required",
+                      })}
+        >
+        
         <Dropdown.Toggle
           variant="light"
           className={`w-100 form-select text-blue-color rounded-3 border-0 py-2 d-flex justify-content-between align-items-center ${
