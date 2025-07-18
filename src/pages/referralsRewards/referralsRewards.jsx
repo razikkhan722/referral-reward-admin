@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import NavBar from "../../components/navbar";
+import CustomDropdown from "../../components/customdropdown";
 import { Nav } from "react-bootstrap";
 import {
   IoIosArrowForward,
@@ -21,7 +22,7 @@ import {
 import { GrAttachment } from "react-icons/gr";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { GoPlus } from "react-icons/go";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 // import { BsArrowsAngleExpand } from 'react-icons/bs';
 import { CgArrowsExpandRight } from "react-icons/cg";
 import EarningsTable from "../../components/earningsTable";
@@ -157,19 +158,28 @@ const ReferralsRewards = () => {
   const [showInnerTable, setShowInnerTable] = useState(false);
 
   const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting },
-    watch,
-  } = useForm();
+  register: registerSpecial,
+  handleSubmit: handleSubmitSpecial,
+  setValue,
+  control: controlSpecial,
+  getValues,
+  reset,
+  formState: { errors: errorsSpecial, isSubmitting: isSpecialSubmitting },
+  watch: watchSpecial,
+} = useForm({
+  defaultValues: {
+    start_date: "",
+    end_date: "",
+    invite_link: "",
+    referrer_reward_type: "",
+    referrer_reward_value: "",
+    referee_reward_type: "",
+    referee_reward_value: "",
+    reward_condition: "",
+    success_reward: "",
+  },
+});
 
-  const {
-    register: registerSpecial,
-    handleSubmit: handleSubmitSpecial,
-    formState: { errors: errorsSpecial, isSubmitting: isSpecialSubmitting },
-    watch: watchSpecial,
-  } = useForm();
   const {
     register: registerShare,
     handleSubmit: handleSubmitShare,
@@ -495,6 +505,7 @@ const ReferralsRewards = () => {
         <div className="container p-lg-4">
           {/* Tab Content */}
           {/* tab 1 (Refer) Start Here */}
+          
           {activeTab === "tab1" && (
             <div className="row gy-3 mt-3">
               <div className="col-lg-7">
@@ -576,172 +587,147 @@ const ReferralsRewards = () => {
                   )}
 
                   {/* Referrer’s Reward Section */}
-                  <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
-                    Referrer’s Reward
-                  </p>
+                  {/* Referrer’s Reward Section */}
+<p className="font-18 montserrat-semibold text-border-gray-color mb-0">
+  Referrer’s Reward
+</p>
 
-                  {/* Reward Type */}
-                  <div className="col-lg-6 mb-3">
-                    <label className="form-label font-12 montserrat-medium text-blue-color">
-                      Reward Type
-                    </label>
-                    <select
-                      className="form-select text-blue-color rounded-3 border-0 py-2"
-                      aria-label="Default select example"
-                      {...registerSpecial("referrer_reward_type", {
-                        required: "Reward Type is required",
-                      })}
-                    >
-                      <option value="">Select one</option>
-                      <option value="Meteor">Meteor</option>
-                      <option value="Star">Star</option>
-                      <option value="Cash">Cash</option>
-                      <option value="Custom">Custom</option>
-                    </select>
-                    {errorsSpecial.referrer_reward_type && (
-                      <p className="text-danger">
-                        {errorsSpecial.referrer_reward_type.message}
-                      </p>
-                    )}
-                  </div>
+{/* Reward Type */}
+<div className="col-lg-6 mb-3">
+  <Controller
+  defaultValue=""
+    name="referrer_reward_type"
+    control={controlSpecial}
+    rules={{ required: "Reward Type is required" }}
+    render={({ field, fieldState }) => (
+      <CustomDropdown
+        label="Reward Type"
+        options={["Meteor", "Star", "Cash", "Custom"]}
+        value={field.value}
+        onChange={field.onChange}
+        error={fieldState.error}
+      />
+    )}
+  />
+</div>
 
-                  {/* Reward Value */}
-                  <div className="col-lg-6 mb-3">
-                    <label className="form-label font-12 montserrat-medium text-border-gray-color">
-                      Reward Value
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Select one"
-                      className="form-control text-blue-color rounded-3 border-0 py-2"
-                      {...registerSpecial("referrer_reward_value", {
-                        required: "Reward Value is required",
-                      })}
-                    />
-                    {errorsSpecial.referrer_reward_value && (
-                      <p className="text-danger">
-                        {errorsSpecial.referrer_reward_value.message}
-                      </p>
-                    )}
-                  </div>
+{/* Reward Value */}
+<div className="col-lg-6 mb-3">
+  <label className="form-label font-12 montserrat-medium text-border-gray-color">
+    Reward Value
+  </label>
+  <input
+    type="text"
+    placeholder="Select one"
+    className="form-control text-blue-color rounded-3 border-0 py-2"
+    {...registerSpecial("referrer_reward_value", {
+      required: "Reward Value is required",
+    })}
+  />
+  {errorsSpecial.referrer_reward_value && (
+    <p className="text-danger">
+      {errorsSpecial.referrer_reward_value.message}
+    </p>
+  )}
+</div>
 
-                  {/* Referree’s Reward */}
-                  <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
-                    Referree’s Reward
-                  </p>
+{/* Referree’s Reward */}
+<p className="font-18 montserrat-semibold text-border-gray-color mb-0">
+  Referree’s Reward
+</p>
 
-                  {/* Reward Type */}
-                  <div className="col-lg-6 mb-3">
-                    <label className="form-label font-12 montserrat-medium text-blue-color">
-                      Reward Type
-                    </label>
-                    <select
-                      className="form-select text-blue-color rounded-3 border-0 py-2"
-                      aria-label="Default select example"
-                      {...registerSpecial("referee_reward_type", {
-                        required: "Reward Type is required",
-                      })}
-                    >
-                      <option value="">Select one</option>
-                      <option value="Meteor">Meteor</option>
-                      <option value="Star">Star</option>
-                      <option value="Cash">Cash</option>
-                      <option value="Custom">Custom</option>
-                    </select>
-                    {errorsSpecial.referee_reward_type && (
-                      <p className="text-danger">
-                        {errorsSpecial.referee_reward_type.message}
-                      </p>
-                    )}
-                  </div>
+{/* Reward Type */}
+<div className="col-lg-6 mb-3">
+  <Controller
+  defaultValue=""
+    name="referee_reward_type"
+    control={controlSpecial}
+    rules={{ required: "Reward Type is required" }}
+    render={({ field, fieldState }) => (
+      <CustomDropdown
+        label="Reward Type"
+        options={["Meteor", "Star", "Cash", "Custom"]}
+        value={field.value}
+        onChange={field.onChange}
+        error={fieldState.error}
+      />
+    )}
+  />
+</div>
 
-                  {/* Reward Value */}
-                  <div className="col-lg-6 mb-3">
-                    <label className="form-label font-12 montserrat-medium text-border-gray-color">
-                      Reward Value
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Select one"
-                      className="form-control text-blue-color rounded-3 border-0 py-2"
-                      {...registerSpecial("referee_reward_value", {
-                        required: "Reward Value is required",
-                      })}
-                    />
-                    {errorsSpecial.referee_reward_value && (
-                      <p className="text-danger">
-                        {errorsSpecial.referee_reward_value.message}
-                      </p>
-                    )}
-                  </div>
+{/* Reward Value */}
+<div className="col-lg-6 mb-3">
+  <label className="form-label font-12 montserrat-medium text-border-gray-color">
+    Reward Value
+  </label>
+  <input
+    type="text"
+    placeholder="Select one"
+    className="form-control text-blue-color rounded-3 border-0 py-2"
+    {...registerSpecial("referee_reward_value", {
+      required: "Reward Value is required",
+    })}
+  />
+  {errorsSpecial.referee_reward_value && (
+    <p className="text-danger">
+      {errorsSpecial.referee_reward_value.message}
+    </p>
+  )}
+</div>
 
-                  {/* Reward Condition */}
-                  <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
-                    Reward Condition
-                  </p>
-                  <div className="col-lg-12 mb-3">
-                    <label className="form-label font-12 montserrat-medium text-blue-color">
-                      Reward Condition
-                    </label>
-                    <select
-                      className="form-select text-blue-color rounded-3 border-0 py-2"
-                      aria-label="Default select example"
-                      {...registerSpecial("reward_condition", {
-                        required: "Reward Condition is required",
-                      })}
-                    >
-                      <option value="">Select one</option>
-                      <option value="On Sign up">On Sign up</option>
-                      <option value="On 10 referrals">On 10 referrals</option>
-                      <option value="When all referred users spend ₹5000 total">
-                        When all referred users spend ₹5000 total
-                      </option>
-                      <option value="On Monthly Leaderboard Ranking">
-                        On Monthly Leaderboard Ranking
-                      </option>
-                      <option value="Custom">Custom</option>
-                    </select>
-                    {errorsSpecial.reward_condition && (
-                      <p className="text-danger">
-                        {errorsSpecial.reward_condition.message}
-                      </p>
-                    )}
-                  </div>
+{/* Reward Condition */}
+<p className="font-18 montserrat-semibold text-border-gray-color mb-0">
+  Reward Condition
+</p>
+<div className="col-lg-12 mb-3">
+  <Controller
+  defaultValue=""
+    name="reward_condition"
+    control={controlSpecial}
+    rules={{ required: "Reward Condition is required" }}
+    render={({ field, fieldState }) => (
+      <CustomDropdown
+        label="Reward Condition"
+        options={[
+          "On Sign up",
+          "On 10 referrals",
+          "When all referred users spend ₹5000 total",
+          "On Monthly Leaderboard Ranking",
+          "Custom",
+        ]}
+        value={field.value}
+        onChange={field.onChange}
+        error={fieldState.error}
+      />
+    )}
+  />
+</div>
 
-                  {/* What Referrer will get */}
-                  <div className="col-lg-12 mb-3">
-                    <label className="form-label font-12 montserrat-medium text-blue-color">
-                      What Referrrer will get on successfully completing the
-                      condition
-                    </label>
-                    <select
-                      className="form-select text-blue-color rounded-3 border-0 py-2"
-                      aria-label="Default select example"
-                      {...registerSpecial("success_reward", {
-                        required: "This field is required",
-                      })}
-                    >
-                      <option value="">Select one</option>
-                      <option value="X % Discount on particular product">
-                        X % Discount on particular product
-                      </option>
-                      <option value="Early access to a sale or product drop">
-                        Early access to a sale or product drop
-                      </option>
-                      <option value="Double reward points">
-                        Double reward points
-                      </option>
-                      <option value="Free upgrade to a premium plan">
-                        Free upgrade to a premium plan
-                      </option>
-                      <option value="Custom">Custom</option>
-                    </select>
-                    {errorsSpecial.success_reward && (
-                      <p className="text-danger">
-                        {errorsSpecial.success_reward.message}
-                      </p>
-                    )}
-                  </div>
+{/* What Referrer will get */}
+<div className="col-lg-12 mb-3">
+  <Controller
+  defaultValue=""
+    name="success_reward"
+    control={controlSpecial}
+    rules={{ required: "This field is required" }}
+    render={({ field, fieldState }) => (
+      <CustomDropdown
+        label="What Referrer will get on successfully completing the condition"
+        options={[
+          "X % Discount on particular product",
+          "Early access to a sale or product drop",
+          "Double reward points",
+          "Free upgrade to a premium plan",
+          "Custom",
+        ]}
+        value={field.value}
+        onChange={field.onChange}
+        error={fieldState.error}
+      />
+    )}
+  />
+</div>
+
 
                   {/* Save Button */}
                   <div className="col-6">
@@ -936,6 +922,7 @@ const ReferralsRewards = () => {
                   </div>
                 </form>
               </div>
+              
             </div>
           )}
 
