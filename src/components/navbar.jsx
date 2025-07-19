@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -29,13 +29,13 @@ const NavBar = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-const [base64String, setBase64String] = useState('');
+// const [base64String, setBase64String] = useState('');
   const onSubmit = (data) => {
     const file = data?.file[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setBase64String(reader.result);
+        // setBase64String(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -50,16 +50,19 @@ const [base64String, setBase64String] = useState('');
         className="bg-light-blue-color pt-4"
       >
         <Container>
-          <Navbar.Brand href="/">
+          
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-center mt-60">
+            <Navbar.Brand href="/" className="width-26">
             <img src={Logo} alt="Logo" />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mx-auto box-shadow bg-white rounded-pill px-4 py-lg-0 py-3 mt-md-3 justify-content-center flex-wrap">
+  <Nav className="flex-wrap d-flex justify-content-center align-items-center">
+              <div className="box-shadow d-flex w-100 bg-white rounded-pill px-1 py-2">
+
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center my-2 font-14 montserrat-semibold me-3 px-3 ${
+                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${
                     isActive ? "active-nav" : ""
                   }`
                 }
@@ -80,7 +83,7 @@ const [base64String, setBase64String] = useState('');
               <NavLink
                 to="/referral"
                 className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center my-2 font-14 montserrat-semibold me-3 px-3 ${
+                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${
                     isActive ? "active-nav" : ""
                   }`
                 }
@@ -101,7 +104,7 @@ const [base64String, setBase64String] = useState('');
               <NavLink
                 to="/earning"
                 className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center my-2 font-14 montserrat-semibold px-3 ${
+                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold px-3 ${
                     isActive ? "active-nav" : ""
                   }`
                 }
@@ -119,6 +122,8 @@ const [base64String, setBase64String] = useState('');
                   </>
                 )}
               </NavLink>
+              </div>
+
             </Nav>
             <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
               <Nav.Link href="#deets" className="font-32 text-blue-color">
@@ -308,9 +313,9 @@ const [base64String, setBase64String] = useState('');
               <label className="form-label text-blue-color font-12 montserrat-semibold">
                 Upload Picture
               </label>
-              <label class="upload-box d-flex text-center bg-light-white-3-color p-2 rounded-3 text-blue-color font-12 montserrat-medium">
-                <div class="upload-icon">
-                  <PiUploadSimpleBold className="font-16 me-3" />
+              <label class="upload-box d-flex text-center bg-light-white-3-color px-4 py-5 rounded-3 text-blue-color font-12 width-40 justify-content-center flex-column montserrat-medium">
+                <div class="upload-icon mx-auto text-center">
+                  <PiUploadSimpleBold className="font-16" />
                 </div>
                 Upload
                 <input type="file" id="formFile"

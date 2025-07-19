@@ -41,14 +41,14 @@ const products = [
   { name: "Product Name", oldPrice: 1000, newPrice: 800, status: "paused" },
 ];
 
-const referralData = [
-  { source: "Facebook", successful: 0, referred: 0, shares: 0 },
-  { source: "E-mail", successful: 0, referred: 0, shares: 0 },
-  { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
-  { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
-  { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
-  { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
-];
+// const referralData = [
+//   { source: "Facebook", successful: 0, referred: 0, shares: 0 },
+//   { source: "E-mail", successful: 0, referred: 0, shares: 0 },
+//   { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
+//   { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
+//   { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
+//   { source: "Whatsapp", successful: 0, referred: 0, shares: 0 },
+// ];
 
 const QuickAccessData = [
   { textLine1: "Add Bonus", textLine2: "Rewards", path: "/referral" },
@@ -619,7 +619,7 @@ const PurchaseTableHeading = [
       return [];
     }
   })();
-  const onSubmit = (data) => {};
+  const onSubmit = () => {};
 
   // Pagination Function Start Here
   // const totalPages = Math.ceil(ParticipantsData.length / rowsPerPage);
@@ -697,7 +697,7 @@ const PurchaseTableHeading = [
       };
   
       const handleErrorNext = () => {
-          if (currentErrorPage < totalPages) setCurrentErrorPage(prev => prev + 1);
+          if (currentErrorPage < totalErrorPages) setCurrentErrorPage(prev => prev + 1);
       };
   
       const handleRowsPerErrorPageChange = (e) => {
@@ -738,11 +738,11 @@ const PurchaseTableHeading = [
           <div className="row my-4">
             {DashboardCardData.map((card, index) => (
               <div key={index} className="col-12 col-sm-6 col-lg-3 mb-4">
-                <div className="dashboard-card border-radius-12 bg-light-white-color px-4 py-4 h-100">
+                <div className="dashboard-card border-radius-12 bg-light-white-color px-4 py-3 h-100">
                   <div className="d-flex justify-content-between align-items-end">
-                    <p className="font-34 text-blue-color montserrat-semibold mb-0">
+                    <h3 className="font-34 text-blue-color montserrat-semibold mb-0">
                       {card.count}
-                    </p>
+                    </h3>
                     <img src={card.img} alt={card.label} />
                   </div>
                   <p className="font-16 text-uppercase mb-0 pt-2 text-blue-color montserrat-semibold">
@@ -1307,25 +1307,25 @@ const PurchaseTableHeading = [
                       className="schedule-card d-flex justify-content-between border-radius-8 mb-2"
                     >
                       <div className="p-3">
-                        <p className="font-12 montserrat-regular text-blue-color mb-1">
+                        <p className="font-12 montserrat-regular text-blue-color mb-12">
                           Offer Title:{" "}
                           <span className="montserrat-semibold">
                             {offer.title}
                           </span>
                         </p>
-                        <p className="font-12 montserrat-regular text-blue-color mb-1">
+                        <p className="font-12 montserrat-regular text-blue-color mb-12">
                           Offer Type:{" "}
                           <span className="montserrat-semibold">
                             {offer.type}
                           </span>
                         </p>
-                        <p className="font-12 montserrat-regular text-blue-color mb-1">
+                        <p className="font-12 montserrat-regular text-blue-color mb-12">
                           Status:{" "}
                           <span className="montserrat-semibold">
                             {offer.status}
                           </span>
                         </p>
-                        <p className="font-12 montserrat-regular text-blue-color mb-1">
+                        <p className="font-12 montserrat-regular text-blue-color mb-0">
                           Date:{" "}
                           <span className="montserrat-semibold">
                             {offer.date}
@@ -1334,10 +1334,10 @@ const PurchaseTableHeading = [
                       </div>
 
                       <div className="schedule-right-side d-flex flex-column justify-content-evenly align-items-center">
-                        <div className="border-bottom border-white px-2 d-flex align-items-center pb-2">
+                        <div className="border-bottom border-white px-2 d-flex align-items-center pb-12">
                           <PiPencilSimple className="font-20 text-blue-color" />
                         </div>
-                        <div className="border-bottom border-white px-2 d-flex align-items-center pb-2">
+                        <div className="border-bottom border-white px-2 d-flex align-items-center pb-12">
                           {offer.isLive ? (
                             <PiPlayCircle className="text-success font-20" />
                           ) : (
