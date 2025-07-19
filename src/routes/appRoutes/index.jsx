@@ -33,10 +33,10 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {AuthLocal && (
+        {!AuthLocal && (
           <Route path="/" element={<Navigate to="/login" replace />} />
         )}
-        {!AuthLocal && <Route path="/" element={<Dashboard />} />}
+        {AuthLocal && <Route path="/" element={<Dashboard />} />}
 
         {/* Public Routes */}
         <Route
@@ -52,7 +52,7 @@ const AppRoutes = () => {
         <Route
           path="/referral"
           element={
-            !AuthLocal ? <ReferralsRewards /> : <Navigate to="/login" replace />
+            AuthLocal ? <ReferralsRewards /> : <Navigate to="/login" replace />
           }
         />
         <Route
