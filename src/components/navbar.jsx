@@ -22,6 +22,8 @@ import { useForm } from "react-hook-form";
 
 // Components
 import Button from "./button";
+import { toastError, toastSuccess } from "../utils/toster";
+import { postData } from "../services/api";
 
 const NavBar = () => {
   const {
@@ -29,17 +31,43 @@ const NavBar = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-const [base64String, setBase64String] = useState('');
-  const onSubmit = (data) => {
+
+  // const HandleImgUpld =()=>{}
+  const GetAdminUid = sessionStorage.getItem("Auth");
+  const onSubmit = async (data) => {
     const file = data?.file[0];
+    let image;
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setBase64String(reader.result);
+        const base64String = reader.result;
+        image = base64String;
       };
       reader.readAsDataURL(file);
+    } else {
+      console.log("No file provided");
     }
-    console.log('filedfdfdsfd: ', file);
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.access_token,
+        log_alt: getAuth?.session_id,
+        username:data?.name,
+        email:data?.email,
+        mobile_number:data?.mobile,
+        image:image,
+        password:data?.password,
+      };
+      const response = await postData("/admin/edit-profile", payload);
+      if (response?.success) {
+        toastSuccess(response?.message);
+      }
+    } catch (error) {
+      toastError(error?.message);
+    }
   };
   return (
     <>
@@ -241,11 +269,11 @@ const [base64String, setBase64String] = useState('');
                 type="text"
                 className="form-control font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter name"
-                {...register("name", { required: "Name is required" })}
+                {...register("name")}
               />
-              {errors.name && (
+              {/* {errors.name && (
                 <small className="text-danger">{errors.name.message}</small>
-              )}
+              )} */}
             </div>
             <div className="mb-3 col-lg-12">
               <label className="form-label text-blue-color font-12 montserrat-semibold">
@@ -255,13 +283,15 @@ const [base64String, setBase64String] = useState('');
                 type="number"
                 className="form-control font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Mobile No."
-                {...register("mobile", {
-                  required: "Mobile number is required",
-                })}
-              />
-              {errors.mobile && (
-                <small className="text-danger">{errors.mobile.message}</small>
+                {...register("mobile"
+                //   , {
+                //   required: "Mobile number is required",
+                // }
               )}
+              />
+              {/* {errors.mobile && (
+                <small className="text-danger">{errors.mobile.message}</small>
+              )} */}
             </div>
             <div className="mb-3 col-lg-12">
               <label className="form-label text-blue-color font-12 montserrat-semibold">
@@ -272,16 +302,16 @@ const [base64String, setBase64String] = useState('');
                 className="form-control font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Email"
                 {...register("email", {
-                  required: "Email is required",
+                  // required: "Email is required",
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: "Invalid email address",
                   },
                 })}
               />
-              {errors.email && (
+              {/* {errors.email && (
                 <small className="text-danger">{errors.email.message}</small>
-              )}
+              )} */}
             </div>
             <div className="mb-3 col-lg-12">
               <label className="form-label text-blue-color font-12 montserrat-semibold">
@@ -313,9 +343,7 @@ const [base64String, setBase64String] = useState('');
                   <PiUploadSimpleBold className="font-16 me-3" />
                 </div>
                 Upload
-                <input type="file" id="formFile"
-                {...register("file")}
-                />
+                <input type="file" id="formFile" {...register("file")} />
               </label>
             </div>
             <Button

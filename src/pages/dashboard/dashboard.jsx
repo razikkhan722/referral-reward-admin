@@ -607,6 +607,7 @@ const PurchaseTableHeading = [
   { label: "Referral code (If any)", accessor: "referralCode" },
 ];
 
+console.log('DashStatData?.part8: ', DashStatData?.part8);
   // to show Channel Performance Data
   const ChanlData = (() => {
     try {
