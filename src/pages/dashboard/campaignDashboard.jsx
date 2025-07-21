@@ -536,7 +536,7 @@
 
 // export default CampaignDashboard;
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   IoChevronDown,
   IoAdd,
@@ -547,6 +547,11 @@ import {
 } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../../utils/UseContext/useContext";
+
+// Images
+import Logo1 from "../../assets/images/Dashboard-img/group 1.svg";
+import Logo2 from "../../assets/images/Dashboard-img/TrendUp.svg"
 
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
@@ -558,7 +563,7 @@ const CampaignDashboard = () => {
     logo: null,
   });
   const [logoPreview, setLogoPreview] = useState(null);
-
+  const { setLogo } = useContext(UserContext);
   const campaigns = [
     {
       id: 1,
@@ -566,7 +571,8 @@ const CampaignDashboard = () => {
       subtitle: "The Universal Referral",
       url: "https://pages.viral-loops.com/skill...",
       totalParticipations: 0,
-      avatar: "👑",
+      // avatar: "👑",
+      avatar: Logo1,
     },
     {
       id: 2,
@@ -574,7 +580,8 @@ const CampaignDashboard = () => {
       subtitle: "The Universal Referral",
       url: "https://pages.viral-loops.com/skill...",
       totalParticipations: 0,
-      avatar: "👑",
+      // avatar: "👑",
+      avatar: Logo2,
     },
   ];
 
@@ -632,9 +639,8 @@ const CampaignDashboard = () => {
               <div className="col-auto d-flex align-items-center gap-4">
                 <nav className="nav nav-pills">
                   <button
-                    className={`nav-link ${
-                      activeTab === "My Campaigns" ? "active" : ""
-                    } px-3 py-2`}
+                    className={`nav-link ${activeTab === "My Campaigns" ? "active" : ""
+                      } px-3 py-2`}
                     onClick={() => setActiveTab("My Campaigns")}
                   >
                     My Campaigns
@@ -718,7 +724,8 @@ const CampaignDashboard = () => {
                               fontSize: "20px",
                             }}
                           >
-                            {campaign.avatar}
+                            <img src={campaign.avatar} alt="Logo" />
+                            {/* {campaign.avatar} */}
                           </div>
                           <div>
                             <h5 className="mb-1 fw-semibold">
@@ -749,7 +756,12 @@ const CampaignDashboard = () => {
 
                         <div className="col-auto">
                           <div className="d-flex gap-2">
-                            <NavLink to="/dashboard">
+                            <NavLink to="/dashboard"
+                              onClick={() => {
+                                setLogo(campaign.avatar);
+                                localStorage.setItem("logo", campaign.avatar);
+                              }}
+                            >
                               <button className="btn btn-outline-secondary">
                                 Dashboard
                               </button>
