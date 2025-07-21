@@ -1,68 +1,22 @@
-// #root {
-//   max-width: 1280px;
-//   margin: 0 auto;
-//   padding: 2rem;
-//   text-align: center;
-// }
-
-// .logo {
-//   height: 6em;
-//   padding: 1.5em;
-//   will-change: filter;
-//   transition: filter 300ms;
-// }
-
-// .logo:hover {
-//   filter: drop-shadow(0 0 2em #646cffaa);
-// }
-
-// .logo.react:hover {
-//   filter: drop-shadow(0 0 2em #61dafbaa);
-// }
-
-// @keyframes logo-spin {
-//   from {
-//     transform: rotate(0deg);
-//   }
-
-//   to {
-//     transform: rotate(360deg);
-//   }
-// }
-
-// @media (prefers-reduced-motion: no-preference) {
-//   a:nth-of-type(2) .logo {
-//     animation: logo-spin infinite 20s linear;
-//   }
-// }
-
-// .card {
-//   padding: 2em;
-// }
-
-// .read-the-docs {
-//   color: #888;
-// }
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
 
 :root {
-  --text-blue: #1A2A6C;
-  --muted-blue: #455A64;
-  --light-blue: #D2F1F9;
-  --text-orange: #FF741F;
-  --text-red: #DA3C37;
-  --light-white: #F7F7F7;
-  --light-white-1: #F5F5F5;
-  --light-white-3: #FAFAFA;
-  --purple-color: #BA68C8;
-  --lavendar-color: #B399FF;
-  --border-light-purple: #C5CEF1;
-  --leave-green: #64AD5A;
-  --green-color: #B5D35B;
-  --light-gray: #EBEBEB;
+  --text-blue: #1a2a6c;
+  --muted-blue: #455a64;
+  --light-blue: #d2f1f9;
+  --text-orange: #ff741f;
+  --text-red: #da3c37;
+  --light-white: #f7f7f7;
+  --light-white-1: #f5f5f5;
+  --light-white-3: #fafafa;
+  --purple-color: #ba68c8;
+  --lavendar-color: #b399ff;
+  --border-light-purple: #c5cef1;
+  --leave-green: #64ad5a;
+  --green-color: #b5d35b;
+  --light-gray: #ebebeb;
   --gray-color: #707070;
-  --border-gray-color: #A1A1A1;
+  --border-gray-color: #a1a1a1;
   --dark-gray-color: #373737;
 }
 
@@ -141,19 +95,19 @@
 }
 
 .text-brown-color {
-  color: #683C0E;
+  color: #683c0e;
 }
 
 .pending-red-color {
-  color: #FF0000 !important;
+  color: #ff0000 !important;
 }
 
 .inner-table-meteors-orange {
-  background-color: #FF741F1A;
+  background-color: #ff741f1a;
 }
 
 .inner-table-meteors-green {
-  background-color: #64AD5A1A;
+  background-color: #64ad5a1a;
 }
 
 .meteors-dot {
@@ -162,7 +116,7 @@
 }
 
 .dot-orange {
-  background-color: #FF741F;
+  background-color: #ff741f;
 }
 
 // ======================================
@@ -290,11 +244,9 @@
   border: 1px solid var(--purple-color);
 }
 
-
-
 // ====================  Box Shadow     ======================
 .box-shadow {
-  box-shadow: 0px 4px 16px 1px #0000001A;
+  box-shadow: 0px 4px 16px 1px #0000001a;
 }
 
 // =======================    Width & Height  ============================
@@ -332,7 +284,7 @@
   max-width: 100%;
 
   .profile-header {
-    background-color: #BA68C833;
+    background-color: #ba68c833;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
   }
@@ -374,7 +326,7 @@
 }
 
 .product-edit {
-  background-color: #BA68C814;
+  background-color: #ba68c814;
   border-top-right-radius: 8px;
 }
 
@@ -449,12 +401,9 @@ td {
   }
 }
 
-
-
-
 // -------------------- Referral & Rewards-----------------------
 .nav-tab-bg {
-  background-color: #C0EBF7;
+  background-color: #c0ebf7;
 }
 
 .nav-link:focus,
@@ -469,7 +418,7 @@ td {
 }
 
 .reffer-card {
-  background-color: #BA68C81A;
+  background-color: #ba68c81a;
   min-width: 120px;
   width: 100%;
 }
@@ -479,12 +428,12 @@ td {
 }
 
 .referral-table-arrow {
-  background-color: #1A2A6C0D;
+  background-color: #1a2a6c0d;
 }
 
 .reward-inner-table th,
 .reward-inner-table td {
-  background-color: #4934951A !important;
+  background-color: #4934951a !important;
 }
 
 // --------------------- Graph Css Start Here   ------------------------
@@ -506,19 +455,19 @@ td {
 }
 
 .dot-yellow {
-  background-color: #FCF45F;
+  background-color: #fcf45f;
 }
 
 .dot-green {
-  background-color: #B5D35B;
+  background-color: #b5d35b;
 }
 
 .dot-orange {
-  background-color: #FF741F;
+  background-color: #ff741f;
 }
 
 .dot-purple {
-  background-color: #B399FF;
+  background-color: #b399ff;
 }
 
 // -------------------------- Login Css Start Here  --------------------------
@@ -529,13 +478,13 @@ td {
 }
 
 .login-input {
-  background-color: #BA68C81A;
+  background-color: #ba68c81a;
 }
 
 .cross-icon {
   width: 24px;
   height: 24px;
-  background-color: #E4F7FB !important;
+  background-color: #e4f7fb !important;
 }
 
 .dropdown-toggle::after {
@@ -550,47 +499,47 @@ td {
 }
 
 .reward-edit-icon {
-  background-color: #BA68C81A;
+  background-color: #ba68c81a;
   color: var(--text-blue);
 }
 
 .reward-attach-icon {
-  background-color: #683C0E26;
-  color: #683C0E;
+  background-color: #683c0e26;
+  color: #683c0e;
 }
 
 .reward-edit-icon:hover {
-  background-color: #BA68C8;
+  background-color: #ba68c8;
   color: white;
 }
 
 .reward-attach-icon:hover {
-  background-color: #683C0E;
+  background-color: #683c0e;
   color: white !important;
 }
 
 .reward-delete-icon {
-  background-color: #FF3B301A;
+  background-color: #ff3b301a;
   color: var(--text-red);
 }
 
 .reward-delete-icon:hover {
-  background-color: #FF3B30;
+  background-color: #ff3b30;
   color: white;
 }
 
 .reward-plus-icon {
-  background-color: #64AD5A1A;
-  color: #64AD5A;
+  background-color: #64ad5a1a;
+  color: #64ad5a;
 }
 
 .reward-plus-icon:hover {
-  background-color: #64AD5A;
+  background-color: #64ad5a;
   color: white;
 }
 
 .milky-dropdown {
-  background-color: #BA68C81A;
+  background-color: #ba68c81a;
   border-top-left-radius: 12px;
 }
 
@@ -663,7 +612,7 @@ td {
 // ------------------------- Exclusive Offer 7 eraning Table Css -------------------------
 .gray-box {
   height: 200px;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 
 .earning-circle-arrow {
@@ -684,7 +633,7 @@ td {
 }
 
 .earning-table th {
-  background-color: #BA68C81A;
+  background-color: #ba68c81a;
   color: var(--text-blue);
 }
 
@@ -724,7 +673,6 @@ td {
   transform: rotate(180deg);
   transition: transform 0.3s ease;
 }
-
 
 // --------------------- Miscellaneous Css Start Here ----------------------------
 .miscellaneous-screen-preview {
@@ -769,31 +717,31 @@ td {
 }
 
 .push-edit-icon {
-  background-color: #1A2A6C1A;
+  background-color: #1a2a6c1a;
   color: var(--text-blue) !important;
 }
 
 .copy-icon {
-  background-color: #BA68C81A;
-  color: #BA68C8;
+  background-color: #ba68c81a;
+  color: #ba68c8;
 }
 
 // --------------------------  Dashboard Schedule Card Css Start --------------------------------
 .schedule-card {
-  background: #BA68C814;
+  background: #ba68c814;
 }
 
 .schedule-right-side {
-  background-color: #BA68C814;
+  background-color: #ba68c814;
 }
 
 // Dashboard Error table Css
 .referral-bg-blue {
-  background-color: #1A2A6C1F;
+  background-color: #1a2a6c1f;
 }
 
 .referral-bg-green {
-  background-color: #64AD5A1F;
+  background-color: #64ad5a1f;
 }
 
 .right-sidepanel {
@@ -802,11 +750,11 @@ td {
 }
 
 .sidepanel-gray-text {
-  color: #A1A1A199;
+  color: #a1a1a199;
 }
 
 .dropdown-item:hover {
-  background-color: #1A2A6C1A !important;
+  background-color: #1a2a6c1a !important;
   color: var(--text-blue) !important;
 }
 
@@ -814,4 +762,49 @@ td {
   color: var(--text-blue) !important;
   text-decoration: none;
   background-color: transparent !important;
+}
+
+.bg-purple {
+  background-color: #6f42c1 !important;
+}
+
+.hover-shadow {
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.transition {
+  transition: all 0.15s ease-in-out;
+}
+
+/* Custom nav pills styling */
+.nav-pills .nav-link.active {
+  background-color: #0d6efd;
+  border-bottom: 2px solid #0d6efd;
+}
+
+/* Footer backdrop blur */
+.fixed-bottom {
+  backdrop-filter: blur(10px);
+  background-color: rgba(248, 249, 250, 0.95) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .row .col-auto:not(:first-child) {
+    margin-top: 1rem;
+  }
+
+  .fixed-bottom .row {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .fixed-bottom .col:last-child {
+    justify-content: center !important;
+  }
 }

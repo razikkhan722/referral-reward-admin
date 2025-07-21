@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboarcampaigns from "../../pages/dashboard/campaignDashboard";
 import Dashboard from "../../pages/dashboard/dashboard";
 import ReferralsRewards from "../../pages/referralsRewards/referralsRewards";
 import EarningRedemption from "../../pages/earningRedemptions/earningRedemption";
@@ -15,7 +16,8 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboarcampaigns />} />
+        <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/referral" element={<ReferralsRewards />} />
         <Route path="/earning" element={<EarningRedemption />} />
         <Route path="/pushup" element={<PushupNotification />} />
