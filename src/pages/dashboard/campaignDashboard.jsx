@@ -536,7 +536,7 @@
 
 // export default CampaignDashboard;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IoChevronDown,
   IoAdd,
@@ -547,9 +547,13 @@ import {
 } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import { postData } from "../../services/api";
+import { DecryptFunction } from "../../utils/decryptFunction";
+import { toastError, toastSuccess } from "../../utils/toster";
 
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
+  const [campList, setcampList] = useState();
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -558,25 +562,7 @@ const CampaignDashboard = () => {
     logo: null,
   });
   const [logoPreview, setLogoPreview] = useState(null);
-
-  const campaigns = [
-    {
-      id: 1,
-      name: "Skill",
-      subtitle: "The Universal Referral",
-      url: "https://pages.viral-loops.com/skill...",
-      totalParticipations: 0,
-      avatar: "👑",
-    },
-    {
-      id: 2,
-      name: "Skill",
-      subtitle: "The Universal Referral",
-      url: "https://pages.viral-loops.com/skill...",
-      totalParticipations: 0,
-      avatar: "👑",
-    },
-  ];
+  const GetAdminUid = sessionStorage.getItem("Auth");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -622,6 +608,31 @@ const CampaignDashboard = () => {
     setLogoPreview(null);
   };
 
+  // =================
+  // API FUNCTIONALITY
+  // =================
+
+  const HandleMainDashdAPI = async () => {
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+      };
+      const response = await postData("/admin/list-all-campaigns", payload);
+      setcampList(response?.all_campaigns);
+      // const Decrpt = await DecryptFunction(response?.data);
+    } catch (error) {
+      toastError();
+      console.log("error: ", error);
+    }
+  };
+  useEffect(() => {
+    HandleMainDashdAPI();
+  }, []);
   return (
     <>
       <div className="min-vh-100 bg-light">
@@ -641,13 +652,15 @@ const CampaignDashboard = () => {
                   </button>
                 </nav>
 
-                <button
-                  className="btn btn-outline-secondary d-flex align-items-center gap-2"
-                  onClick={() => setShowModal(true)}
-                >
-                  <IoAdd size={16} />
-                  Create
-                </button>
+                <NavLink to={"/mainform"}>
+                  <button
+                    className="btn btn-outline-secondary d-flex align-items-center gap-2"
+                    // onClick={() => setShowModal(true)}
+                  >
+                    <IoAdd size={16} />
+                    Create
+                  </button>
+                </NavLink>
               </div>
 
               <div className="col d-flex align-items-center justify-content-end gap-3">
@@ -702,36 +715,42 @@ const CampaignDashboard = () => {
               <h2 className="h4 fw-semibold text-dark mb-4">Draft Campaigns</h2>
 
               <div className="d-flex flex-column gap-3">
-                {campaigns.map((campaign) => (
+                {campList?.map((campaign, index) => (
                   <div
-                    key={campaign.id}
+                    key={index}
                     className="card border-1 hover-shadow transition"
                   >
                     <div className="card-body p-4">
                       <div className="row align-items-center">
                         <div className="col-auto d-flex align-items-center gap-3">
-                          <div
+                          {/* <div
                             className="bg-purple text-white rounded-circle d-flex align-items-center justify-content-center"
                             style={{
                               width: "48px",
                               height: "48px",
                               fontSize: "20px",
                             }}
-                          >
-                            {campaign.avatar}
-                          </div>
+                          > */}
+                          <img
+                            className=""
+                            width={50}
+                            height={50}
+                            src={campaign?.image}
+                            alt="Loading"
+                          />
+                          {/* </div> */}
                           <div>
                             <h5 className="mb-1 fw-semibold">
-                              {campaign.name}
+                              {campaign?.program_name}
                             </h5>
-                            <p className="mb-1 text-muted small">
+                            {/* <p className="mb-1 text-muted small">
                               {campaign.subtitle}
-                            </p>
+                            </p> */}
                             <p
                               className="mb-0 text-muted"
                               style={{ fontSize: "12px" }}
                             >
-                              {campaign.url}
+                              {campaign?.base_url}
                             </p>
                           </div>
                         </div>
@@ -742,7 +761,7 @@ const CampaignDashboard = () => {
                               Total Participations
                             </div>
                             <div className="h3 fw-bold mb-0">
-                              {campaign.totalParticipations}
+                              {campaign?.total_participants}
                             </div>
                           </div>
                         </div>
@@ -750,7 +769,15 @@ const CampaignDashboard = () => {
                         <div className="col-auto">
                           <div className="d-flex gap-2">
                             <NavLink to="/dashboard">
-                              <button className="btn btn-outline-secondary">
+                              <button
+                                onClick={() =>
+                                  sessionStorage.setItem(
+                                    "Prgid",
+                                    campaign?.program_id
+                                  )
+                                }
+                                className="btn btn-outline-secondary"
+                              >
                                 Dashboard
                               </button>
                             </NavLink>

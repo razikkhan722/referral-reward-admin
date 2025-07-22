@@ -497,6 +497,7 @@ const Dashboard = () => {
   } = useForm();
 
   const GetAdminUid = sessionStorage.getItem("Auth");
+  const ProgramId = sessionStorage.getItem("Prgid");
 
   // UseState's
   const [activeTab, setActiveTab] = useState("tab1");
@@ -550,64 +551,63 @@ const Dashboard = () => {
     {
       title: "Referrals",
       value: DashStatData?.part9,
-      percent: "25%",
+      percent: DashStatData?.part9,
       color: "dot-yellow",
     },
     {
       title: "Purchases",
       value: DashStatData?.part10,
-      percent: "12%",
+      percent: DashStatData?.part10,
       color: "dot-orange",
     },
     {
       title: "Milestones",
       value: DashStatData?.part11,
-      percent: "12%",
+      percent: DashStatData?.part11,
       color: "dot-green",
     },
     {
       title: "Signups",
       value: DashStatData?.part12,
-      percent: "12%",
+      percent: DashStatData?.part12,
       color: "dot-purple",
     },
   ];
   const ReferTableHeading = [
-  { label: "Ranking", accessor: "rank" },
-  { label: "Name", accessor: "username" },
-  { label: "Email", accessor: "email" },
-  { label: "Mobile", accessor: "mobile_number" },
-  { label: "Referral Code", accessor: "referral_code" },
-  { label: "Referrals", accessor: "total_referrals", isBadge: true },
-  {
-    label: "Successful Referrals",
-    accessor: "successful_referrals",
-    isGreenBadge: true,
-  },
-  { label: "Earnings", accessor: "referral_earning" },
-  { label: "Total Earnings", accessor: "total_earnings" },
-];
-const GameTableHeading = [
-  { label: "Ranking", accessor: "rank" },
-  { label: "Name", accessor: "username" },
-  { label: "Email", accessor: "email" },
-  { label: "Game", accessor: "game_name" },
-  { label: "Number of plays", accessor: "num_play" },
-  { label: "Last Played Date", accessor: "last_play_date" },
-  { label: "Earnings via Game", accessor: "earning_game" },
-  { label: "Total earnings", accessor: "total_earning" },
-];
-const PurchaseTableHeading = [
-  { label: "Ranking", accessor: "rank" },
-  { label: "Name", accessor: "username" },
-  { label: "Email", accessor: "email" },
-  { label: "Product Purchased", accessor: "productPurchased" },
-  { label: "Amount", accessor: "amount" },
-  { label: "Coupon code", accessor: "couponCode" },
-  { label: "Referral code (If any)", accessor: "referralCode" },
-];
+    { label: "Ranking", accessor: "rank" },
+    { label: "Name", accessor: "username" },
+    { label: "Email", accessor: "email" },
+    { label: "Mobile", accessor: "mobile_number" },
+    { label: "Referral Code", accessor: "referral_code" },
+    { label: "Referrals", accessor: "total_referrals", isBadge: true },
+    {
+      label: "Successful Referrals",
+      accessor: "successful_referrals",
+      isGreenBadge: true,
+    },
+    { label: "Earnings", accessor: "referral_earning" },
+    { label: "Total Earnings", accessor: "total_earnings" },
+  ];
+  const GameTableHeading = [
+    { label: "Ranking", accessor: "rank" },
+    { label: "Name", accessor: "username" },
+    { label: "Email", accessor: "email" },
+    { label: "Game", accessor: "game_name" },
+    { label: "Number of plays", accessor: "num_play" },
+    { label: "Last Played Date", accessor: "last_play_date" },
+    { label: "Earnings via Game", accessor: "earning_game" },
+    { label: "Total earnings", accessor: "total_earning" },
+  ];
+  const PurchaseTableHeading = [
+    { label: "Ranking", accessor: "rank" },
+    { label: "Name", accessor: "username" },
+    { label: "Email", accessor: "email" },
+    { label: "Product Purchased", accessor: "productPurchased" },
+    { label: "Amount", accessor: "amount" },
+    { label: "Coupon code", accessor: "couponCode" },
+    { label: "Referral code (If any)", accessor: "referralCode" },
+  ];
 
-console.log('DashStatData?.part8: ', DashStatData?.part8);
   // to show Channel Performance Data
   const ChanlData = (() => {
     try {
@@ -654,8 +654,9 @@ console.log('DashStatData?.part8: ', DashStatData?.part8);
       });
       const payload = {
         admin_uid: GetAdminUid,
-        mode: getAuth?.access_token,
-        log_alt: getAuth?.session_id,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+        program_id: ProgramId,
       };
       const responseState = await postData("/admin/dashboard/stats", payload);
       if (responseState?.data) {
@@ -672,8 +673,8 @@ console.log('DashStatData?.part8: ', DashStatData?.part8);
       );
       if (prtcpResp?.data) {
         const Decrpt = await DecryptFunction(prtcpResp?.data);
-        console.log('Decrpt: ', Decrpt);
-        setPrtcpntTableData(Decrpt)
+        console.log("Decrpt: ", Decrpt);
+        setPrtcpntTableData(Decrpt);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -684,33 +685,32 @@ console.log('DashStatData?.part8: ', DashStatData?.part8);
     HandleDashBoardAPI();
   }, []);
 
-
   // ------------------------------------
-      const [currentErrorPage, setCurrentErrorPage] = useState(1);
-      const [rowsPerErrorPage, setRowsPerErrorPage] = useState(5);
-  
-      // Pagination Function Start Here
-      // const totalPages = Math.ceil(ParticipantsData.length / rowsPerErrorPage);
-      const totalErrorPages = Math?.ceil(ErrorTableData?.length / rowsPerErrorPage);
-  
-      const handleErrorPrevious = () => {
-          if (currentErrorPage > 1) setCurrentErrorPage(prev => prev - 1);
-      };
-  
-      const handleErrorNext = () => {
-          if (currentErrorPage < totalErrorPages) setCurrentErrorPage(prev => prev + 1);
-      };
-  
-      const handleRowsPerErrorPageChange = (e) => {
-          setRowsPerErrorPage(Number(e.target.value));
-          setCurrentErrorPage(1); // reset to first page
-      };
-  
-      const ErrorTablePgntData = ErrorTableData?.slice(
-          (currentErrorPage - 1) * rowsPerErrorPage,
-          currentErrorPage * rowsPerErrorPage
-      );
+  const [currentErrorPage, setCurrentErrorPage] = useState(1);
+  const [rowsPerErrorPage, setRowsPerErrorPage] = useState(5);
 
+  // Pagination Function Start Here
+  // const totalPages = Math.ceil(ParticipantsData.length / rowsPerErrorPage);
+  const totalErrorPages = Math?.ceil(ErrorTableData?.length / rowsPerErrorPage);
+
+  const handleErrorPrevious = () => {
+    if (currentErrorPage > 1) setCurrentErrorPage((prev) => prev - 1);
+  };
+
+  const handleErrorNext = () => {
+    if (currentErrorPage < totalErrorPages)
+      setCurrentErrorPage((prev) => prev + 1);
+  };
+
+  const handleRowsPerErrorPageChange = (e) => {
+    setRowsPerErrorPage(Number(e.target.value));
+    setCurrentErrorPage(1); // reset to first page
+  };
+
+  const ErrorTablePgntData = ErrorTableData?.slice(
+    (currentErrorPage - 1) * rowsPerErrorPage,
+    currentErrorPage * rowsPerErrorPage
+  );
 
   return (
     <>
@@ -921,7 +921,14 @@ console.log('DashStatData?.part8: ', DashStatData?.part8);
                         } ${index % 2 === 0 ? "border-end" : ""}`}
                       >
                         <div className="montserrat-bold font-14 text-blue-color">
-                          {item.value} <span>({item.percent})</span>
+                          {item.value}{" "}
+                          <span>
+                            ({(
+                              (Number(item?.percent) * 100) /
+                              DashStatData?.part13
+                            ).toFixed(2)}
+                            %)
+                          </span>
                         </div>
                         <div className="d-flex justify-content-center align-items-center gap-2">
                           <span
@@ -1518,30 +1525,36 @@ console.log('DashStatData?.part8: ', DashStatData?.part8);
               </table>
             </div>
             {/* Pagination for Error table */}
-            <div className='row gy-2 d-flex align-items-center m-3'>
-                <div className='col-lg-7 d-flex justify-content-end gap-4 '>
-                    <button className='text-gray-color border-gray border-radiu-8 px-3 py-2 bg-transparent font-14 poppins-medium'
-                        disabled={currentErrorPage === 1}
-                        onClick={handleErrorPrevious}>
-                        Previous</button>
-                    <button className='border-0 border-radiu-8 bg-blue-color text-white px-3 py-2 font-14 poppins-medium'
-                        disabled={currentErrorPage === totalErrorPages}
-                        onClick={handleErrorNext}>
-                        Next</button>
-                </div>
-                <div className='col-lg-5 d-flex align-items-center justify-content-end gap-2'>
-                    <label className='font-14 poppins-medium'>Rows per page</label>
-                    <select
-                        className='form-select border-gray border-radiu-8 bg-transparent w-auto font-14 poppins-medium text-gray-color'
-                        value={rowsPerErrorPage}
-                        onChange={handleRowsPerErrorPageChange}
-                    >
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={15}>15</option>
-                        <option value={20}>20</option>
-                    </select>
-                </div>
+            <div className="row gy-2 d-flex align-items-center m-3">
+              <div className="col-lg-7 d-flex justify-content-end gap-4 ">
+                <button
+                  className="text-gray-color border-gray border-radiu-8 px-3 py-2 bg-transparent font-14 poppins-medium"
+                  disabled={currentErrorPage === 1}
+                  onClick={handleErrorPrevious}
+                >
+                  Previous
+                </button>
+                <button
+                  className="border-0 border-radiu-8 bg-blue-color text-white px-3 py-2 font-14 poppins-medium"
+                  disabled={currentErrorPage === totalErrorPages}
+                  onClick={handleErrorNext}
+                >
+                  Next
+                </button>
+              </div>
+              <div className="col-lg-5 d-flex align-items-center justify-content-end gap-2">
+                <label className="font-14 poppins-medium">Rows per page</label>
+                <select
+                  className="form-select border-gray border-radiu-8 bg-transparent w-auto font-14 poppins-medium text-gray-color"
+                  value={rowsPerErrorPage}
+                  onChange={handleRowsPerErrorPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
