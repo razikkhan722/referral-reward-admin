@@ -536,7 +536,7 @@
 
 // export default CampaignDashboard;
 
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   IoChevronDown,
   IoAdd,
@@ -547,6 +547,9 @@ import {
 } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import { postData } from "../../services/api";
+import { DecryptFunction } from "../../utils/decryptFunction";
+import { toastError, toastSuccess } from "../../utils/toster";
 import { UserContext } from "../../utils/UseContext/useContext";
 
 // Images
@@ -556,6 +559,7 @@ import CampaignNavbar from "../../components/campaignNavbar";
 
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
+  const [campList, setcampList] = useState();
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -564,27 +568,7 @@ const CampaignDashboard = () => {
     logo: null,
   });
   const [logoPreview, setLogoPreview] = useState(null);
-  const { setLogo } = useContext(UserContext);
-  const campaigns = [
-    {
-      id: 1,
-      name: "Skill",
-      subtitle: "The Universal Referral",
-      url: "https://pages.viral-loops.com/skill...",
-      totalParticipations: 0,
-      // avatar: "👑",
-      avatar: Logo1,
-    },
-    {
-      id: 2,
-      name: "Skill",
-      subtitle: "The Universal Referral",
-      url: "https://pages.viral-loops.com/skill...",
-      totalParticipations: 0,
-      // avatar: "👑",
-      avatar: Logo2,
-    },
-  ];
+  const GetAdminUid = sessionStorage.getItem("Auth");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -630,6 +614,31 @@ const CampaignDashboard = () => {
     setLogoPreview(null);
   };
 
+  // =================
+  // API FUNCTIONALITY
+  // =================
+
+  const HandleMainDashdAPI = async () => {
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+      };
+      const response = await postData("/admin/list-all-campaigns", payload);
+      setcampList(response?.all_campaigns);
+      // const Decrpt = await DecryptFunction(response?.data);
+    } catch (error) {
+      toastError();
+      console.log("error: ", error);
+    }
+  };
+  useEffect(() => {
+    HandleMainDashdAPI();
+  }, []);
   return (
     <>
       <div className="min-vh-100 bg-light">
@@ -648,13 +657,15 @@ const CampaignDashboard = () => {
                   </button>
                 </nav>
 
-                <button
-                  className="btn btn-outline-secondary d-flex align-items-center gap-2"
-                  onClick={() => setShowModal(true)}
-                >
-                  <IoAdd size={16} />
-                  Create
-                </button>
+                <NavLink to={"/mainform"}>
+                  <button
+                    className="btn btn-outline-secondary d-flex align-items-center gap-2"
+                    // onClick={() => setShowModal(true)}
+                  >
+                    <IoAdd size={16} />
+                    Create
+                  </button>
+                </NavLink>
               </div>
 
               <div className="col d-flex align-items-center justify-content-end gap-3">
@@ -713,9 +724,9 @@ const CampaignDashboard = () => {
               <p className="text-blue-color font-12 montserrat-medium">Create, manage, and monitor all your campaigns from one place.</p>
 
               <div className="d-flex flex-column gap-3">
-                {campaigns.map((campaign) => (
+                {campList?.map((campaign, index) => (
                   <div
-                    key={campaign.id}
+                    key={index}
                     className="card campaign-card border-radius-12 border-0 hover-shadow transition"
                   >
                     <div className="card-body px-4 py-3">
@@ -727,16 +738,16 @@ const CampaignDashboard = () => {
                           </div>
                           <div>
                             <h5 className="mb-0 text-blue-color font-28 montserrat-semibold">
-                              {campaign.name}
+                              {campaign?.program_name}
                             </h5>
-                            {/* <p className="mb-1 text-muted small">
+                            {/* {/* <p className="mb-1 text-muted small">
                               {campaign.subtitle}
                             </p> */}
                             <p
                               className="mb-0 text-muted"
                               style={{ fontSize: "12px" }}
                             >
-                              {campaign.url}
+                              {campaign?.base_url}
                             </p>
                           </div>
                         </div>
@@ -744,7 +755,7 @@ const CampaignDashboard = () => {
                         <div className="col-auto mx-auto">
                           <div className="text-center text-blue-color">
                             <div className="font-32 montserrat-semibold mb-0">
-                              {campaign.totalParticipations}
+                              {campaign?.total_participants}
                             </div>
                             <div className="small font-16 montserrat-medium">
                               Total Participations
@@ -754,13 +765,16 @@ const CampaignDashboard = () => {
 
                         <div className="col-auto">
                           <div className="d-flex gap-2">
-                            <NavLink to="/dashboard"
-                              onClick={() => {
-                                setLogo(campaign.avatar);
-                                localStorage.setItem("logo", campaign.avatar);
-                              }}
-                            >
-                              <button className="border-radius-8 bg-purple-color border-0 px-3 py-2 font-14 montserrat-medium text-white">
+                            <NavLink to="/dashboard">
+                              <button
+                                onClick={() =>
+                                  sessionStorage.setItem(
+                                    "Prgid",
+                                    campaign?.program_id
+                                  )
+                                }
+                                className="btn btn-outline-secondary"
+                              >
                                 Dashboard
                               </button>
                             </NavLink>
