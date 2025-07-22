@@ -552,6 +552,7 @@ import { UserContext } from "../../utils/UseContext/useContext";
 // Images
 import Logo1 from "../../assets/images/Dashboard-img/group 1.svg";
 import Logo2 from "../../assets/images/Dashboard-img/TrendUp.svg"
+import CampaignNavbar from "../../components/campaignNavbar";
 
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
@@ -633,7 +634,7 @@ const CampaignDashboard = () => {
     <>
       <div className="min-vh-100 bg-light">
         {/* Header */}
-        <header className="bg-white border-bottom">
+        {/* <header className="bg-white border-bottom">
           <div className="container-fluid">
             <div className="row align-items-center py-3">
               <div className="col-auto d-flex align-items-center gap-4">
@@ -699,41 +700,38 @@ const CampaignDashboard = () => {
               </div>
             </div>
           </div>
-        </header>
+        </header> */}
+
+        <CampaignNavbar/>
 
         {/* Main Content */}
         <main className="container-fluid py-4">
           <div className="row d-flex justify-content-center align-items-center">
             <div className="col-9">
-              <h2 className="h4 fw-semibold text-dark mb-4">Draft Campaigns</h2>
+              {/* <h2 className="h4 fw-semibold text-dark mb-4">Draft Campaigns</h2> */}
+              <p className="text-blue-color font-24 montserrat-semibold mb-0">All Campaigns</p>
+              <p className="text-blue-color font-12 montserrat-medium">Create, manage, and monitor all your campaigns from one place.</p>
 
               <div className="d-flex flex-column gap-3">
                 {campaigns.map((campaign) => (
                   <div
                     key={campaign.id}
-                    className="card border-1 hover-shadow transition"
+                    className="card campaign-card border-radius-12 border-0 hover-shadow transition"
                   >
-                    <div className="card-body p-4">
+                    <div className="card-body px-4 py-3">
                       <div className="row align-items-center">
                         <div className="col-auto d-flex align-items-center gap-3">
                           <div
-                            className="bg-purple text-white rounded-circle d-flex align-items-center justify-content-center"
-                            style={{
-                              width: "48px",
-                              height: "48px",
-                              fontSize: "20px",
-                            }}
-                          >
-                            <img src={campaign.avatar} alt="Logo" />
-                            {/* {campaign.avatar} */}
+                            className="campaign-img text-white rounded-circle d-flex align-items-center justify-content-center overflow-hidden">
+                            <img src={campaign.avatar} className="logo" alt="Logo" />
                           </div>
                           <div>
-                            <h5 className="mb-1 fw-semibold">
+                            <h5 className="mb-0 text-blue-color font-28 montserrat-semibold">
                               {campaign.name}
                             </h5>
-                            <p className="mb-1 text-muted small">
+                            {/* <p className="mb-1 text-muted small">
                               {campaign.subtitle}
-                            </p>
+                            </p> */}
                             <p
                               className="mb-0 text-muted"
                               style={{ fontSize: "12px" }}
@@ -744,12 +742,12 @@ const CampaignDashboard = () => {
                         </div>
 
                         <div className="col-auto mx-auto">
-                          <div className="text-center">
-                            <div className="small text-muted mb-1">
-                              Total Participations
-                            </div>
-                            <div className="h3 fw-bold mb-0">
+                          <div className="text-center text-blue-color">
+                            <div className="font-32 montserrat-semibold mb-0">
                               {campaign.totalParticipations}
+                            </div>
+                            <div className="small font-16 montserrat-medium">
+                              Total Participations
                             </div>
                           </div>
                         </div>
@@ -762,18 +760,18 @@ const CampaignDashboard = () => {
                                 localStorage.setItem("logo", campaign.avatar);
                               }}
                             >
-                              <button className="btn btn-outline-secondary">
+                              <button className="border-radius-8 bg-purple-color border-0 px-3 py-2 font-14 montserrat-medium text-white">
                                 Dashboard
                               </button>
                             </NavLink>
-                            <div className="dropdown">
+                            {/* <div className="dropdown"> */}
                               <button
-                                className="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1"
-                                data-bs-toggle="dropdown"
+                                className="border-purple text-purple-color font-14 montserrat-medium border-radius-8 bg-transparent px-4 py-1"
+                                // data-bs-toggle="dropdown"
                               >
                                 Edit
                               </button>
-                            </div>
+                            {/* </div> */}
                           </div>
                         </div>
                       </div>
@@ -786,7 +784,7 @@ const CampaignDashboard = () => {
         </main>
 
         {/* Footer */}
-        <footer className="bg-light border-top fixed-bottom">
+        {/* <footer className="bg-light border-top fixed-bottom">
           <div className="container-fluid py-3">
             <div className="row align-items-center">
               <div className="col-auto d-flex align-items-center gap-3">
@@ -806,7 +804,7 @@ const CampaignDashboard = () => {
               </div>
             </div>
           </div>
-        </footer>
+        </footer> */}
 
         {/* Create Campaign Modal */}
         {showModal && (

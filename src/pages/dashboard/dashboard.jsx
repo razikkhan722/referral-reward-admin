@@ -705,6 +705,7 @@ const Dashboard = () => {
       return [];
     }
   })();
+  console.log('ChanlData: ', ChanlData);
   const onSubmit = () => { };
 
   // Pagination Function Start Here
@@ -1344,7 +1345,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            {ChanlData ? (
+            {ChanlData?.length > 0 && (
               <div className="col-lg-5">
                 <p className="text-blue-color font-18 montserrat-medium">
                   Channel Performance
@@ -1399,8 +1400,6 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            ) : (
-              " "
             )}
             <div className="col-lg-4">
               <p className="text-blue-color font-18 montserrat-medium">
