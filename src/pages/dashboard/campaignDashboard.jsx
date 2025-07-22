@@ -569,6 +569,7 @@ const CampaignDashboard = () => {
   });
   const [logoPreview, setLogoPreview] = useState(null);
   const GetAdminUid = sessionStorage.getItem("Auth");
+  const { setLogo } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -713,7 +714,7 @@ const CampaignDashboard = () => {
           </div>
         </header> */}
 
-        <CampaignNavbar/>
+        <CampaignNavbar />
 
         {/* Main Content */}
         <main className="container-fluid py-4">
@@ -767,24 +768,23 @@ const CampaignDashboard = () => {
                           <div className="d-flex gap-2">
                             <NavLink to="/dashboard">
                               <button
-                                onClick={() =>
-                                  sessionStorage.setItem(
-                                    "Prgid",
-                                    campaign?.program_id
-                                  )
-                                }
-                                className="btn btn-outline-secondary"
+                                onClick={() => {
+                                  sessionStorage.setItem("Prgid", campaign?.program_id);
+                                  setLogo(campaign?.avatar);
+                                  localStorage.setItem("logo", campaign?.avatar);
+                                }}
+                                className="rounded-pill bg-purple-color border-0 px-4 py-2 font-14 montserrat-medium text-white"
                               >
                                 Dashboard
                               </button>
                             </NavLink>
-                            {/* <div className="dropdown"> */}
-                              <button
-                                className="border-purple text-purple-color font-14 montserrat-medium border-radius-8 bg-transparent px-4 py-1"
-                                // data-bs-toggle="dropdown"
-                              >
-                                Edit
-                              </button>
+                           <NavLink to={"/mainform"}>
+                             <button
+                              className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
+                            >
+                              Edit
+                            </button>
+                           </NavLink>
                             {/* </div> */}
                           </div>
                         </div>
@@ -795,7 +795,7 @@ const CampaignDashboard = () => {
               </div>
             </div>
           </div>
-        </main>
+        </main >
 
         {/* Footer */}
         {/* <footer className="bg-light border-top fixed-bottom">
@@ -821,164 +821,166 @@ const CampaignDashboard = () => {
         </footer> */}
 
         {/* Create Campaign Modal */}
-        {showModal && (
-          <div
-            className="modal fade show d-block"
-            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-          >
-            <div className="modal-dialog modal-lg modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header border-0 pb-0">
-                  <h5 className="modal-title fw-semibold">
-                    Create New Campaign
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={() => setShowModal(false)}
-                  ></button>
-                </div>
-                <div className="modal-body pt-3">
-                  <div>
-                    <div className="mb-3">
-                      <label
-                        htmlFor="campaignName"
-                        className="form-label fw-medium"
-                      >
-                        Campaign Name
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="campaignName"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter campaign name"
-                      />
-                    </div>
+        {
+          showModal && (
+            <div
+              className="modal fade show d-block"
+              style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            >
+              <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header border-0 pb-0">
+                    <h5 className="modal-title fw-semibold">
+                      Create New Campaign
+                    </h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={() => setShowModal(false)}
+                    ></button>
+                  </div>
+                  <div className="modal-body pt-3">
+                    <div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="campaignName"
+                          className="form-label fw-medium"
+                        >
+                          Campaign Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="campaignName"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          placeholder="Enter campaign name"
+                        />
+                      </div>
 
-                    <div className="mb-3">
-                      <label
-                        htmlFor="campaignSubtitle"
-                        className="form-label fw-medium"
-                      >
-                        Subtitle
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="campaignSubtitle"
-                        name="subtitle"
-                        value={formData.subtitle}
-                        onChange={handleInputChange}
-                        placeholder="Enter campaign subtitle"
-                      />
-                    </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="campaignSubtitle"
+                          className="form-label fw-medium"
+                        >
+                          Subtitle
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="campaignSubtitle"
+                          name="subtitle"
+                          value={formData.subtitle}
+                          onChange={handleInputChange}
+                          placeholder="Enter campaign subtitle"
+                        />
+                      </div>
 
-                    <div className="mb-3">
-                      <label
-                        htmlFor="campaignUrl"
-                        className="form-label fw-medium"
-                      >
-                        Campaign URL
-                      </label>
-                      <input
-                        type="url"
-                        className="form-control"
-                        id="campaignUrl"
-                        name="url"
-                        value={formData.url}
-                        onChange={handleInputChange}
-                        placeholder="https://pages.viral-loops.com/..."
-                      />
-                    </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="campaignUrl"
+                          className="form-label fw-medium"
+                        >
+                          Campaign URL
+                        </label>
+                        <input
+                          type="url"
+                          className="form-control"
+                          id="campaignUrl"
+                          name="url"
+                          value={formData.url}
+                          onChange={handleInputChange}
+                          placeholder="https://pages.viral-loops.com/..."
+                        />
+                      </div>
 
-                    <div className="mb-4">
-                      <label className="form-label fw-medium">
-                        Company Logo
-                      </label>
-                      <div className="d-flex align-items-center gap-3">
-                        {logoPreview ? (
-                          <div className="position-relative">
-                            <img
-                              src={logoPreview}
-                              alt="Logo preview"
-                              className="rounded border"
+                      <div className="mb-4">
+                        <label className="form-label fw-medium">
+                          Company Logo
+                        </label>
+                        <div className="d-flex align-items-center gap-3">
+                          {logoPreview ? (
+                            <div className="position-relative">
+                              <img
+                                src={logoPreview}
+                                alt="Logo preview"
+                                className="rounded border"
+                                style={{
+                                  width: "64px",
+                                  height: "64px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle p-1"
+                                style={{
+                                  transform: "translate(50%, -50%)",
+                                  width: "24px",
+                                  height: "24px",
+                                }}
+                                onClick={() => {
+                                  setLogoPreview(null);
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    logo: null,
+                                  }));
+                                }}
+                              >
+                                <IoClose size={14} />
+                              </button>
+                            </div>
+                          ) : (
+                            <div
+                              className="border border-2 border-dashed rounded d-flex align-items-center justify-content-center text-muted"
                               style={{
                                 width: "64px",
                                 height: "64px",
-                                objectFit: "cover",
-                              }}
-                            />
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle p-1"
-                              style={{
-                                transform: "translate(50%, -50%)",
-                                width: "24px",
-                                height: "24px",
-                              }}
-                              onClick={() => {
-                                setLogoPreview(null);
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  logo: null,
-                                }));
                               }}
                             >
-                              <IoClose size={14} />
-                            </button>
-                          </div>
-                        ) : (
-                          <div
-                            className="border border-2 border-dashed rounded d-flex align-items-center justify-content-center text-muted"
-                            style={{
-                              width: "64px",
-                              height: "64px",
-                            }}
-                          >
-                            <span style={{ fontSize: "24px" }}>+</span>
-                          </div>
-                        )}
-                        <div className="flex-grow-1">
-                          <input
-                            type="file"
-                            className="form-control"
-                            accept="image/*"
-                            onChange={handleLogoUpload}
-                          />
-                          <div className="form-text">
-                            Upload PNG, JPG, or GIF. Max size: 2MB
+                              <span style={{ fontSize: "24px" }}>+</span>
+                            </div>
+                          )}
+                          <div className="flex-grow-1">
+                            <input
+                              type="file"
+                              className="form-control"
+                              accept="image/*"
+                              onChange={handleLogoUpload}
+                            />
+                            <div className="form-text">
+                              Upload PNG, JPG, or GIF. Max size: 2MB
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="d-flex justify-content-end gap-2">
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary d-flex align-items-center gap-2"
-                        onClick={handleSubmit}
-                      >
-                        <IoAdd size={16} />
-                        Create Campaign
-                      </button>
+                      <div className="d-flex justify-content-end gap-2">
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary"
+                          onClick={() => setShowModal(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary d-flex align-items-center gap-2"
+                          onClick={handleSubmit}
+                        >
+                          <IoAdd size={16} />
+                          Create Campaign
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )
+        }
+      </div >
       {/* 
       <style jsx>{`
         .bg-purple {

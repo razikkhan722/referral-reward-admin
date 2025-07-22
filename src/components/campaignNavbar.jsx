@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -9,7 +9,7 @@ import Logo from "../assets/images/Dashboard-img/logo.svg";
 import User from "../assets/images/Navbar-img/User-60.svg";
 
 // React Icon
-import { GoBell } from "react-icons/go";
+import { GoBell, GoPlus } from "react-icons/go";
 import { IoColorPalette, IoSettingsOutline } from "react-icons/io5";
 import { PiPencilSimple, PiUploadSimpleBold } from "react-icons/pi";
 import { BiSolidCheckShield } from "react-icons/bi";
@@ -21,7 +21,6 @@ import { useForm } from "react-hook-form";
 import Button from "./button";
 import { toastError, toastSuccess } from "../utils/toster";
 import { postData } from "../services/api";
-import { UserContext } from "../utils/UseContext/useContext";
 
 
 const CampaignNavbar = () => {
@@ -30,15 +29,6 @@ const CampaignNavbar = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-    const { logo, setLogo } = useContext(UserContext);
-
-    useEffect(() => {
-        const storedLogo = localStorage.getItem("logo");
-        if (storedLogo) {
-            setLogo(storedLogo);
-        }
-    }, []);
 
     // const HandleImgUpld =()=>{}
     const GetAdminUid = sessionStorage.getItem("Auth");
@@ -86,7 +76,6 @@ const CampaignNavbar = () => {
                 className="bg-light pt-4 box-shadow"
             >
                 <Container>
-
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-between mt-60">
                         <Navbar.Brand href="/" className="width-26">
@@ -97,8 +86,8 @@ const CampaignNavbar = () => {
                             <NavLink to="/">
                                 <Button btn_title={"My Campaigns"} btn_class={"border-0 bg-blue-color text-white px-5"} />
                             </NavLink>
-                            <NavLink to="/">
-                                <Button btn_title={"Create Campaign"} btn_class={"bg-transparent border-blue text-blue-color px-5"} />
+                            <NavLink to="/mainform">
+                                <Button btn_title={"Create Campaign"} icon={<GoPlus className="font-18" />} btn_class={"bg-transparent border-blue text-blue-color px-5"} />
                             </NavLink>
                             <Nav.Link href="#deets" className="font-32 text-blue-color">
                                 <GoBell />
