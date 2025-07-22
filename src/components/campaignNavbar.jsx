@@ -89,7 +89,7 @@ const CampaignNavbar = () => {
                             <NavLink to="/mainform">
                                 <Button btn_title={"Create Campaign"} icon={<GoPlus className="font-18" />} btn_class={"bg-transparent border-blue text-blue-color px-5"} />
                             </NavLink>
-                            <Nav.Link href="#deets" className="font-32 text-blue-color">
+                            <Nav.Link href="#deets" className="font-32 text-blue-color ms-3">
                                 <GoBell />
                             </Nav.Link>
                             <Nav.Link
