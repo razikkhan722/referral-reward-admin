@@ -3,6 +3,8 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const DonutChart = ({grpData}) => {
+    // (Number(grpData?.part9)/grpData?.part13 *100)/grpData?.part13
+    // console.log('(Number(grpData?.part9)/grpData?.part13 *100)/grpData?.part13: ', (Number(grpData?.part9) * 100)/grpData?.part13);
     // console.log('DonutChartData: ', DonutChartData);
 
     //   const weeklyData = DonutChartData?.week?.data || [];
@@ -33,9 +35,9 @@ const DonutChart = ({grpData}) => {
                             if (!customLabel) {
                                 customLabel = chart.options.chart.custom.label =
                                     chart.renderer.label(
-                                        `<div style="text-align: center;">
-                                    <span style="font-size: 22px; font-weight: bold;">96,715,28</span><br/>
-                                    <span style="font-size: 14px; color: grey;">weekly visits</span>
+                                        `<div className="text-center" style="text-align: center; text-align: center;">
+                                        <span style="font-size: 28px;font-weight: bold; ">${grpData?.part13}</span>
+                                        <span className="text-center" style="font-size: 22px; font-weight: bold ; text-align:center;"></span><br/>
                                 </div>`, 0,
                                         0,
                                         'html'

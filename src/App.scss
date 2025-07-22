@@ -259,6 +259,9 @@
 }
 
 // ===================     Navbar         =========================
+// .navbar{
+//   background-color: rgba(210, 241, 249, 0.9);
+// }
 .active-nav {
   background-color: var(--text-blue);
   /* light blue shade */
@@ -271,7 +274,10 @@
     height: 16px;
   }
 }
-
+.logo{
+width: 100px;
+height: 50px;
+}
 .user-icon {
   width: 60px;
   height: 60px;
@@ -375,7 +381,7 @@ td {
 @media (min-width: 1280px) {
   .reffer-card {
     width: 100%;
-    min-width: 110px !important;
+    min-width: 130px !important;
   }
 }
 
@@ -422,9 +428,9 @@ td {
 }
 
 .reffer-card {
-  background-color: #ba68c81a;
-  min-width: 120px;
-  width: 100%;
+  // background-color: #ba68c81a;
+  width: 170px;
+  // width: 100%;
 }
 
 .reward-history-table td {
@@ -811,4 +817,35 @@ td {
   .fixed-bottom .col:last-child {
     justify-content: center !important;
   }
+}
+
+// ===============================
+// Campaign Css Start Here
+// ===============================
+.campaign-card{
+  background-color: #BA68C814;
+
+  .campaign-img{
+    height: 60px;
+    width: 60px;
+    background-color: #D9D9D9;
+  }
+}
+
+// ===============================
+// Campaign Css Start Here
+// ===============================
+.campaign-card{
+  background-color: #BA68C814;
+
+  .campaign-img{
+    height: 60px;
+    width: 60px;
+    background-color: #D9D9D9;
+  }
+}
+
+// ---- DASHBOARD MAIN FORM CSS ----
+.background-light-color{
+  background-color: #ffffffa8;
 }

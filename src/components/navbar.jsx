@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import Button from "./button";
 import { toastError, toastSuccess } from "../utils/toster";
 import { postData } from "../services/api";
+import { UserContext } from "../utils/UseContext/useContext";
 
 const NavBar = () => {
   const {
@@ -31,6 +32,15 @@ const NavBar = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { logo, setLogo } = useContext(UserContext);
+
+  useEffect(() => {
+    const storedLogo = localStorage.getItem("logo");
+    if (storedLogo) {
+      setLogo(storedLogo);
+    }
+  }, []);
 
   // const HandleImgUpld =()=>{}
   const GetAdminUid = sessionStorage.getItem("Auth");
@@ -55,11 +65,11 @@ const NavBar = () => {
         admin_uid: GetAdminUid,
         mode: getAuth?.access_token,
         log_alt: getAuth?.session_id,
-        username:data?.name,
-        email:data?.email,
-        mobile_number:data?.mobile,
-        image:image,
-        password:data?.password,
+        username: data?.name,
+        email: data?.email,
+        mobile_number: data?.mobile,
+        image: image,
+        password: data?.password,
       };
       const response = await postData("/admin/edit-profile", payload);
       if (response?.success) {
@@ -75,85 +85,86 @@ const NavBar = () => {
         collapseOnSelect
         expand="lg"
         sticky="top"
-        className="bg-light-blue-color pt-4"
+        className="bg-light-blue-color pt-4 box-shadow"
       >
         <Container>
-          
+
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-center mt-60">
+          <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-between mt-60">
             <Navbar.Brand href="/" className="width-26">
-            <img src={Logo} alt="Logo" />
-          </Navbar.Brand>
-  <Nav className="flex-wrap d-flex justify-content-center align-items-center">
+              {logo && (
+                <img src={logo} alt="Logo" className="logo" />
+              )}
+
+            </Navbar.Brand>
+
+            {/* <Nav className="flex-wrap d-flex justify-content-center align-items-center">
               <div className="box-shadow d-flex w-100 bg-white rounded-pill px-1 py-2">
 
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${
-                    isActive ? "active-nav" : ""
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <img
-                        src={Home}
-                        alt="Active"
-                        className="active-icon me-2"
-                      />
-                    )}
-                    <span> Dashboard</span>
-                  </>
-                )}
-              </NavLink>
-              <NavLink
-                to="/referral"
-                className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${
-                    isActive ? "active-nav" : ""
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <img
-                        src={Reward}
-                        alt="Active"
-                        className="active-icon me-2"
-                      />
-                    )}
-                    <span> Referrals & Rewards</span>
-                  </>
-                )}
-              </NavLink>
-              <NavLink
-                to="/earning"
-                className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold px-3 ${
-                    isActive ? "active-nav" : ""
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <img
-                        src={Earning}
-                        alt="Active"
-                        className="active-icon me-2"
-                      />
-                    )}
-                    <span> Earning & Redemptions</span>
-                  </>
-                )}
-              </NavLink>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${isActive ? "active-nav" : ""
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <img
+                          src={Home}
+                          alt="Active"
+                          className="active-icon me-2"
+                        />
+                      )}
+                      <span> Dashboard</span>
+                    </>
+                  )}
+                </NavLink>
+                <NavLink
+                  to="/referral"
+                  className={({ isActive }) =>
+                    `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${isActive ? "active-nav" : ""
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <img
+                          src={Reward}
+                          alt="Active"
+                          className="active-icon me-2"
+                        />
+                      )}
+                      <span> Referrals & Rewards</span>
+                    </>
+                  )}
+                </NavLink>
+                <NavLink
+                  to="/earning"
+                  className={({ isActive }) =>
+                    `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold px-3 ${isActive ? "active-nav" : ""
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <img
+                          src={Earning}
+                          alt="Active"
+                          className="active-icon me-2"
+                        />
+                      )}
+                      <span> Earning & Redemptions</span>
+                    </>
+                  )}
+                </NavLink>
               </div>
 
-            </Nav>
-            <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
+            </Nav> */}
+            {/* <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
               <Nav.Link href="#deets" className="font-32 text-blue-color">
                 <GoBell />
               </Nav.Link>
@@ -199,7 +210,6 @@ const NavBar = () => {
                       Adity Sharma
                     </h6>
                   </li>
-                  {/* <li><hr className="dropdown-divider" /></li> */}
                   <li className="border-bottom  pt-3 px-3">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <FaLanguage className="font-20 text-border-gray-color" />
@@ -234,7 +244,14 @@ const NavBar = () => {
                   </li>
                 </ul>
               </div>
-            </Nav>
+            </Nav> */}
+
+            <NavLink
+              to="/"
+              className={`nav-link text-white bg-blue-color mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3`}
+            >
+              <span>My Campaigns</span>
+            </NavLink>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -289,10 +306,10 @@ const NavBar = () => {
                 className="form-control font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Mobile No."
                 {...register("mobile"
-                //   , {
-                //   required: "Mobile number is required",
-                // }
-              )}
+                  //   , {
+                  //   required: "Mobile number is required",
+                  // }
+                )}
               />
               {/* {errors.mobile && (
                 <small className="text-danger">{errors.mobile.message}</small>
