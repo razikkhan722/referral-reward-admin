@@ -82,7 +82,7 @@ const CampaignNavbar = () => {
                             <img src={Logo} alt="Logo" className="logo" />
 
                         </Navbar.Brand>
-                        <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
+                        <Nav className="d-flex flex-wrap align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
                             <NavLink to="/">
                                 <Button btn_title={"My Campaigns"} btn_class={"border-0 bg-blue-color text-white px-5"} />
                             </NavLink>

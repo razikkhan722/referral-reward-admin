@@ -845,6 +845,16 @@ td {
   }
 }
 
+.campaign-tab-bg{
+  background-color: #A1A1A11A;
+}
+// .form-control:focus{
+//   color: var(--text-blue) !important;
+// }
+input::placeholder {
+  color: var(--border-gray-color) !important;
+  font-size: 12px;
+}
 // ---- DASHBOARD MAIN FORM CSS ----
 .background-light-color{
   background-color: #ffffffa8;
