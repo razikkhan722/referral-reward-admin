@@ -212,7 +212,7 @@
 }
 
 .border-radius-12 {
-  border-radius: 12px;
+  border-radius: 12px !important;
 }
 
 .border-radius-16 {
@@ -237,7 +237,7 @@
 }
 
 .border-light-gray {
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--light-gray) !important;
 }
 
 .border-purple {
@@ -274,10 +274,12 @@
     height: 16px;
   }
 }
-.logo{
-width: 100px;
-height: 50px;
+
+.logo {
+  width: 100px;
+  height: 50px;
 }
+
 .user-icon {
   width: 60px;
   height: 60px;
@@ -478,6 +480,41 @@ td {
 
 .dot-purple {
   background-color: #b399ff;
+}
+
+.invite-card {
+  background: linear-gradient(0deg, #F6F9FE 27.34%, #8FD3EA 56.12%, #493495 105.15%);
+  height: 218px;
+}
+
+// Copy button
+.divider-with-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: pxToRem(60) auto;
+  width: 40%;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #9D92D2;
+    width: 30%;
+  }
+
+  .divider-border {
+    margin: 0 pxToRem(10);
+    color: #9D92D2;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+
+.social-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
 }
 
 // -------------------------- Login Css Start Here  --------------------------
@@ -822,10 +859,10 @@ td {
 // ===============================
 // Campaign Css Start Here
 // ===============================
-.campaign-card{
+.campaign-card {
   background-color: #BA68C814;
 
-  .campaign-img{
+  .campaign-img {
     height: 60px;
     width: 60px;
     background-color: #D9D9D9;
@@ -835,27 +872,34 @@ td {
 // ===============================
 // Campaign Css Start Here
 // ===============================
-.campaign-card{
+.campaign-card {
   background-color: #BA68C814;
 
-  .campaign-img{
+  .campaign-img {
     height: 60px;
     width: 60px;
     background-color: #D9D9D9;
   }
 }
 
-.campaign-tab-bg{
+.campaign-tab-bg {
   background-color: #A1A1A11A;
 }
-// .form-control:focus{
-//   color: var(--text-blue) !important;
-// }
+
+.accordion,
+.accordion-button:not(.collapsed) {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  --bs-accordion-btn-focus-box-shadow: none !important;
+}
+
 input::placeholder {
   color: var(--border-gray-color) !important;
   font-size: 12px;
 }
+
 // ---- DASHBOARD MAIN FORM CSS ----
-.background-light-color{
+.background-light-color {
   background-color: #ffffffa8;
 }
