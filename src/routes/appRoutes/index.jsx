@@ -15,6 +15,7 @@ import PushupNotification from "../../pages/pushupNotification/pushupNotificatio
 import { UserContext } from "../../utils/UseContext/useContext";
 import Error from "../../pages/Errror/error";
 import MainForm from "../../pages/dashboard/mainForm";
+import SpecialOfferForm from "../../pages/specialOffer/specialOfferForm";
 
 // import ProtectedRoute from "./ProtectedRoute";
 
@@ -84,6 +85,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot" element={<Forgot />} /> 
         <Route path="/mainform" element={<MainForm />} /> 
+        <Route path="/specialoffer" element={<SpecialOfferForm />} /> 
       </Routes>
     </Router>
   );

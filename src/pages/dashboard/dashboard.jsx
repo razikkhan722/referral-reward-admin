@@ -32,6 +32,7 @@ import DropdownFilter from "../../components/dropdown";
 import DashboardTable from "./dashboardTable";
 import { postData } from "../../services/api";
 import { DecryptFunction } from "../../utils/decryptFunction";
+import { toastError, toastSuccess } from "../../utils/toster";
 
 const products = [
   { name: "Product Name", oldPrice: 1000, newPrice: 800, status: "live" },
@@ -496,6 +497,13 @@ const Dashboard = () => {
     formState: { errors },
   } = useForm();
 
+  const {
+    register: registerRefMail,
+    handleSubmit: handleSubmitRefMail,
+    formState: { errors: errorsRefMail, isSubmitting: isRefMailSubmitting },
+    watch: watchRefMail,
+  } = useForm();
+
   const GetAdminUid = sessionStorage.getItem("Auth");
   const ProgramId = sessionStorage.getItem("Prgid");
 
@@ -505,6 +513,7 @@ const Dashboard = () => {
   const [ErrorTableData, setErrorTableData] = useState();
   const [PrtcpntTableData, setPrtcpntTableData] = useState();
   const [DashStatData, setDashStatData] = useState();
+  const [MailImg, setMailImg] = useState();
 
   //   json with Data
   // Filter Json
@@ -711,6 +720,58 @@ const Dashboard = () => {
     (currentErrorPage - 1) * rowsPerErrorPage,
     currentErrorPage * rowsPerErrorPage
   );
+
+  const HandleMailImg = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setMailImg(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please select a valid image file (PNG, JPG, GIF, etc.)");
+      }
+    }
+  };
+
+  //=====================
+  //Api Functionality
+  //=====================
+  const onRefrMailSubmit = async (data) => {
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+        program_id: ProgramId,
+        email_type:
+          activeTab === "tab1"
+            ? "mailstone"
+            : activeTab === "tab2"
+            ? "referral"
+            : "promotional",
+        name: data?.name,
+        email: data?.email,
+        subject: data?.subject,
+        reply_to: data?.replyTo,
+        content: data?.content,
+        button_text: data?.buttonText,
+        button_url: data?.buttonUrl,
+        image_type: data?.inlineRadioOptions,
+        image: MailImg,
+      };
+      console.log("payload: ", payload);
+      const response = await postData("/admin/send-email", payload);
+      toastSuccess(response?.message);
+    } catch (error) {
+      toastError(error?.error);
+    }
+  };
 
   return (
     <>
@@ -923,7 +984,8 @@ const Dashboard = () => {
                         <div className="montserrat-bold font-14 text-blue-color">
                           {item.value}{" "}
                           <span>
-                            ({(
+                            (
+                            {(
                               (Number(item?.percent) * 100) /
                               DashStatData?.part13
                             ).toFixed(2)}
@@ -960,8 +1022,8 @@ const Dashboard = () => {
                       <button
                         type="button"
                         className="w-100 bg-light-white-color p-3 border-radiu-8 d-flex align-items-center justify-content-between border-0"
-                        data-bs-toggle="modal"
-                        data-bs-target="#emailUpdatesModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#emailUpdatesModal"
                       >
                         <p className="mb-0 text-blue-color font-18 montserrat-medium">
                           {item.textLine1} <br /> {item.textLine2}
@@ -971,7 +1033,7 @@ const Dashboard = () => {
                     ) : (
                       // Normal NavLink for other cards
                       <NavLink
-                        to={item.path}
+                        // to={item.path}
                         className="text-decoration-none text-blue-color"
                       >
                         <div className="bg-light-white-color p-3 border-radiu-8 d-flex align-items-center justify-content-between">
@@ -1049,7 +1111,7 @@ const Dashboard = () => {
                             </p>
                             <form
                               className="row scroll-height"
-                              onSubmit={handleSubmit(onSubmit)}
+                              onSubmit={handleSubmitRefMail(onRefrMailSubmit)}
                             >
                               <div className="col-lg-6 mb-3">
                                 <label className="form-label font-14 montserrat-regular text-border-gray-color">
@@ -1058,13 +1120,13 @@ const Dashboard = () => {
                                 <input
                                   type="text"
                                   className="form-control login-input rounded-3 border-0 py-2 "
-                                  {...register("name", {
+                                  {...registerRefMail("name", {
                                     required: "name is required",
                                   })}
                                 />
-                                {errors.name && (
+                                {errorsRefMail.name && (
                                   <div className="text-danger">
-                                    {errors.name.message}
+                                    {errorsRefMail.name.message}
                                   </div>
                                 )}
                               </div>
@@ -1075,7 +1137,7 @@ const Dashboard = () => {
                                 <input
                                   type="email"
                                   className="form-control login-input rounded-3 border-0 py-2 "
-                                  {...register("email", {
+                                  {...registerRefMail("email", {
                                     required: "Email is required",
                                     pattern: {
                                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -1083,9 +1145,9 @@ const Dashboard = () => {
                                     },
                                   })}
                                 />
-                                {errors.email && (
+                                {errorsRefMail.email && (
                                   <div className="text-danger">
-                                    {errors.email.message}
+                                    {errorsRefMail.email.message}
                                   </div>
                                 )}
                               </div>
@@ -1096,11 +1158,11 @@ const Dashboard = () => {
                                 <input
                                   type="text"
                                   className="form-control login-input rounded-3 border-0 py-2 "
-                                  {...register("subject")}
+                                  {...registerRefMail("subject")}
                                 />
-                                {errors.subject && (
+                                {errorsRefMail.subject && (
                                   <div className="text-danger">
-                                    {errors.subject.message}
+                                    {errorsRefMail.subject.message}
                                   </div>
                                 )}
                               </div>
@@ -1111,11 +1173,11 @@ const Dashboard = () => {
                                 <input
                                   type="text"
                                   className="form-control login-input rounded-3 border-0 py-2 "
-                                  {...register("replyTo")}
+                                  {...registerRefMail("replyTo")}
                                 />
-                                {errors.replyTo && (
+                                {errorsRefMail.replyTo && (
                                   <div className="text-danger">
-                                    {errors.replyTo.message}
+                                    {errorsRefMail.replyTo.message}
                                   </div>
                                 )}
                               </div>
@@ -1131,6 +1193,7 @@ const Dashboard = () => {
                                   class="form-control login-input border-0"
                                   id="exampleFormControlTextarea1"
                                   rows="3"
+                                  {...registerRefMail("content")}
                                 ></textarea>
                               </div>
                               <div className="col-lg-6 mb-3">
@@ -1140,11 +1203,11 @@ const Dashboard = () => {
                                 <input
                                   type="text"
                                   className="form-control login-input rounded-3 border-0 py-2 "
-                                  {...register("buttonText")}
+                                  {...registerRefMail("buttonText")}
                                 />
-                                {errors.buttonText && (
+                                {errorsRefMail.buttonText && (
                                   <div className="text-danger">
-                                    {errors.buttonText.message}
+                                    {errorsRefMail.buttonText.message}
                                   </div>
                                 )}
                               </div>
@@ -1155,11 +1218,11 @@ const Dashboard = () => {
                                 <input
                                   type="text"
                                   className="form-control login-input rounded-3 border-0 py-2 "
-                                  {...register("buttonUrl")}
+                                  {...registerRefMail("buttonUrl")}
                                 />
-                                {errors.buttonUrl && (
+                                {errorsRefMail.buttonUrl && (
                                   <div className="text-danger">
-                                    {errors.buttonUrl.message}
+                                    {errorsRefMail.buttonUrl.message}
                                   </div>
                                 )}
                               </div>
@@ -1170,33 +1233,34 @@ const Dashboard = () => {
                                 will be resized to maximum 600 px width
                               </p>
                               {/* Radio button */}
+                           
                               <div className="d-flex mb-3">
-                                <div class="form-check form-check-inline">
+                                <div className="form-check form-check-inline">
                                   <input
-                                    class="form-check-input"
+                                    className="form-check-input"
                                     type="radio"
-                                    name="inlineRadioOptions"
                                     id="inlineRadio1"
-                                    value="option1"
+                                    value="headerImage"
+                                    {...registerRefMail("inlineRadioOptions")}
                                   />
                                   <label
-                                    class="form-check-label text-blue-color font-14 montserrat-medium"
-                                    for="inlineRadio1"
+                                    className="form-check-label text-blue-color font-14 montserrat-medium"
+                                    htmlFor="inlineRadio1"
                                   >
                                     Header Image
                                   </label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div className="form-check form-check-inline">
                                   <input
-                                    class="form-check-input"
+                                    className="form-check-input"
                                     type="radio"
-                                    name="inlineRadioOptions"
                                     id="inlineRadio2"
-                                    value="option2"
+                                    value="logo"
+                                    {...registerRefMail("inlineRadioOptions")}
                                   />
                                   <label
-                                    class="form-check-label text-blue-color font-14 montserrat-medium"
-                                    for="inlineRadio2"
+                                    className="form-check-label text-blue-color font-14 montserrat-medium"
+                                    htmlFor="inlineRadio2"
                                   >
                                     Logo
                                   </label>
@@ -1212,8 +1276,17 @@ const Dashboard = () => {
                                     <PiUploadSimpleBold className="font-16 me-3" />
                                   </div>
                                   Upload
-                                  <input type="file" id="formFile" />
+                                  <input
+                                    type="file"
+                                    id="formFile"
+                                    onChange={(e) => HandleMailImg(e)}
+                                  />
                                 </label>
+                                {MailImg && <img
+                                  className="w-25 h-50 my-2  "
+                                  src={MailImg}
+                                  alt=""
+                                />}
                               </div>
                               <div className="d-flex justify-content-start mt-4 gap-4">
                                 <Button
