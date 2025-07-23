@@ -40,9 +40,9 @@ const DashboardTable = ({ tabelHeading = [], tableData = [] }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {paginatedData.map((item, index) => (
+                        {paginatedData?.map((item, index) => (
                             <tr key={index}>
-                                {tabelHeading.map((col, colIndex) => (
+                                {tabelHeading?.map((col, colIndex) => (
                                     <td key={colIndex} className="font-14 montserrat-semibold py-3 px-3">
                                         {col.isBadge ? (
                                             <span className="referral-bg-blue px-2 py-1 rounded-3">{item[col.accessor]}</span>

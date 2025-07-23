@@ -665,7 +665,7 @@ const CampaignDashboard = () => {
                         <div className="col-auto d-flex align-items-center gap-3">
                           <div
                             className="campaign-img text-white rounded-circle d-flex align-items-center justify-content-center overflow-hidden">
-                            <img src={campaign.avatar} className="logo" alt="Logo" />
+                            <img src={campaign?.image } className="logo" alt="Logo" />
                           </div>
                           <div>
                             <h5 className="mb-0 text-blue-color font-28 montserrat-semibold">
@@ -700,8 +700,8 @@ const CampaignDashboard = () => {
                               <button
                                 onClick={() => {
                                   sessionStorage.setItem("Prgid", campaign?.program_id);
-                                  setLogo(campaign?.avatar);
-                                  localStorage.setItem("logo", campaign?.avatar);
+                                  setLogo(campaign?.image);
+                                  localStorage.setItem("logo", campaign?.image);
                                 }}
                                 className="rounded-pill bg-purple-color border-0 px-4 py-2 font-14 montserrat-medium text-white"
                               >

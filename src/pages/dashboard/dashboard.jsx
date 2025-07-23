@@ -11,7 +11,6 @@ import Coupon from "../../assets/images/Dashboard-img/gift-voucher_6182470.svg";
 import Trophy from "../../assets/images/Dashboard-img/trophy 1.svg";
 import User from "../../assets/images/ReferralRewards-img/User-reffer.svg";
 
-
 import { IoIosArrowForward } from "react-icons/io";
 import NavBar from "../../components/navbar";
 import DonutGraph from "./donutGraph";
@@ -35,6 +34,7 @@ import DashboardTable from "./dashboardTable";
 import { postData } from "../../services/api";
 import { DecryptFunction } from "../../utils/decryptFunction";
 import { toastError, toastSuccess } from "../../utils/toster";
+import leftarrow from "../../assets/images/Dashboard-img/leftarrow.svg";
 
 const products = [
   { name: "Product Name", oldPrice: 1000, newPrice: 800, status: "live" },
@@ -516,6 +516,7 @@ const Dashboard = () => {
   const [PrtcpntTableData, setPrtcpntTableData] = useState();
   const [DashStatData, setDashStatData] = useState();
   const [MailImg, setMailImg] = useState();
+  const [UserRwdHsty, setUserRwdHsty] = useState();
   const [showInnerTable, setShowInnerTable] = useState(false);
 
   //   json with Data
@@ -620,7 +621,7 @@ const Dashboard = () => {
     { label: "Referral code (If any)", accessor: "referralCode" },
   ];
 
-   const ReferralData = [
+  const ReferralData = [
     { name: "Areeba Mujeeb", referrals: 22 },
     { name: "Areeba Mujeeb", referrals: 22 },
     { name: "Areeba Mujeeb", referrals: 22 },
@@ -634,6 +635,18 @@ const Dashboard = () => {
 
   const ReferralTableData = [
     {
+      name: "user admin",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+    {
+      name: "Areeba Mujeeb",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+    {
       name: "Areeba Mujeeb",
       email: "areeba1234@gmail.com",
       referrals: 12,
@@ -664,7 +677,7 @@ const Dashboard = () => {
       reward: "10000 Meteors",
     },
   ];
-  
+
   const InnerTableData = [
     {
       rewardType: "Streak Store",
@@ -715,8 +728,7 @@ const Dashboard = () => {
       return [];
     }
   })();
-  console.log('ChanlData: ', ChanlData);
-  const onSubmit = () => { };
+  const onSubmit = () => {};
 
   // Pagination Function Start Here
   // const totalPages = Math.ceil(ParticipantsData.length / rowsPerPage);
@@ -755,13 +767,11 @@ const Dashboard = () => {
         program_id: ProgramId,
       };
       const responseState = await postData("/admin/dashboard/stats", payload);
-      console.log('responseState: ', responseState);
       if (responseState?.data) {
         const Decrpt = await DecryptFunction(responseState?.data);
         setDashStatData(Decrpt);
       }
       const response = await postData("/admin/dashboard/error-table", payload);
-      console.log('response-errortable: ', response);
       if (response?.data) {
         setErrorTableData(response?.data);
       }
@@ -771,7 +781,6 @@ const Dashboard = () => {
       );
       if (prtcpResp?.data) {
         const Decrpt = await DecryptFunction(prtcpResp?.data);
-        console.log("Decrpt: ", Decrpt);
         setPrtcpntTableData(Decrpt);
       }
     } catch (error) {
@@ -782,6 +791,11 @@ const Dashboard = () => {
   useEffect(() => {
     HandleDashBoardAPI();
   }, []);
+
+  const HandleRewrdHisty = (e) => {
+    setUserRwdHsty(e);
+    setShowInnerTable(true);
+  };
 
   // ------------------------------------
   const [currentErrorPage, setCurrentErrorPage] = useState(1);
@@ -810,7 +824,6 @@ const Dashboard = () => {
     currentErrorPage * rowsPerErrorPage
   );
 
-
   //Reward history Pagination table Function
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -834,7 +847,6 @@ const Dashboard = () => {
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
-
 
   const HandleMailImg = (e) => {
     const file = e.target.files[0];
@@ -880,7 +892,6 @@ const Dashboard = () => {
         image_type: data?.inlineRadioOptions,
         image: MailImg,
       };
-      console.log("payload: ", payload);
       const response = await postData("/admin/send-email", payload);
       toastSuccess(response?.message);
     } catch (error) {
@@ -993,16 +1004,18 @@ const Dashboard = () => {
                     <div className="product-card rounded-3" key={index}>
                       <div className="product-card-header rounded-top p-2">
                         <div
-                          className={`rounded d-flex justify-content-center align-items-center active-transparent-bg ${item.status === "live"
-                            ? "bg-transparent-green"
-                            : "bg-transparent-muted-blue"
-                            }`}
+                          className={`rounded d-flex justify-content-center align-items-center active-transparent-bg ${
+                            item.status === "live"
+                              ? "bg-transparent-green"
+                              : "bg-transparent-muted-blue"
+                          }`}
                         >
                           <span
-                            className={`live-circle d-inline-block rounded-circle ${item.status === "live"
-                              ? "bg-live-green-color"
-                              : "bg-muted-blue-color"
-                              }`}
+                            className={`live-circle d-inline-block rounded-circle ${
+                              item.status === "live"
+                                ? "bg-live-green-color"
+                                : "bg-muted-blue-color"
+                            }`}
                           ></span>
                         </div>
                       </div>
@@ -1090,8 +1103,9 @@ const Dashboard = () => {
                     {earningsData.map((item, index) => (
                       <div
                         key={index}
-                        className={`col-6 py-3 border-white border-2 ${index < 2 ? "border-bottom" : ""
-                          } ${index % 2 === 0 ? "border-end" : ""}`}
+                        className={`col-6 py-3 border-white border-2 ${
+                          index < 2 ? "border-bottom" : ""
+                        } ${index % 2 === 0 ? "border-end" : ""}`}
                       >
                         <div className="montserrat-bold font-14 text-blue-color">
                           {item.value}{" "}
@@ -1130,7 +1144,7 @@ const Dashboard = () => {
                 {QuickAccessData.map((item, index) => (
                   <div className="col-lg-12" key={index}>
                     {item.textLine1 === "E-mail" &&
-                      item.textLine2 === "Updates" ? (
+                    item.textLine2 === "Updates" ? (
                       //  Button to trigger modal for Email Updates
                       <button
                         type="button"
@@ -1346,7 +1360,7 @@ const Dashboard = () => {
                                 will be resized to maximum 600 px width
                               </p>
                               {/* Radio button */}
-                           
+
                               <div className="d-flex mb-3">
                                 <div className="form-check form-check-inline">
                                   <input
@@ -1395,11 +1409,13 @@ const Dashboard = () => {
                                     onChange={(e) => HandleMailImg(e)}
                                   />
                                 </label>
-                                {MailImg && <img
-                                  className="w-25 h-50 my-2  "
-                                  src={MailImg}
-                                  alt=""
-                                />}
+                                {MailImg && (
+                                  <img
+                                    className="w-25 h-50 my-2  "
+                                    src={MailImg}
+                                    alt=""
+                                  />
+                                )}
                               </div>
                               <div className="d-flex justify-content-start mt-4 gap-4">
                                 <Button
@@ -1623,7 +1639,9 @@ const Dashboard = () => {
               />
             )} */}
             </div>
-          ) : (" ")}
+          ) : (
+            " "
+          )}
 
           {/* Error Table Start Here */}
           <div className="border-radius-16 bg-light-white-color pt-3 border-light-purple mt-5">
@@ -1748,7 +1766,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-
           {/* Top 3 Referr and Earner */}
           <div className="row py-5">
             <div className="col-lg-5">
@@ -1800,29 +1817,42 @@ const Dashboard = () => {
               <div className="bg-light-white-color border-radius-12 px-3 py-1">
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 py-3">
                   {/* Title */}
-                  <p className="font-18 montserrat-semibold text-blue-color mb-0">
-                    Reward History
+                  <p className="font-18 montserrat-semibold text-blue-color mb-0 d-flex align-items-center">
+                    {!showInnerTable ? (
+                      "Reward History"
+                    ) : (
+                      <>
+                        <img
+                          onClick={() => setShowInnerTable(false)}
+                          src={leftarrow}
+                          alt=""
+                        />
+                        <span className="mx-2">
+                        {UserRwdHsty}
+                        </span>
+                      </>
+                    )}
                   </p>
 
                   {/* Right Controls */}
                   <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3">
                     {/* Search Input */}
-                    <div>
+                    {/* <div>
                       <input
                         className="form-control border-light-gray font-12 py-2 bg-light-white-1-color"
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
                       />
-                    </div>
+                    </div> */}
                     {/* Buttons */}
-                    <button className="text-blue-color d-flex align-items-center justify-content-center border-light-gray border-radius-8 px-3 py-2 font-12 montserrat-medium bg-light-white-1-color">
+                    {/* <button className="text-blue-color d-flex align-items-center justify-content-center border-light-gray border-radius-8 px-3 py-2 font-12 montserrat-medium bg-light-white-1-color">
                       Export <PiExport className="ms-2 font-20" />
                     </button>
 
                     <button className="text-blue-color d-flex align-items-center justify-content-center border-light-gray border-radius-8 px-3 py-2 font-12 montserrat-medium bg-light-white-1-color">
                       Filter <PiFadersHorizontal className="ms-2 font-20" />
-                    </button>
+                    </button> */}
                   </div>
                 </div>
 
@@ -1875,7 +1905,7 @@ const Dashboard = () => {
                             </td>
                             <td
                               className="font-12 montserrat-semibold text-blue-color py-3"
-                              onClick={() => setShowInnerTable(true)}
+                              onClick={() => HandleRewrdHisty(item?.name)}
                             >
                               {item.reward}{" "}
                               <span className="text-blue-color rounded referral-table-arrow ms-3 p-1">
@@ -1931,25 +1961,28 @@ const Dashboard = () => {
                               {item.date}
                             </td>
                             <td
-                              className={`font-12 montserrat-semibold py-3 ${item.status === "Approved"
-                                ? "text-live-green-color"
-                                : "pending-red-color"
-                                }`}
+                              className={`font-12 montserrat-semibold py-3 ${
+                                item.status === "Approved"
+                                  ? "text-live-green-color"
+                                  : "pending-red-color"
+                              }`}
                             >
                               {item.status}
                             </td>
                             <td className="font-12 montserrat-semibold text-blue-color py-3 d-flex align-items-center">
                               <span
-                                className={`d-flex justify-content-center align-items-center ${item.status === "Approved"
-                                  ? "inner-table-meteors-green"
-                                  : "inner-table-meteors-orange"
-                                  } rounded-2 px-3 py-2`}
+                                className={`d-flex justify-content-center align-items-center ${
+                                  item.status === "Approved"
+                                    ? "inner-table-meteors-green"
+                                    : "inner-table-meteors-orange"
+                                } rounded-2 px-3 py-2`}
                               >
                                 <span
-                                  className={`rounded-circle meteors-dot me-2 ${item.status === "Approved"
-                                    ? "bg-live-green-color"
-                                    : "dot-orange"
-                                    }`}
+                                  className={`rounded-circle meteors-dot me-2 ${
+                                    item.status === "Approved"
+                                      ? "bg-live-green-color"
+                                      : "dot-orange"
+                                  }`}
                                 ></span>{" "}
                                 {item.eraning}
                               </span>
@@ -1997,7 +2030,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>
