@@ -902,7 +902,7 @@ const Dashboard = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-light-blue-color py-5">
+      <div className="bg-light-white-3-color py-5">
         <div className="container">
           <div className="d-flex align-items-center justify-content-between">
             <div>
@@ -926,7 +926,7 @@ const Dashboard = () => {
           <div className="row my-4">
             {DashboardCardData.map((card, index) => (
               <div key={index} className="col-12 col-sm-6 col-lg-3 mb-4">
-                <div className="dashboard-card border-radius-12 bg-light-white-color px-4 py-3 h-100">
+                <div className="dashboard-card border-radius-12 bg-light-white-color box-shadow px-4 py-3 h-100">
                   <div className="d-flex justify-content-between align-items-end">
                     <h3 className="font-34 text-blue-color montserrat-semibold mb-0">
                       {card.count}
@@ -943,7 +943,7 @@ const Dashboard = () => {
           {/* ------------------ Best Performance / Product Cards ---------------- */}
           <div className="row gy-3">
             <div className="col-lg-3 col-12">
-              <div className="border-radius-12 bg-light-white-color px-3 py-4">
+              <div className="border-radius-12 bg-light-white-color border-bright-gray px-3 py-4">
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="bg-blue-color text-white rounded p-2 montserrat-semibold font-18">
                     {DashStatData?.part5}
@@ -978,7 +978,7 @@ const Dashboard = () => {
             </div>
             {/* Products Card Start Here */}
             <div className="col-lg-9 col-12">
-              <div className="border-radius-12 bg-light-white-color p-3">
+              <div className="border-radius-12 bg-light-white-color border-bright-gray p-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="font-18 montserrat-medium text-blue-color mb-0">
                     Best Performance Services / Products
@@ -1047,7 +1047,7 @@ const Dashboard = () => {
           <div className="row py-3 gy-3">
             <div className="col-lg-7">
               {/* Line Graph Start Here */}
-              <div className="bg-white border-radius-12">
+              <div className="bg-white border-radius-12 box-shadow">
                 <div className="d-flex flex-column flex-md-row justify-content-between graph-header-bg border-top-left-right-12">
                   <div className="d-flex flex-wrap p-3 gap-2">
                     <p className="text-blue-color font-14 montserrat-medium d-flex align-items-center text-uppercase mb-0">
@@ -1148,7 +1148,7 @@ const Dashboard = () => {
                       //  Button to trigger modal for Email Updates
                       <button
                         type="button"
-                        className="w-100 bg-light-white-color p-3 border-radiu-8 d-flex align-items-center justify-content-between border-0"
+                        className="w-100 bg-light-white-color border-bright-gray p-3 border-radiu-8 d-flex align-items-center justify-content-between"
                         // data-bs-toggle="modal"
                         // data-bs-target="#emailUpdatesModal"
                       >
@@ -1163,7 +1163,7 @@ const Dashboard = () => {
                         // to={item.path}
                         className="text-decoration-none text-blue-color"
                       >
-                        <div className="bg-light-white-color p-3 border-radiu-8 d-flex align-items-center justify-content-between">
+                        <div className="bg-light-white-color border-bright-gray p-3 border-radiu-8 d-flex align-items-center justify-content-between">
                           <p className="mb-0 text-blue-color font-18 montserrat-medium">
                             {item.textLine1} <br /> {item.textLine2}
                           </p>
@@ -1448,7 +1448,7 @@ const Dashboard = () => {
                 <p className="text-blue-color font-18 montserrat-medium">
                   Channel Performance
                 </p>
-                <div className="bg-light-white-color border-radius-12 px-2 py-3">
+                <div className="bg-light-white-color border-bright-gray border-radius-12 px-2 py-3">
                   <div className="table-responsive">
                     <table className="table table-borderless text-center align-middle custom-table-bg">
                       <thead className="channel-table align-middle">
@@ -1503,7 +1503,7 @@ const Dashboard = () => {
               <p className="text-blue-color font-18 montserrat-medium">
                 Scheduled offers
               </p>
-              <div className="bg-light-white-color border-radius-12">
+              <div className="bg-light-white-color border-bright-gray border-radius-12">
                 <div className="d-flex justify-content-end">
                   <div className="text-end font-14 montserrat-medium text-white bg-purple-color px-3 py-2 graph-filter d-flex align-items-center justify-content-end mt-2 mt-md-0 mx-3 mx-md-0">
                     Filter
@@ -1778,7 +1778,7 @@ const Dashboard = () => {
                     key={index}
                     className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
                   >
-                    <div className="reffer-card bg-white border-radius-12 text-center px-2 d-flex flex-column align-items-center justify-content-center py-3 h-100">
+                    <div className="reffer-card bg-white border-bright-gray border-radius-12 text-center px-2 d-flex flex-column align-items-center justify-content-center py-3 h-100">
                       <img src={User} className="mb-3" alt="User" />
                       <p className="font-14 montserrat-semibold text-blue-color mb-0">
                         {item.name}
@@ -1800,7 +1800,7 @@ const Dashboard = () => {
                     key={index}
                     className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
                   >
-                    <div className="reffer-card bg-white border-radius-12 text-center d-flex px-2 flex-column align-items-center justify-content-center py-3 h-100">
+                    <div className="reffer-card border-bright-gray bg-white border-radius-12 text-center d-flex px-2 flex-column align-items-center justify-content-center py-3 h-100">
                       <img src={User} className="mb-3" alt="User" />
                       <p className="font-14 montserrat-semibold text-blue-color mb-0">
                         {item.name}
@@ -1814,7 +1814,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="col-lg-7">
-              <div className="bg-light-white-color border-radius-12 px-3 py-1">
+              <div className="bg-light-white-color border-bright-gray border-radius-12 px-3 py-1">
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 py-3">
                   {/* Title */}
                   <p className="font-18 montserrat-semibold text-blue-color mb-0 d-flex align-items-center">
