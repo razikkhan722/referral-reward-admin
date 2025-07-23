@@ -30,6 +30,7 @@ import { Dropdown } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../utils/toster";
 import { postData } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import CampaignNavbar from "../../components/campaignNavbar";
 
 const MainForm = () => {
   // ==================
@@ -269,7 +270,8 @@ const MainForm = () => {
   return (
     <>
       <section className="bg-light-blue-color">
-        <div className="container">
+        <CampaignNavbar/>
+        <div className="container py-5">
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Campaign Form */}
             <div className="camp-form background-light-color border-radius-16 p-4">

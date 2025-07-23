@@ -9,6 +9,8 @@ import SuccessfulReferral from "../../assets/images/Dashboard-img/collaboration_
 import TrendUp from "../../assets/images/Dashboard-img/TrendUp.svg";
 import Coupon from "../../assets/images/Dashboard-img/gift-voucher_6182470.svg";
 import Trophy from "../../assets/images/Dashboard-img/trophy 1.svg";
+import User from "../../assets/images/ReferralRewards-img/User-reffer.svg";
+
 
 import { IoIosArrowForward } from "react-icons/io";
 import NavBar from "../../components/navbar";
@@ -514,6 +516,7 @@ const Dashboard = () => {
   const [PrtcpntTableData, setPrtcpntTableData] = useState();
   const [DashStatData, setDashStatData] = useState();
   const [MailImg, setMailImg] = useState();
+  const [showInnerTable, setShowInnerTable] = useState(false);
 
   //   json with Data
   // Filter Json
@@ -617,6 +620,89 @@ const Dashboard = () => {
     { label: "Referral code (If any)", accessor: "referralCode" },
   ];
 
+   const ReferralData = [
+    { name: "Areeba Mujeeb", referrals: 22 },
+    { name: "Areeba Mujeeb", referrals: 22 },
+    { name: "Areeba Mujeeb", referrals: 22 },
+  ];
+
+  const EarnerData = [
+    { name: "Areeba Mujeeb", referrals: 5 },
+    { name: "Areeba Mujeeb", referrals: 5 },
+    { name: "Areeba Mujeeb", referrals: 5 },
+  ];
+
+  const ReferralTableData = [
+    {
+      name: "Areeba Mujeeb",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+    {
+      name: "Areeba Mujeeb",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+    {
+      name: "Areeba Mujeeb",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+    {
+      name: "Areeba Mujeeb",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+    {
+      name: "Areeba Mujeeb",
+      email: "areeba1234@gmail.com",
+      referrals: 12,
+      reward: "10000 Meteors",
+    },
+  ];
+  
+  const InnerTableData = [
+    {
+      rewardType: "Streak Store",
+      date: "29 May, 2025",
+      status: "Approved",
+      eraning: "-540 Meteors",
+      // meteors_color: "inner-table-meteors-orange",
+    },
+    {
+      rewardType: "Mystery Rewards",
+      date: "22 May, 2025",
+      status: "Approved",
+      eraning: "+200 Meteors",
+      // meteors_color: "inner-table-meteors-green",
+    },
+    {
+      rewardType: "Streak Store",
+      date: "29 May, 2025",
+      status: "Pending",
+      eraning: "-540 Meteors",
+      // meteors_color: "inner-table-meteors-orange",
+    },
+    {
+      rewardType: "Streak Store",
+      date: "29 May, 2025",
+      status: "Pending",
+      eraning: "-540 Meteors",
+      // meteors_color: "inner-table-meteors-orange",
+    },
+    {
+      rewardType: "Streak Store",
+      date: "29 May, 2025",
+      status: "Approved",
+      eraning: "-540 Meteors",
+      // meteors_color: "inner-table-meteors-green",
+    },
+  ];
+
   // to show Channel Performance Data
   const ChanlData = (() => {
     try {
@@ -629,7 +715,8 @@ const Dashboard = () => {
       return [];
     }
   })();
-  const onSubmit = () => {};
+  console.log('ChanlData: ', ChanlData);
+  const onSubmit = () => { };
 
   // Pagination Function Start Here
   // const totalPages = Math.ceil(ParticipantsData.length / rowsPerPage);
@@ -668,11 +755,13 @@ const Dashboard = () => {
         program_id: ProgramId,
       };
       const responseState = await postData("/admin/dashboard/stats", payload);
+      console.log('responseState: ', responseState);
       if (responseState?.data) {
         const Decrpt = await DecryptFunction(responseState?.data);
         setDashStatData(Decrpt);
       }
       const response = await postData("/admin/dashboard/error-table", payload);
+      console.log('response-errortable: ', response);
       if (response?.data) {
         setErrorTableData(response?.data);
       }
@@ -720,6 +809,32 @@ const Dashboard = () => {
     (currentErrorPage - 1) * rowsPerErrorPage,
     currentErrorPage * rowsPerErrorPage
   );
+
+
+  //Reward history Pagination table Function
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const totalPages = Math.ceil(ReferralTableData.length / rowsPerPage);
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1); // reset to first page
+  };
+
+  const paginatedData = ReferralTableData.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
 
   const HandleMailImg = (e) => {
     const file = e.target.files[0];
@@ -878,18 +993,16 @@ const Dashboard = () => {
                     <div className="product-card rounded-3" key={index}>
                       <div className="product-card-header rounded-top p-2">
                         <div
-                          className={`rounded d-flex justify-content-center align-items-center active-transparent-bg ${
-                            item.status === "live"
-                              ? "bg-transparent-green"
-                              : "bg-transparent-muted-blue"
-                          }`}
+                          className={`rounded d-flex justify-content-center align-items-center active-transparent-bg ${item.status === "live"
+                            ? "bg-transparent-green"
+                            : "bg-transparent-muted-blue"
+                            }`}
                         >
                           <span
-                            className={`live-circle d-inline-block rounded-circle ${
-                              item.status === "live"
-                                ? "bg-live-green-color"
-                                : "bg-muted-blue-color"
-                            }`}
+                            className={`live-circle d-inline-block rounded-circle ${item.status === "live"
+                              ? "bg-live-green-color"
+                              : "bg-muted-blue-color"
+                              }`}
                           ></span>
                         </div>
                       </div>
@@ -977,9 +1090,8 @@ const Dashboard = () => {
                     {earningsData.map((item, index) => (
                       <div
                         key={index}
-                        className={`col-6 py-3 border-white border-2 ${
-                          index < 2 ? "border-bottom" : ""
-                        } ${index % 2 === 0 ? "border-end" : ""}`}
+                        className={`col-6 py-3 border-white border-2 ${index < 2 ? "border-bottom" : ""
+                          } ${index % 2 === 0 ? "border-end" : ""}`}
                       >
                         <div className="montserrat-bold font-14 text-blue-color">
                           {item.value}{" "}
@@ -1007,6 +1119,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
           <div className="row gy-3 py-4">
             <div className="col-lg-3">
               {/* Quick Acces Panel Cards Start Here */}
@@ -1017,7 +1130,7 @@ const Dashboard = () => {
                 {QuickAccessData.map((item, index) => (
                   <div className="col-lg-12" key={index}>
                     {item.textLine1 === "E-mail" &&
-                    item.textLine2 === "Updates" ? (
+                      item.textLine2 === "Updates" ? (
                       //  Button to trigger modal for Email Updates
                       <button
                         type="button"
@@ -1314,60 +1427,62 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-5">
-              <p className="text-blue-color font-18 montserrat-medium">
-                Channel Performance
-              </p>
-              <div className="bg-light-white-color border-radius-12 px-2 py-3">
-                <div className="table-responsive">
-                  <table className="table table-borderless text-center align-middle custom-table-bg">
-                    <thead className="channel-table align-middle">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="montserrat-medium font-12 text-start ps-5"
-                        >
-                          Source
-                        </th>
-                        <th scope="col" className="montserrat-medium font-12">
-                          Successful <br /> Referrals
-                        </th>
-                        <th scope="col" className="montserrat-medium font-12">
-                          Referred <br /> Leads
-                        </th>
-                        <th scope="col" className="montserrat-medium font-12">
-                          Shares
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="align-middle">
-                      {ChanlData?.map((item, index) => (
-                        <tr key={index}>
-                          <td className="montserrat-medium font-14 py-3 text-start ps-5">
-                            {item?.app_name}
-                          </td>
-                          <td className="montserrat-medium font-14 py-3">
-                            <span className="referral-bg-purple rounded-3 py-1 px-2">
-                              {item?.successful_registered}
-                            </span>
-                          </td>
-                          <td className="montserrat-medium font-14 py-3">
-                            <span className="leads-bg-yellow rounded-3 py-1 px-2">
-                              {item?.referral_leads || 0}
-                            </span>
-                          </td>
-                          <td className="montserrat-medium font-14 py-3">
-                            <span className="share-bg-orange rounded-3 py-1 px-2">
-                              {item?.total_sent}
-                            </span>
-                          </td>
+            {ChanlData?.length > 0 && (
+              <div className="col-lg-5">
+                <p className="text-blue-color font-18 montserrat-medium">
+                  Channel Performance
+                </p>
+                <div className="bg-light-white-color border-radius-12 px-2 py-3">
+                  <div className="table-responsive">
+                    <table className="table table-borderless text-center align-middle custom-table-bg">
+                      <thead className="channel-table align-middle">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="montserrat-medium font-12 text-start ps-5"
+                          >
+                            Source
+                          </th>
+                          <th scope="col" className="montserrat-medium font-12">
+                            Successful <br /> Referrals
+                          </th>
+                          <th scope="col" className="montserrat-medium font-12">
+                            Referred <br /> Leads
+                          </th>
+                          <th scope="col" className="montserrat-medium font-12">
+                            Shares
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="align-middle">
+                        {ChanlData?.map((item, index) => (
+                          <tr key={index}>
+                            <td className="montserrat-medium font-14 py-3 text-start ps-5">
+                              {item?.app_name}
+                            </td>
+                            <td className="montserrat-medium font-14 py-3">
+                              <span className="referral-bg-purple rounded-3 py-1 px-2">
+                                {item?.successful_registered}
+                              </span>
+                            </td>
+                            <td className="montserrat-medium font-14 py-3">
+                              <span className="leads-bg-yellow rounded-3 py-1 px-2">
+                                {item?.referral_leads || 0}
+                              </span>
+                            </td>
+                            <td className="montserrat-medium font-14 py-3">
+                              <span className="share-bg-orange rounded-3 py-1 px-2">
+                                {item?.total_sent}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="col-lg-4">
               <p className="text-blue-color font-18 montserrat-medium">
                 Scheduled offers
@@ -1437,76 +1552,78 @@ const Dashboard = () => {
           </div>
 
           {/* -------------------- Praticipants Table -------------------- */}
-          <div className="border-radius-16 bg-light-white-color border-light-purple">
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 p-3">
-              {/* Title */}
-              <p className="text-blue-color font-24 montserrat-medium mb-0">
-                Participants
-              </p>
+          {PrtcpntTableData ? (
+            <div className="border-radius-16 bg-light-white-color border-light-purple">
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 p-3">
+                {/* Title */}
+                <p className="text-blue-color font-24 montserrat-medium mb-0">
+                  Participants
+                </p>
 
-              {/* Right Controls */}
-              <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3">
-                {/* Search Input */}
-                <div>
-                  <input
-                    className="form-control border-light-gray py-2 bg-light-white-1-color"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
+                {/* Right Controls */}
+                <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3">
+                  {/* Search Input */}
+                  <div>
+                    <input
+                      className="form-control border-light-gray py-2 bg-light-white-1-color"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                    />
+                  </div>
+
+                  {/* Buttons */}
+                  <button className="text-blue-color border-light-gray border-radius-8 px-3 py-2 font-14 montserrat-medium bg-light-white-1-color">
+                    Add Leads <GoPlus className="ms-2 font-24" />
+                  </button>
+                  <button className="text-blue-color border-light-gray border-radius-8 px-3 py-2 font-14 montserrat-medium bg-light-white-1-color">
+                    Export <PiExport className="ms-2 font-24" />
+                  </button>
+
+                  <DropdownFilter
+                    title={"Sort"}
+                    dropdownItems={Sortitem}
+                    dropIcon={<PiFadersHorizontal className="font-24" />}
+                  />
+
+                  <DropdownFilter
+                    title={"Filter"}
+                    dropdownItems={Filteritem}
+                    dropIcon={<PiFadersHorizontal className="font-24" />}
                   />
                 </div>
-
-                {/* Buttons */}
-                <button className="text-blue-color border-light-gray border-radius-8 px-3 py-2 font-14 montserrat-medium bg-light-white-1-color">
-                  Add Leads <GoPlus className="ms-2 font-24" />
-                </button>
-                <button className="text-blue-color border-light-gray border-radius-8 px-3 py-2 font-14 montserrat-medium bg-light-white-1-color">
-                  Export <PiExport className="ms-2 font-24" />
-                </button>
-
-                <DropdownFilter
-                  title={"Sort"}
-                  dropdownItems={Sortitem}
-                  dropIcon={<PiFadersHorizontal className="font-24" />}
-                />
-
-                <DropdownFilter
-                  title={"Filter"}
-                  dropdownItems={Filteritem}
-                  dropIcon={<PiFadersHorizontal className="font-24" />}
-                />
               </div>
-            </div>
 
-            {/* All Participants Table Start Here */}
-            {selectedFilter === "Refers & Acceptances" && (
-              <DashboardTable
-                tabelHeading={ReferTableHeading}
-                tableData={PrtcpntTableData?.part1}
-              />
-            )}
+              {/* All Participants Table Start Here */}
+              {selectedFilter === "Refers & Acceptances" && (
+                <DashboardTable
+                  tabelHeading={ReferTableHeading}
+                  tableData={PrtcpntTableData?.part1}
+                />
+              )}
 
-            {selectedFilter === "Games" && (
-              <DashboardTable
-                tabelHeading={GameTableHeading}
-                tableData={PrtcpntTableData?.part3}
-              />
-            )}
+              {selectedFilter === "Games" && (
+                <DashboardTable
+                  tabelHeading={GameTableHeading}
+                  tableData={PrtcpntTableData?.part3}
+                />
+              )}
 
-            {selectedFilter === "Redemptions" && (
-              <DashboardTable
-                tabelHeading={RedemptionTableHeading}
-                tableData={RedemptionTableData}
-              />
-            )}
+              {selectedFilter === "Redemptions" && (
+                <DashboardTable
+                  tabelHeading={RedemptionTableHeading}
+                  tableData={RedemptionTableData}
+                />
+              )}
 
-            {/* {selectedFilter === "Product Purchases" && (
+              {/* {selectedFilter === "Product Purchases" && (
               <DashboardTable
                 tabelHeading={PurchaseTableHeading}
                 tableData={PrtcpntTableData?.part2}
               />
             )} */}
-          </div>
+            </div>
+          ) : (" ")}
 
           {/* Error Table Start Here */}
           <div className="border-radius-16 bg-light-white-color pt-3 border-light-purple mt-5">
@@ -1630,6 +1747,257 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
+
+          {/* Top 3 Referr and Earner */}
+          <div className="row py-5">
+            <div className="col-lg-5">
+              <p className="font-24 montserrat-medium text-blue-color">
+                Top 5 Referrers
+              </p>
+              <div className="row justify-content-start justify-content-lg-around g-2">
+                {ReferralData.map((item, index) => (
+                  <div
+                    key={index}
+                    className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
+                  >
+                    <div className="reffer-card bg-white border-radius-12 text-center px-2 d-flex flex-column align-items-center justify-content-center py-3 h-100">
+                      <img src={User} className="mb-3" alt="User" />
+                      <p className="font-14 montserrat-semibold text-blue-color mb-0">
+                        {item.name}
+                      </p>
+                      <p className="font-16 montserrat-semibold text-blue-color mb-0">
+                        {item.referrals} Referrals
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p className="font-24 montserrat-medium text-blue-color">
+                Top 5 Earners
+              </p>
+              <div className="row justify-content-start justify-content-lg-around g-2">
+                {EarnerData.map((item, index) => (
+                  <div
+                    key={index}
+                    className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
+                  >
+                    <div className="reffer-card bg-white border-radius-12 text-center d-flex px-2 flex-column align-items-center justify-content-center py-3 h-100">
+                      <img src={User} className="mb-3" alt="User" />
+                      <p className="font-14 montserrat-semibold text-blue-color mb-0">
+                        {item.name}
+                      </p>
+                      <p className="font-16 montserrat-semibold text-blue-color mb-0">
+                        {item.referrals} Stars
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="col-lg-7">
+              <div className="bg-light-white-color border-radius-12 px-3 py-1">
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 py-3">
+                  {/* Title */}
+                  <p className="font-18 montserrat-semibold text-blue-color mb-0">
+                    Reward History
+                  </p>
+
+                  {/* Right Controls */}
+                  <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3">
+                    {/* Search Input */}
+                    <div>
+                      <input
+                        className="form-control border-light-gray font-12 py-2 bg-light-white-1-color"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
+                    </div>
+                    {/* Buttons */}
+                    <button className="text-blue-color d-flex align-items-center justify-content-center border-light-gray border-radius-8 px-3 py-2 font-12 montserrat-medium bg-light-white-1-color">
+                      Export <PiExport className="ms-2 font-20" />
+                    </button>
+
+                    <button className="text-blue-color d-flex align-items-center justify-content-center border-light-gray border-radius-8 px-3 py-2 font-12 montserrat-medium bg-light-white-1-color">
+                      Filter <PiFadersHorizontal className="ms-2 font-20" />
+                    </button>
+                  </div>
+                </div>
+
+                {!showInnerTable ? (
+                  /* Reward History Table */
+                  <div className="table-responsive border-radius-12">
+                    <table class="table earning-table reward-history-table middle-align text-nowrap border-radius-12">
+                      <thead>
+                        <tr>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-medium text-blue-color py-3"
+                          >
+                            Name
+                          </th>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-medium text-blue-color py-3"
+                          >
+                            E-mail
+                          </th>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-medium text-blue-color py-3"
+                          >
+                            No of Rewards
+                          </th>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-medium text-blue-color py-3"
+                          >
+                            Earnings
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {paginatedData.map((item, index) => (
+                          <tr key={index}>
+                            <td
+                              scope="row"
+                              className="font-12 montserrat-semibold text-blue-color py-3"
+                            >
+                              {item.name}
+                            </td>
+                            <td className="font-12 montserrat-semibold text-blue-color py-3">
+                              {item.email}
+                            </td>
+                            <td className="font-12 montserrat-semibold text-blue-color py-3">
+                              {item.referrals}
+                            </td>
+                            <td
+                              className="font-12 montserrat-semibold text-blue-color py-3"
+                              onClick={() => setShowInnerTable(true)}
+                            >
+                              {item.reward}{" "}
+                              <span className="text-blue-color rounded referral-table-arrow ms-3 p-1">
+                                <IoIosArrowForward className="font-14" />
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="table-responsive border-radius-12">
+                    <table class="table earning-table reward-history-table middle-align text-nowrap border-radius-12">
+                      <thead>
+                        <tr>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-semibold text-blue-color py-3 ps-3"
+                          >
+                            Reward Type
+                          </th>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-semibold text-blue-color py-3"
+                          >
+                            Date
+                          </th>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-semibold text-blue-color py-3"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            className="font-12 montserrat-semibold text-blue-color py-3"
+                          >
+                            Earning/ Redemption
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {InnerTableData.map((item, index) => (
+                          <tr key={index}>
+                            <td
+                              scope="row"
+                              className="font-12 montserrat-semibold text-blue-color py-3 ps-3"
+                            >
+                              {item.rewardType}
+                            </td>
+                            <td className="font-12 montserrat-semibold text-blue-color py-3">
+                              {item.date}
+                            </td>
+                            <td
+                              className={`font-12 montserrat-semibold py-3 ${item.status === "Approved"
+                                ? "text-live-green-color"
+                                : "pending-red-color"
+                                }`}
+                            >
+                              {item.status}
+                            </td>
+                            <td className="font-12 montserrat-semibold text-blue-color py-3 d-flex align-items-center">
+                              <span
+                                className={`d-flex justify-content-center align-items-center ${item.status === "Approved"
+                                  ? "inner-table-meteors-green"
+                                  : "inner-table-meteors-orange"
+                                  } rounded-2 px-3 py-2`}
+                              >
+                                <span
+                                  className={`rounded-circle meteors-dot me-2 ${item.status === "Approved"
+                                    ? "bg-live-green-color"
+                                    : "dot-orange"
+                                    }`}
+                                ></span>{" "}
+                                {item.eraning}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {/* Pagination */}
+                <div className="row gy-2 d-flex align-items-center my-2">
+                  <div className="col-lg-7 d-flex justify-content-end gap-4 ">
+                    <button
+                      className="text-gray-color border-gray border-radiu-8 px-3 py-1 bg-transparent font-14 poppins-medium"
+                      disabled={currentPage === 1}
+                      onClick={handlePrevious}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="border-0 border-radiu-8 bg-blue-color text-white px-3 py-1 font-14 poppins-medium"
+                      disabled={currentPage === totalPages}
+                      onClick={handleNext}
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div className="col-lg-5 d-flex align-items-center justify-content-end gap-2 ">
+                    <label className="font-14 poppins-medium">
+                      Rows per page
+                    </label>
+                    <select
+                      className="form-select border-gray py-1 border-radiu-8 bg-transparent w-auto font-14 poppins-medium text-gray-color"
+                      value={rowsPerPage}
+                      onChange={handleRowsPerPageChange}
+                    >
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                      <option value={15}>15</option>
+                      <option value={20}>20</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </>
