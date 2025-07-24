@@ -515,9 +515,11 @@ const Dashboard = () => {
   const [ErrorTableData, setErrorTableData] = useState();
   const [PrtcpntTableData, setPrtcpntTableData] = useState();
   const [DashStatData, setDashStatData] = useState();
+  const [RwdHstryTable, setRwdHstryTable] = useState();
   const [MailImg, setMailImg] = useState();
   const [UserRwdHsty, setUserRwdHsty] = useState();
   const [showInnerTable, setShowInnerTable] = useState(false);
+    const [UserInrRwdHsty, setUserInrRwdHsty] = useState();
 
   //   json with Data
   // Filter Json
@@ -783,6 +785,11 @@ const Dashboard = () => {
         const Decrpt = await DecryptFunction(prtcpResp?.data);
         setPrtcpntTableData(Decrpt);
       }
+      // reward history api
+      const rewardHistory = await postData("/admin/reward-history", payload);
+      if (rewardHistory?.rewards) {
+        setRwdHstryTable(rewardHistory?.rewards);
+      }
     } catch (error) {
       console.log("error: ", error);
     }
@@ -792,8 +799,10 @@ const Dashboard = () => {
     HandleDashBoardAPI();
   }, []);
 
+
   const HandleRewrdHisty = (e) => {
-    setUserRwdHsty(e);
+    setUserInrRwdHsty(e?.reward_history);
+    setUserRwdHsty(e?.username);
     setShowInnerTable(true);
   };
 
@@ -1823,13 +1832,12 @@ const Dashboard = () => {
                     ) : (
                       <>
                         <img
+                          className="cursor-pointer"
                           onClick={() => setShowInnerTable(false)}
                           src={leftarrow}
                           alt=""
                         />
-                        <span className="mx-2">
-                        {UserRwdHsty}
-                        </span>
+                        <span className="mx-2">{UserRwdHsty}</span>
                       </>
                     )}
                   </p>
@@ -1889,25 +1897,25 @@ const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {paginatedData.map((item, index) => (
+                        {RwdHstryTable?.map((item, index) => (
                           <tr key={index}>
                             <td
                               scope="row"
                               className="font-12 montserrat-semibold text-blue-color py-3"
                             >
-                              {item.name}
+                              {item?.username}
                             </td>
                             <td className="font-12 montserrat-semibold text-blue-color py-3">
-                              {item.email}
+                              {item?.email}
                             </td>
                             <td className="font-12 montserrat-semibold text-blue-color py-3">
-                              {item.referrals}
+                              {item?.total_rewards}
                             </td>
                             <td
                               className="font-12 montserrat-semibold text-blue-color py-3"
-                              onClick={() => HandleRewrdHisty(item?.name)}
+                              onClick={() => HandleRewrdHisty(item)}
                             >
-                              {item.reward}{" "}
+                              {item?.earnings}{" "}
                               <span className="text-blue-color rounded referral-table-arrow ms-3 p-1">
                                 <IoIosArrowForward className="font-14" />
                               </span>
@@ -1938,7 +1946,7 @@ const Dashboard = () => {
                             scope="col"
                             className="font-12 montserrat-semibold text-blue-color py-3"
                           >
-                            Status
+                            Expiry Date
                           </th>
                           <th
                             scope="col"
@@ -1949,16 +1957,16 @@ const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {InnerTableData.map((item, index) => (
+                        {UserInrRwdHsty?.map((item, index) => (
                           <tr key={index}>
                             <td
                               scope="row"
                               className="font-12 montserrat-semibold text-blue-color py-3 ps-3"
                             >
-                              {item.rewardType}
+                              {item?.earned_by_action}
                             </td>
                             <td className="font-12 montserrat-semibold text-blue-color py-3">
-                              {item.date}
+                              {item?.referred_on}
                             </td>
                             <td
                               className={`font-12 montserrat-semibold py-3 ${
@@ -1967,7 +1975,7 @@ const Dashboard = () => {
                                   : "pending-red-color"
                               }`}
                             >
-                              {item.status}
+                              {item?.expiry_date}
                             </td>
                             <td className="font-12 montserrat-semibold text-blue-color py-3 d-flex align-items-center">
                               <span
@@ -1984,7 +1992,7 @@ const Dashboard = () => {
                                       : "dot-orange"
                                   }`}
                                 ></span>{" "}
-                                {item.eraning}
+                                {item?.earned_meteors}
                               </span>
                             </td>
                           </tr>
