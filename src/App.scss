@@ -905,3 +905,12 @@ input::placeholder {
 .background-light-color {
   background-color: #ffffffa8;
 }
+.new-milestone-form{
+    overflow: hidden;
+    height: 28rem;
+}
+.milestone-form-sect{
+    overflow: scroll;
+    height: 100%;
+    overflow-x: hidden;
+}
