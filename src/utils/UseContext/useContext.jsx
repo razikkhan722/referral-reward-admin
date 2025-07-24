@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const [ContextFaqsDataAPI, setContextFaqsDataAPI] = useState();
   const [ContextMyRewardDataAPI, setContextMyRewardDataAPI] = useState();
   const [ContextInviteRefferAPI, setContextInviteRefferAPI] = useState();
+  const [ContextToEditForm, setContextToEditForm] = useState();
   const [AuthLocal, setAuthLocal] = useState();
   const [MeterUpdateData, setMeterUpdateData] = useState();
    const [logo, setLogo] = useState(null);
@@ -25,7 +26,8 @@ export const UserProvider = ({ children }) => {
         setContextInviteRefferAPI,
         MeterUpdateData,
         setMeterUpdateData,
-         logo, setLogo
+         logo, setLogo,
+         ContextToEditForm, setContextToEditForm,
       }}
     >
       {children}
