@@ -33,6 +33,7 @@ const NavBar = () => {
     formState: { errors },
   } = useForm();
 
+  const campaignName = sessionStorage.getItem("campaignName");
   const { logo, setLogo } = useContext(UserContext);
 
   useEffect(() => {
@@ -92,8 +93,15 @@ const NavBar = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-between mt-60">
             <Navbar.Brand href="/" className="width-26">
-              {logo && (
+              {/* {logo && (
                 <img src={logo} alt="Logo" className="logo" />
+              )} */}
+               {logo ? (
+                <img src={logo} alt="Logo" className="logo" />
+              ) : (
+                <h5 className="mb-0 text-blue-color font-20 montserrat-semibold">
+                  {campaignName || "Campaign"}
+                </h5>
               )}
 
             </Navbar.Brand>
@@ -162,9 +170,22 @@ const NavBar = () => {
                   )}
                 </NavLink>
               </div>
+              
+              </Nav> */}
 
-            </Nav> */}
-            {/* <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
+            <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
+              <NavLink
+                to="/campaignform"
+                className={`nav-link text-white bg-blue-color mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-5`}
+              >
+                <span>Loyalty Program</span>
+              </NavLink>
+              <NavLink
+                to="/"
+                className={`nav-link text-blue-color bg-transparent border-blue mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-5`}
+              >
+                <span>My Campaigns</span>
+              </NavLink>
               <Nav.Link href="#deets" className="font-32 text-blue-color">
                 <GoBell />
               </Nav.Link>
@@ -244,14 +265,8 @@ const NavBar = () => {
                   </li>
                 </ul>
               </div>
-            </Nav> */}
+            </Nav>
 
-            <NavLink
-              to="/"
-              className={`nav-link text-white bg-blue-color mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3`}
-            >
-              <span>My Campaigns</span>
-            </NavLink>
           </Navbar.Collapse>
         </Container>
       </Navbar>

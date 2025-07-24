@@ -54,10 +54,10 @@ const products = [
 // ];
 
 const QuickAccessData = [
-  { textLine1: "Add Bonus", textLine2: "Rewards", path: "/referral" },
+  { textLine1: "Add Special", textLine2: "Offer", path: "/specialoffer" },
+  { textLine1: "Your", textLine2: "products", path: "/earning" },
   { textLine1: "E-mail", textLine2: "Updates" },
-  { textLine1: "Add a New", textLine2: "product", path: "/earning" },
-  { textLine1: "Add new Pushup", textLine2: "Notification", path: "/pushup" },
+  { textLine1: "Add New Pushup", textLine2: "Notification", path: "/pushup" },
 ];
 
 const ScheduleData = [
@@ -1152,8 +1152,7 @@ const Dashboard = () => {
               <div className="row gy-4">
                 {QuickAccessData.map((item, index) => (
                   <div className="col-lg-12" key={index}>
-                    {item.textLine1 === "E-mail" &&
-                    item.textLine2 === "Updates" ? (
+                    {item.textLine1 === "E-mail" && item.textLine2 === "Updates" ? (
                       //  Button to trigger modal for Email Updates
                       <button
                         type="button"
