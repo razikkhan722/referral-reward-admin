@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import Button from "./button";
 import { toastError, toastSuccess } from "../utils/toster";
 import { postData } from "../services/api";
+import { UserContext } from "../utils/UseContext/useContext";
 
 
 const CampaignNavbar = () => {
@@ -29,6 +30,7 @@ const CampaignNavbar = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
+      const { setLogo, setContextToEditForm } = useContext(UserContext);
 
     // const HandleImgUpld =()=>{}
     const GetAdminUid = sessionStorage.getItem("Auth");
@@ -87,7 +89,7 @@ const CampaignNavbar = () => {
                                 <Button btn_title={"My Campaigns"} btn_class={"border-0 bg-blue-color text-white px-5"} />
                             </NavLink>
                             <NavLink to="/campaignform">
-                                <Button btn_title={"Create Campaign"} icon={<GoPlus className="font-18" />} btn_class={"bg-transparent border-blue text-blue-color px-5"} />
+                                <Button btn_title={"Create Campaign"} icon={<GoPlus className="font-18" />} btn_class={"bg-transparent border-blue text-blue-color px-5"} onClick={()=>setContextToEditForm(false)} />
                             </NavLink>
                             <Nav.Link href="#deets" className="font-32 text-blue-color ms-3">
                                 <GoBell />

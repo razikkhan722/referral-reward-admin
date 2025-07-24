@@ -569,7 +569,7 @@ const CampaignDashboard = () => {
   });
   const [logoPreview, setLogoPreview] = useState(null);
   const GetAdminUid = sessionStorage.getItem("Auth");
-  const { setLogo } = useContext(UserContext);
+  const { setLogo,ContextToEditForm, setContextToEditForm } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -614,6 +614,7 @@ const CampaignDashboard = () => {
     });
     setLogoPreview(null);
   };
+
 
   // =================
   // API FUNCTIONALITY
@@ -712,6 +713,7 @@ const CampaignDashboard = () => {
                             <NavLink to={"/mainform"}>
                               <button
                                 className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
+                                onClick={()=>setContextToEditForm(true)}
                               >
                                 Edit
                               </button>
