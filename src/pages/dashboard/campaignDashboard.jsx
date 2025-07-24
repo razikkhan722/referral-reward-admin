@@ -710,7 +710,7 @@ const CampaignDashboard = () => {
                                 Dashboard
                               </button>
                             </NavLink>
-                            <NavLink to={"/mainform"}>
+                            <NavLink to={"/campaignform"}>
                               <button
                                 className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
                                 onClick={()=>setContextToEditForm(true)}
