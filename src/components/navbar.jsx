@@ -37,6 +37,7 @@ const NavBar = () => {
   console.log('campaignName: ', campaignName);
   const { logo, setLogo } = useContext(UserContext);
   console.log('logo: ', logo);
+  console.log('logo: ', logo);
 
   useEffect(() => {
     const storedLogo = localStorage.getItem("logo");
@@ -98,11 +99,11 @@ const NavBar = () => {
               {/* {logo && (
                 <img src={logo} alt="Logo" className="logo" />
               )} */}
-               {logo ? (
+               {logo !=="undefined" ? (
                 <img src={logo} alt="Logo" className="logo" />
               ) : (
-                <h5 className="mb-0 text-blue-color font-20 montserrat-semibold">
-                  {campaignName || "Campaign"}
+                <h5 className="mb-0 text-blue-color font-20 montserrat-semibold text-uppercase">
+                  {campaignName?.slice(0,3) || "CAM"}
                 </h5>
               )}
 

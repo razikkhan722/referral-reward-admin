@@ -624,15 +624,15 @@ const Dashboard = () => {
   ];
 
   const ReferralData = [
-    { name: "Areeba Mujeeb", referrals: 22 },
-    { name: "Areeba Mujeeb", referrals: 22 },
-    { name: "Areeba Mujeeb", referrals: 22 },
+    { name: "Juned Abbasi", referrals: 22 },
+    { name: "Areeba Mujeeb", referrals: 16 },
+    { name: "Pragati Joshi", referrals: 10 },
   ];
 
   const EarnerData = [
     { name: "Areeba Mujeeb", referrals: 5 },
-    { name: "Areeba Mujeeb", referrals: 5 },
-    { name: "Areeba Mujeeb", referrals: 5 },
+    { name: "Razik Khan", referrals: 3 },
+    { name: "Nabila Khan", referrals: 1 },
   ];
 
   const ReferralTableData = [

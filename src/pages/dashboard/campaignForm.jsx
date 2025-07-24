@@ -30,13 +30,6 @@ const tabs = [
   // { key: "tab5", label: "Exclusive Offers" },
   // { key: "tab6", label: "Exciting Prizes" },
   // { key: "tab7", label: "Miscellaneous" },
-  { key: "tab1", label: "Basic Info" },
-  { key: "tab2", label: "Create Galaxy" },
-  { key: "tab3", label: "Refer" },
-  { key: "tab4", label: "Rewards" },
-  // { key: "tab5", label: "Exclusive Offers" },
-  // { key: "tab6", label: "Exciting Prizes" },
-  // { key: "tab7", label: "Miscellaneous" },
 ];
 // Add Icons
 const platformIcons = {
@@ -208,17 +201,18 @@ const CampaignForm = () => {
   const onSubmit = async (data) => {
     console.log("data: ", data);
     try {
-      // const getAuth = await postData("/admin/auths", {
-      //   admin_uid: GetAdminUid,
-      // });
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
     const payload = {
-      // admin_uid: GetAdminUid,
-      // mode: getAuth?.mode,
-      // log_alt: getAuth?.log_alt,
+      admin_uid: GetAdminUid,
+      mode: getAuth?.mode,
+      log_alt: getAuth?.log_alt,
       campaign_name: data?.name,
       subtitle: data?.subtitle,
       image: CampLogo,
       url: data?.url,
+      galaxies :data?.galaxies,
       // referrer_reward: 400,
       // invitee_reward: 400,
       conversion_rates: {
@@ -263,15 +257,16 @@ const CampaignForm = () => {
       signup_reward_type: data?.signup_reward_type,
       login_reward: Number(data?.login_reward_value),
       login_reward_type: data?.login_reward_type,
-      referer_reward: Number(data?.refer_reward),
+      referrer_reward: Number(data?.refer_reward),
       refer_reward_type: data?.refer_reward_type,
       invitee_reward: Number(data?.invitee_reward),
       invitee_reward_type: data?.invitee_reward_type,
     };
     console.log("payload: ", payload);
-    //   const response = await postData("/admin/create-campaign", payload);
-    //   // const Decrpt = await DecryptFunction(response?.data);
-    //   toastSuccess(response?.message);
+      const response = await postData("/admin/create-campaign", payload);
+      console.log('response: ', response);
+      // const Decrpt = await DecryptFunction(response?.data);
+      toastSuccess(response?.message);
     } catch (error) {
       toastError(error?.message);
     }
@@ -1048,7 +1043,7 @@ const CampaignForm = () => {
                             <textarea
                               class="form-control login-input rounded-3 border-0 py-2"
                               rows="2"
-                              {...register("Ln")}
+                              {...register("ln")}
                             ></textarea>
                           </div>
                           <div className="mb-3 px-3">
@@ -1303,7 +1298,7 @@ const CampaignForm = () => {
                               </div>
 
                               {/* What Referrer will get */}
-                              <div className="col-lg-12 mb-3">
+                              {/* <div className="col-lg-12 mb-3">
                                 <label className="form-label font-12 montserrat-medium  text-gray-color">
                                   What Referrrer will get on successfully
                                   completing the condition
@@ -1335,7 +1330,7 @@ const CampaignForm = () => {
                                     {errors.success_reward.message}
                                   </p>
                                 )}
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>
