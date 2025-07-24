@@ -34,7 +34,9 @@ const NavBar = () => {
   } = useForm();
 
   const campaignName = sessionStorage.getItem("campaignName");
+  console.log('campaignName: ', campaignName);
   const { logo, setLogo } = useContext(UserContext);
+  console.log('logo: ', logo);
 
   useEffect(() => {
     const storedLogo = localStorage.getItem("logo");
@@ -174,12 +176,12 @@ const NavBar = () => {
               </Nav> */}
 
             <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
-              <NavLink
+              {/* <NavLink
                 to="/campaignform"
                 className={`nav-link text-white bg-blue-color mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-5`}
               >
                 <span>Loyalty Program</span>
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 to="/"
                 className={`nav-link text-blue-color bg-transparent border-blue mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-5`}

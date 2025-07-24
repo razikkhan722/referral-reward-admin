@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -30,7 +30,13 @@ const CampaignNavbar = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
-      const { setLogo, setContextToEditForm } = useContext(UserContext);
+
+    const location = useLocation();
+    const { setLogo, setContextToEditForm } = useContext(UserContext);
+
+    const isMyCampaignsActive = location.pathname === "/";
+    const isCreateCampaignActive = location.pathname === "/campaignform";
+
 
     // const HandleImgUpld =()=>{}
     const GetAdminUid = sessionStorage.getItem("Auth");
@@ -86,10 +92,26 @@ const CampaignNavbar = () => {
                         </Navbar.Brand>
                         <Nav className="d-flex flex-wrap align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
                             <NavLink to="/">
-                                <Button btn_title={"My Campaigns"} btn_class={"border-0 bg-blue-color text-white px-5"} />
+                                {/* <Button btn_title={"My Campaigns"} btn_class={"border-0 bg-blue-color text-white px-5"} /> */}
+                                <Button
+                                    btn_title="My Campaigns"
+                                    btn_class={`px-5 ${isMyCampaignsActive
+                                        ? "bg-blue-color text-white border-0"
+                                        : "bg-transparent border-blue text-blue-color"
+                                        }`}
+                                />
                             </NavLink>
                             <NavLink to="/campaignform">
-                                <Button btn_title={"Create Campaign"} icon={<GoPlus className="font-18" />} btn_class={"bg-transparent border-blue text-blue-color px-5"} onClick={()=>setContextToEditForm(false)} />
+                                {/* <Button btn_title={"Create Campaign"} icon={<GoPlus className="font-18" />} btn_class={"bg-transparent border-blue text-blue-color px-5"} onClick={() => setContextToEditForm(false)} /> */}
+                                <Button
+                                    btn_title="Create Campaign"
+                                    icon={<GoPlus className="font-18" />}
+                                    onClick={() => setContextToEditForm(false)}
+                                    btn_class={`px-5 ${isCreateCampaignActive
+                                            ? "bg-blue-color text-white border-0"
+                                            : "bg-transparent border-blue text-blue-color"
+                                        }`}
+                                />
                             </NavLink>
                             <Nav.Link href="#deets" className="font-32 text-blue-color ms-3">
                                 <GoBell />
