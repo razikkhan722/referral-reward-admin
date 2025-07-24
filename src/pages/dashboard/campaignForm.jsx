@@ -18,11 +18,18 @@ import { RxCross1 } from "react-icons/rx";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { GrAttachment } from "react-icons/gr";
 import { PiPencilSimple } from "react-icons/pi";
-import { FaFacebookSquare, FaTwitterSquare, FaYoutube } from "react-icons/fa";
+import { FaFacebookSquare, FaLinkedin, FaTelegram, FaTwitterSquare, FaYoutube } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { UserContext } from "../../utils/UseContext/useContext";
 
 const tabs = [
+  { key: "tab1", label: "Basic Info" },
+  { key: "tab2", label: "Create Galaxy" },
+  { key: "tab3", label: "Refer" },
+  { key: "tab4", label: "Rewards" },
+  // { key: "tab5", label: "Exclusive Offers" },
+  // { key: "tab6", label: "Exciting Prizes" },
+  // { key: "tab7", label: "Miscellaneous" },
   { key: "tab1", label: "Basic Info" },
   { key: "tab2", label: "Create Galaxy" },
   { key: "tab3", label: "Refer" },
@@ -35,8 +42,8 @@ const tabs = [
 const platformIcons = {
   WhatsApp: <IoLogoWhatsapp size={25} />,
   Facebook: <IoLogoFacebook size={25} />,
-  Instagram: <IoLogoInstagram size={25} />,
-  YouTube: <IoLogoYoutube size={25} />,
+  LinkedIn: <FaLinkedin size={25} />,
+  Telegram: <FaTelegram size={25} />,
   Twitter: <IoLogoTwitter size={25} />,
 };
 
@@ -71,8 +78,8 @@ const CampaignForm = () => {
   const [primarySelected, setPrimarySelected] = useState("Choose one");
   const [platforms, setPlatforms] = useState([
     "Facebook",
-    "Instagram",
-    "YouTube",
+    "LinkedIn",
+    "Telegram",
     "Twitter",
   ]);
   //=============
@@ -196,7 +203,7 @@ const CampaignForm = () => {
       setPlatforms([...platforms, platform]);
     }
   };
-  const onAddGalaxySubmit = (data) => {};
+  const onAddGalaxySubmit = (data) => { };
 
   const onSubmit = async (data) => {
     console.log("data: ", data);
@@ -372,9 +379,8 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-border-gray-color ${
-                          !enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
+                        className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
                         disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
@@ -397,10 +403,9 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-blue-color ${
-                          enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
-                        // disabled={!enabledTabs.includes(tab.key)}
+                        className={`font-16 montserrat-semibold text-blue-color ${enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
+                      // disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
                         <IoIosArrowForward className="mx-1 font-20" />
@@ -520,7 +525,7 @@ const CampaignForm = () => {
                                 width: "24px",
                                 height: "24px",
                               }}
-                              //   onClick={handleRemoveLogo}
+                            //   onClick={handleRemoveLogo}
                             >
                               <IoClose size={14} />
                             </button>
@@ -545,7 +550,7 @@ const CampaignForm = () => {
                               id="formFile"
                               {...register("logo")}
                               onChange={(e) => handleCampLogoUpload(e)}
-                              // onChange={(e) => HandleMailImg(e)}
+                            // onChange={(e) => HandleMailImg(e)}
                             />
                           </label>
                           <div className="form-text font-12 montserrat-medium text-gray-color">
@@ -873,7 +878,7 @@ const CampaignForm = () => {
                         >
                           <div className="accordion-body text-blue-color">
                             <label className="form-label font-14 montserrat-regular text-border-gray-color">
-                              Galaxy Title
+                              Primary
                             </label>
                             <div className="d-flex align-items-center gap-3 mb-3">
                               <Dropdown onSelect={handlePrimarySelect}>
@@ -1007,7 +1012,7 @@ const CampaignForm = () => {
                           <div className="mb-3 px-3">
                             <label className="form-label font-12 montserrat-medium text-blue-color">
                               Message with{" "}
-                              <span className="montserrat-semibold">
+                              <span className="montserrat-semibold text-uppercase">
                                 FACEBOOK
                               </span>{" "}
                               invite
@@ -1021,35 +1026,35 @@ const CampaignForm = () => {
                           <div className="mb-3 px-3">
                             <label className="form-label font-12 montserrat-medium text-blue-color">
                               Message with{" "}
-                              <span className="montserrat-semibold">
-                                INSTAGRAM
+                              <span className="montserrat-semibold text-uppercase">
+                              Telegram
                               </span>{" "}
                               invite
                             </label>
                             <textarea
                               class="form-control login-input rounded-3 border-0 py-2"
                               rows="2"
-                              {...register("insta")}
+                              {...register("tl")}
                             ></textarea>
                           </div>
                           <div className="mb-3 px-3">
                             <label className="form-label font-12 montserrat-medium text-blue-color">
                               Message with{" "}
-                              <span className="montserrat-semibold">
-                                YOUTUBE
+                              <span className="montserrat-semibold text-uppercase">
+                                LinkedIn
                               </span>{" "}
                               invite
                             </label>
                             <textarea
                               class="form-control login-input rounded-3 border-0 py-2"
                               rows="2"
-                              {...register("yt")}
+                              {...register("Ln")}
                             ></textarea>
                           </div>
                           <div className="mb-3 px-3">
                             <label className="form-label font-12 montserrat-medium text-blue-color">
                               Message with{" "}
-                              <span className="montserrat-semibold">
+                              <span className="montserrat-semibold text-uppercase">
                                 TWITTER
                               </span>{" "}
                               invite

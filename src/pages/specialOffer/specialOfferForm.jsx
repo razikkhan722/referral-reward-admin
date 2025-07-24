@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { postData } from "../../services/api";
 import { toastError, toastSuccess } from "../../utils/toster";
 import NavBar from "../../components/navbar";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { NavLink } from "react-router-dom";
 
 const SpecialOfferForm = () => {
   const {
@@ -49,13 +51,17 @@ const SpecialOfferForm = () => {
   };
 
   return (
-    <section className="bg-light-blue-color min-vh-100">
+    <section className="bg-light-white-3-color min-vh-100">
       <NavBar />
       <div className="container mt-3 pb-5">
         {/* Header Section */}
+       <NavLink to={"/dashboard"}>
+         <p className="text-blue-color font-14 montserrat-medium"> <IoIosArrowBack className="font-16" />
+          Back</p>
+       </NavLink>
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h2 className="text-blue-color font-24 montserrat-semibold">
+            <h2 className="text-blue-color font-24 montserrat-semibold mb-0">
               Add Special Offer
             </h2>
             <p className="text-blue-color font-12 montserrat-medium">
@@ -67,7 +73,8 @@ const SpecialOfferForm = () => {
             <span className="text-blue-color font-14 montserrat-medium me-2">
               View all special offers
             </span>
-            <img src="" alt="" />
+            <IoIosArrowForward className="text-blue-color font-20" />
+
           </div>
         </div>
 
@@ -77,7 +84,7 @@ const SpecialOfferForm = () => {
           <p className="font-16 montserrat-semibold text-border-gray-color mt-2">
             Banner Basic Details
           </p>
-          <div className="row mb-4">
+          <div className="row mb-3">
             {/* Offer Title */}
             <div className="col-lg-3 mb-3">
               <label className="form-label font-12 montserrat-medium text-blue-color">
@@ -86,7 +93,7 @@ const SpecialOfferForm = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("offerTitle", {
                   required: "Offer title is required",
                 })}
@@ -103,7 +110,7 @@ const SpecialOfferForm = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("offerDescription", {
                   required: "Description is required",
                 })}
@@ -120,7 +127,7 @@ const SpecialOfferForm = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("ctaButton", {
                   required: "CTA Button is required",
                 })}
@@ -137,7 +144,7 @@ const SpecialOfferForm = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("occasionTag")}
               />
             </div>
@@ -147,7 +154,7 @@ const SpecialOfferForm = () => {
           <p className="font-16 montserrat-semibold text-border-gray-color mt-2">
             Validity
           </p>
-          <div className="row mb-4">
+          <div className="row mb-3">
             {/* Start Date */}
             <div className="col-lg-3 mb-3">
               <label className="form-label font-12 montserrat-medium text-blue-color">
@@ -155,7 +162,7 @@ const SpecialOfferForm = () => {
               </label>
               <input
                 type="date"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("startDate")}
               />
             </div>
@@ -166,7 +173,7 @@ const SpecialOfferForm = () => {
               </label>
               <input
                 type="time"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("startTime")}
               />
             </div>
@@ -177,7 +184,7 @@ const SpecialOfferForm = () => {
               </label>
               <input
                 type="date"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("endDate")}
               />
             </div>
@@ -188,7 +195,7 @@ const SpecialOfferForm = () => {
               </label>
               <input
                 type="time"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("endTime")}
               />
             </div>
@@ -198,13 +205,13 @@ const SpecialOfferForm = () => {
           <p className="font-16 montserrat-semibold text-border-gray-color mt-2">
             Create Code
           </p>
-          <div className="row mb-4 align-items-center">
+          <div className="row mb-3 align-items-center">
             {/* Code Input */}
             <div className="col-lg-3 mb-3">
               <input
                 type="text"
                 placeholder="Create code here"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("offerCode", { required: "Code is required" })}
               />
               {errors.offerCode && (
@@ -246,7 +253,7 @@ const SpecialOfferForm = () => {
           <p className="font-16 montserrat-semibold text-border-gray-color mt-2">
             Pop Up Details
           </p>
-          <div className="row mb-4">
+          <div className="row mb-3">
             {/* Pop Up Content */}
             <div className="col-lg-3 mb-3">
               <label className="form-label font-12 montserrat-medium text-blue-color">
@@ -255,7 +262,7 @@ const SpecialOfferForm = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("popupContent")}
               />
             </div>
@@ -267,7 +274,7 @@ const SpecialOfferForm = () => {
               <input
                 type="text"
                 placeholder="Give title"
-                className="form-control rounded-3 font-14 montserrat-medium border-0 py-2"
+                className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2"
                 {...register("buttonText")}
               />
             </div>
