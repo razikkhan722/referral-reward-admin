@@ -665,7 +665,7 @@ const CampaignDashboard = () => {
                         <div className="col-auto d-flex align-items-center gap-3">
                           <div
                             className="campaign-img text-white rounded-circle d-flex align-items-center justify-content-center overflow-hidden">
-                            <img src={campaign?.image } className="logo" alt="Logo" />
+                            <img src={campaign?.image} className="logo" alt="Logo" />
                           </div>
                           <div>
                             <h5 className="mb-0 text-blue-color font-28 montserrat-semibold">
@@ -700,6 +700,7 @@ const CampaignDashboard = () => {
                               <button
                                 onClick={() => {
                                   sessionStorage.setItem("Prgid", campaign?.program_id);
+                                  sessionStorage.setItem("campaignName", campaign?.program_name);
                                   setLogo(campaign?.image);
                                   localStorage.setItem("logo", campaign?.image);
                                 }}
@@ -708,13 +709,13 @@ const CampaignDashboard = () => {
                                 Dashboard
                               </button>
                             </NavLink>
-                           <NavLink to={"/mainform"}>
-                             <button
-                              className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
-                            >
-                              Edit
-                            </button>
-                           </NavLink>
+                            <NavLink to={"/mainform"}>
+                              <button
+                                className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
+                              >
+                                Edit
+                              </button>
+                            </NavLink>
                             {/* </div> */}
                           </div>
                         </div>
