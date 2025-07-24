@@ -85,7 +85,7 @@ const NavBar = () => {
         collapseOnSelect
         expand="lg"
         sticky="top"
-        className="bg-light-blue-color pt-4 box-shadow"
+        className="bg-light-white-3-color pt-4 box-shadow"
       >
         <Container>
 
