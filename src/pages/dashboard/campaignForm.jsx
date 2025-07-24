@@ -15,8 +15,8 @@ import { FaFacebookSquare, FaTwitterSquare, FaYoutube } from 'react-icons/fa';
 import { AiFillInstagram } from 'react-icons/ai';
 
 const tabs = [
-    { key: "tab1", label: "Info" },
-    { key: "tab2", label: "Galaxy" },
+    { key: "tab1", label: "Basic Info" },
+    { key: "tab2", label: "Create Galaxy" },
     { key: "tab3", label: "Refer" },
     { key: "tab4", label: "Rewards" },
     // { key: "tab5", label: "Exclusive Offers" },
@@ -32,7 +32,7 @@ const platformIcons = {
     Twitter: <IoLogoTwitter size={25} />,
 };
 
-const Test = () => {
+const CampaignForm = () => {
     // ===================
     // useForm
     // ===================
@@ -250,28 +250,30 @@ const Test = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="campaign-tab-bg d-flex justify-content-between align-items-center">
                         {/* <p className='mb-0 text-blue-color font-16'>Info</p> */}
-                        <Nav
-                            className="mt-2"
-                            activeKey={activeTab}
-                            onSelect={(selectedKey) => {
-                                if (enabledTabs.includes(selectedKey)) {
-                                    setActiveTab(selectedKey);
-                                }
-                            }}
-                        >
-                            {tabs.map((tab) => (
-                                <Nav.Item key={tab.key}>
-                                    <Nav.Link
-                                        eventKey={tab.key}
-                                        className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                                            }`}
-                                        disabled={!enabledTabs.includes(tab.key)}
-                                    >
-                                        {tab.label} <IoIosArrowForward className="mx-1 font-20" />
-                                    </Nav.Link>
-                                </Nav.Item>
-                            ))}
-                        </Nav>
+                        <div className='container'>
+                            <Nav
+                                // className="mt-2"
+                                activeKey={activeTab}
+                                onSelect={(selectedKey) => {
+                                    if (enabledTabs.includes(selectedKey)) {
+                                        setActiveTab(selectedKey);
+                                    }
+                                }}
+                            >
+                                {tabs.map((tab) => (
+                                    <Nav.Item key={tab.key}>
+                                        <Nav.Link
+                                            eventKey={tab.key}
+                                            className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                                                }`}
+                                            disabled={!enabledTabs.includes(tab.key)}
+                                        >
+                                            {tab.label} <IoIosArrowForward className="mx-1 font-20" />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                ))}
+                            </Nav>
+                        </div>
                         <button
                             onClick={goToNextTab}
                             className="border-0 bg-blue-color text-white px-4 py-2"
@@ -1173,4 +1175,4 @@ const Test = () => {
     );
 };
 
-export default Test;
+export default CampaignForm;
