@@ -21,6 +21,7 @@ import { PiPencilSimple } from "react-icons/pi";
 import { FaFacebookSquare, FaLinkedin, FaTelegram, FaTwitterSquare, FaYoutube } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { UserContext } from "../../utils/UseContext/useContext";
+import { useNavigate } from "react-router-dom";
 
 const tabs = [
   { key: "tab1", label: "Basic Info" },
@@ -56,7 +57,7 @@ const CampaignForm = () => {
 
   const GetAdminUid = sessionStorage.getItem("Auth");
   const NewMilestone = watch("addnewmilestone");
-
+const navigate = useNavigate()
   // ==============
   // useStates
   // =================
@@ -265,6 +266,9 @@ const CampaignForm = () => {
     console.log("payload: ", payload);
       const response = await postData("/admin/create-campaign", payload);
       console.log('response: ', response);
+      // if(response?.success){
+      //   Navigate("/")
+      // }
       // const Decrpt = await DecryptFunction(response?.data);
       toastSuccess(response?.message);
     } catch (error) {

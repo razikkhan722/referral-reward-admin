@@ -99,12 +99,12 @@ const NavBar = () => {
               {/* {logo && (
                 <img src={logo} alt="Logo" className="logo" />
               )} */}
-               {logo !=="undefined" ? (
+              {logo !== "undefined" ? (
                 <img src={logo} alt="Logo" className="logo" />
               ) : (
-                <h5 className="mb-0 text-blue-color font-20 montserrat-semibold text-uppercase">
-                  {campaignName?.slice(0,3) || "CAM"}
-                </h5>
+                <div className="mb-0 text-blue-color font-20 montserrat-semibold text-uppercase h-32 w-32 bg-border-gray-color rounded-circle d-flex align-items-center justify-content-center box-shadow">
+                  <span className="font-20"> {campaignName?.slice(0, 2) || "CAM"}</span>
+                </div>
               )}
 
             </Navbar.Brand>
