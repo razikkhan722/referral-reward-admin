@@ -17,7 +17,7 @@ const Login = () => {
   } = useForm();
 
   const {setAuthLocal,AuthLocal} = useContext(UserContext)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [loading, setloading] = useState(false)
 

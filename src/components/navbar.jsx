@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -33,11 +33,9 @@ const NavBar = () => {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
   const campaignName = sessionStorage.getItem("campaignName");
-  console.log('campaignName: ', campaignName);
-  const { logo, setLogo } = useContext(UserContext);
-  console.log('logo: ', logo);
-  console.log('logo: ', logo);
+  const { logo, setLogo, setAuthLocal } = useContext(UserContext);
 
   useEffect(() => {
     const storedLogo = localStorage.getItem("logo");
@@ -82,6 +80,14 @@ const NavBar = () => {
     } catch (error) {
       toastError(error?.message);
     }
+  };
+
+  // ------Logout Functionailty
+  const HandleLogout = () => {
+    sessionStorage.removeItem('Auth');
+    setAuthLocal('');
+    console.log('check auth');
+    navigate('/login');
   };
   return (
     <>
@@ -189,13 +195,13 @@ const NavBar = () => {
               >
                 <span>My Campaigns</span>
               </NavLink>
-              <Nav.Link href="#deets" className="font-32 text-blue-color">
+              <Nav.Link href="#deets" className="font-32 text-border-gray-color pe-none">
                 <GoBell />
               </Nav.Link>
               <Nav.Link
                 eventKey={2}
                 href="#memes"
-                className="font-32 text-blue-color"
+                className="font-32 text-border-gray-color pe-none"
               >
                 <IoSettingsOutline />
               </Nav.Link>
@@ -234,26 +240,26 @@ const NavBar = () => {
                       Adity Sharma
                     </h6>
                   </li>
-                  <li className="border-bottom  pt-3 px-3">
+                  <li className="border-bottom pt-3 px-3 pe-none">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <FaLanguage className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-border-gray-color font-16 montserrat-medium">
                         Languages
                       </span>
                     </button>
                   </li>
-                  <li className="border-bottom px-3">
+                  <li className="border-bottom px-3 pe-none">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <IoColorPalette className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-border-gray-color font-16 montserrat-medium">
                         Themes
                       </span>
                     </button>
                   </li>
-                  <li className="border-bottom px-3">
+                  <li className="border-bottom px-3 pe-none">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <BiSolidCheckShield className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-border-gray-color font-16 montserrat-medium">
                         Security
                       </span>
                     </button>
@@ -261,7 +267,9 @@ const NavBar = () => {
                   <li className="border-bottom px-3">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <HiOutlineLogout className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-blue-color font-16 montserrat-medium"
+                        onClick={() => HandleLogout()}
+                      >
                         Logout
                       </span>
                     </button>

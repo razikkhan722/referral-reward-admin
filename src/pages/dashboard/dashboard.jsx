@@ -516,10 +516,12 @@ const Dashboard = () => {
   const [PrtcpntTableData, setPrtcpntTableData] = useState();
   const [DashStatData, setDashStatData] = useState();
   const [RwdHstryTable, setRwdHstryTable] = useState();
+  const [ReferralData, setReferralData] = useState();
+  const [EarnerData, setEarnerData] = useState();
   const [MailImg, setMailImg] = useState();
   const [UserRwdHsty, setUserRwdHsty] = useState();
   const [showInnerTable, setShowInnerTable] = useState(false);
-    const [UserInrRwdHsty, setUserInrRwdHsty] = useState();
+  const [UserInrRwdHsty, setUserInrRwdHsty] = useState();
 
   //   json with Data
   // Filter Json
@@ -623,17 +625,17 @@ const Dashboard = () => {
     { label: "Referral code (If any)", accessor: "referralCode" },
   ];
 
-  const ReferralData = [
-    { name: "Juned Abbasi", referrals: 22 },
-    { name: "Areeba Mujeeb", referrals: 16 },
-    { name: "Pragati Joshi", referrals: 10 },
-  ];
+  // const ReferralData = [
+  //   { name: "Juned Abbasi", referrals: 22 },
+  //   { name: "Areeba Mujeeb", referrals: 16 },
+  //   { name: "Pragati Joshi", referrals: 10 },
+  // ];
 
-  const EarnerData = [
-    { name: "Areeba Mujeeb", referrals: 5 },
-    { name: "Razik Khan", referrals: 3 },
-    { name: "Nabila Khan", referrals: 1 },
-  ];
+  // const EarnerData = [
+  //   { name: "Areeba Mujeeb", referrals: 5 },
+  //   { name: "Razik Khan", referrals: 3 },
+  //   { name: "Nabila Khan", referrals: 1 },
+  // ];
 
   const ReferralTableData = [
     {
@@ -730,7 +732,7 @@ const Dashboard = () => {
       return [];
     }
   })();
-  const onSubmit = () => {};
+  // const onSubmit = () => {};
 
   // Pagination Function Start Here
   // const totalPages = Math.ceil(ParticipantsData.length / rowsPerPage);
@@ -790,6 +792,13 @@ const Dashboard = () => {
       if (rewardHistory?.rewards) {
         setRwdHstryTable(rewardHistory?.rewards);
       }
+      if (rewardHistory?.top_earners) {
+        setReferralData(rewardHistory?.top_earners)
+      }
+      if (rewardHistory?.top_referrers) {
+        setEarnerData(rewardHistory?.top_referrers)
+      }
+    
     } catch (error) {
       console.log("error: ", error);
     }
@@ -889,8 +898,8 @@ const Dashboard = () => {
           activeTab === "tab1"
             ? "mailstone"
             : activeTab === "tab2"
-            ? "referral"
-            : "promotional",
+              ? "referral"
+              : "promotional",
         name: data?.name,
         email: data?.email,
         subject: data?.subject,
@@ -1013,18 +1022,16 @@ const Dashboard = () => {
                     <div className="product-card rounded-3" key={index}>
                       <div className="product-card-header rounded-top p-2">
                         <div
-                          className={`rounded d-flex justify-content-center align-items-center active-transparent-bg ${
-                            item.status === "live"
-                              ? "bg-transparent-green"
-                              : "bg-transparent-muted-blue"
-                          }`}
+                          className={`rounded d-flex justify-content-center align-items-center active-transparent-bg ${item.status === "live"
+                            ? "bg-transparent-green"
+                            : "bg-transparent-muted-blue"
+                            }`}
                         >
                           <span
-                            className={`live-circle d-inline-block rounded-circle ${
-                              item.status === "live"
-                                ? "bg-live-green-color"
-                                : "bg-muted-blue-color"
-                            }`}
+                            className={`live-circle d-inline-block rounded-circle ${item.status === "live"
+                              ? "bg-live-green-color"
+                              : "bg-muted-blue-color"
+                              }`}
                           ></span>
                         </div>
                       </div>
@@ -1112,9 +1119,8 @@ const Dashboard = () => {
                     {earningsData.map((item, index) => (
                       <div
                         key={index}
-                        className={`col-6 py-3 border-white border-2 ${
-                          index < 2 ? "border-bottom" : ""
-                        } ${index % 2 === 0 ? "border-end" : ""}`}
+                        className={`col-6 py-3 border-white border-2 ${index < 2 ? "border-bottom" : ""
+                          } ${index % 2 === 0 ? "border-end" : ""}`}
                       >
                         <div className="montserrat-bold font-14 text-blue-color">
                           {item.value}{" "}
@@ -1157,8 +1163,8 @@ const Dashboard = () => {
                       <button
                         type="button"
                         className="w-100 bg-light-white-color border-bright-gray p-3 border-radiu-8 d-flex align-items-center justify-content-between"
-                        // data-bs-toggle="modal"
-                        // data-bs-target="#emailUpdatesModal"
+                      // data-bs-toggle="modal"
+                      // data-bs-target="#emailUpdatesModal"
                       >
                         <p className="mb-0 text-blue-color font-18 montserrat-medium">
                           {item.textLine1} <br /> {item.textLine2}
@@ -1781,7 +1787,7 @@ const Dashboard = () => {
                 Top 5 Referrers
               </p>
               <div className="row justify-content-start justify-content-lg-around g-2">
-                {ReferralData.map((item, index) => (
+                {ReferralData?.map((item, index) => (
                   <div
                     key={index}
                     className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
@@ -1789,10 +1795,11 @@ const Dashboard = () => {
                     <div className="reffer-card bg-white border-bright-gray border-radius-12 text-center px-2 d-flex flex-column align-items-center justify-content-center py-3 h-100">
                       <img src={User} className="mb-3" alt="User" />
                       <p className="font-14 montserrat-semibold text-blue-color mb-0">
-                        {item.name}
+                        {item?.name}
                       </p>
+                      <p className="text-blue-color w-100 font-12 montserrat-medium text-truncate mb-1">{item?.email}</p>
                       <p className="font-16 montserrat-semibold text-blue-color mb-0">
-                        {item.referrals} Referrals
+                        {item?.total_meteors_earned} Referrals
                       </p>
                     </div>
                   </div>
@@ -1803,7 +1810,7 @@ const Dashboard = () => {
                 Top 5 Earners
               </p>
               <div className="row justify-content-start justify-content-lg-around g-2">
-                {EarnerData.map((item, index) => (
+                {EarnerData?.map((item, index) => (
                   <div
                     key={index}
                     className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
@@ -1811,10 +1818,11 @@ const Dashboard = () => {
                     <div className="reffer-card border-bright-gray bg-white border-radius-12 text-center d-flex px-2 flex-column align-items-center justify-content-center py-3 h-100">
                       <img src={User} className="mb-3" alt="User" />
                       <p className="font-14 montserrat-semibold text-blue-color mb-0">
-                        {item.name}
+                        {item?.name}
                       </p>
+                      <p className="text-blue-color w-100 font-12 montserrat-medium text-truncate mb-1">{item?.email}</p>
                       <p className="font-16 montserrat-semibold text-blue-color mb-0">
-                        {item.referrals} Stars
+                        {item?.total_referrals} Stars
                       </p>
                     </div>
                   </div>
@@ -1968,28 +1976,25 @@ const Dashboard = () => {
                               {item?.referred_on}
                             </td>
                             <td
-                              className={`font-12 montserrat-semibold py-3 ${
-                                item.status === "Approved"
-                                  ? "text-live-green-color"
-                                  : "pending-red-color"
-                              }`}
+                              className={`font-12 montserrat-semibold py-3 ${item.status === "Approved"
+                                ? "text-live-green-color"
+                                : "pending-red-color"
+                                }`}
                             >
                               {item?.expiry_date}
                             </td>
                             <td className="font-12 montserrat-semibold text-blue-color py-3 d-flex align-items-center">
                               <span
-                                className={`d-flex justify-content-center align-items-center ${
-                                  item.status === "Approved"
-                                    ? "inner-table-meteors-green"
-                                    : "inner-table-meteors-orange"
-                                } rounded-2 px-3 py-2`}
+                                className={`d-flex justify-content-center align-items-center ${item.status === "Approved"
+                                  ? "inner-table-meteors-green"
+                                  : "inner-table-meteors-orange"
+                                  } rounded-2 px-3 py-2`}
                               >
                                 <span
-                                  className={`rounded-circle meteors-dot me-2 ${
-                                    item.status === "Approved"
-                                      ? "bg-live-green-color"
-                                      : "dot-orange"
-                                  }`}
+                                  className={`rounded-circle meteors-dot me-2 ${item.status === "Approved"
+                                    ? "bg-live-green-color"
+                                    : "dot-orange"
+                                    }`}
                                 ></span>{" "}
                                 {item?.earned_meteors}
                               </span>

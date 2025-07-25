@@ -556,10 +556,13 @@ import { UserContext } from "../../utils/UseContext/useContext";
 import Logo1 from "../../assets/images/Dashboard-img/group 1.svg";
 import Logo2 from "../../assets/images/Dashboard-img/TrendUp.svg"
 import CampaignNavbar from "../../components/campaignNavbar";
+import Astronut from "../../assets/images/Dashboard-img/astronut.svg";
+
 
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
   const [campList, setcampList] = useState();
+  console.log('campList: ', campList);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -569,7 +572,7 @@ const CampaignDashboard = () => {
   });
   const [logoPreview, setLogoPreview] = useState(null);
   const GetAdminUid = sessionStorage.getItem("Auth");
-  const { setLogo,ContextToEditForm, setContextToEditForm } = useContext(UserContext);
+  const { setLogo, ContextToEditForm, setContextToEditForm } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -634,7 +637,7 @@ const CampaignDashboard = () => {
       setcampList(response?.all_campaigns);
       // const Decrpt = await DecryptFunction(response?.data);
     } catch (error) {
-      toastError();
+      // toastError();
       console.log("error: ", error);
     }
   };
@@ -652,80 +655,93 @@ const CampaignDashboard = () => {
           <div className="row d-flex justify-content-center align-items-center">
             <div className="col-9">
               {/* <h2 className="h4 fw-semibold text-dark mb-4">Draft Campaigns</h2> */}
-              <p className="text-blue-color font-24 montserrat-semibold mb-0">All Campaigns</p>
-              <p className="text-blue-color font-12 montserrat-medium">Create, manage, and monitor all your campaigns from one place.</p>
+              {campList?.length > 0 ? (
+                <>
+                  <p className="text-blue-color font-24 montserrat-semibold mb-0">All Campaigns</p>
+                  <p className="text-blue-color font-12 montserrat-medium">Create, manage, and monitor all your campaigns from one place.</p>
 
-              <div className="d-flex flex-column gap-3">
-                {campList?.map((campaign, index) => (
-                  <div
-                    key={index}
-                    className="card campaign-card border-radius-12 border-0 hover-shadow transition"
-                  >
-                    <div className="card-body px-4 py-3">
-                      <div className="row align-items-center">
-                        <div className="col-auto d-flex align-items-center gap-3">
-                          <div
-                            className="campaign-img text-white rounded-circle d-flex align-items-center justify-content-center overflow-hidden">
-                            <img src={campaign?.image} className="logo" alt="Logo" />
-                          </div>
-                          <div>
-                            <h5 className="mb-0 text-blue-color font-28 montserrat-semibold">
-                              {campaign?.program_name}
-                            </h5>
-                            {/* {/* <p className="mb-1 text-muted small">
+                  <div className="d-flex flex-column gap-3">
+                    {campList?.map((campaign, index) => (
+                      <div
+                        key={index}
+                        className="card campaign-card border-radius-12 border-0 hover-shadow transition"
+                      >
+                        <div className="card-body px-4 py-3">
+                          <div className="row align-items-center">
+                            <div className="col-auto d-flex align-items-center gap-3">
+                              <div
+                                className="campaign-img text-white rounded-circle d-flex align-items-center justify-content-center overflow-hidden">
+                                <img src={campaign?.image} className="logo" alt="Logo" />
+                              </div>
+                              <div>
+                                <h5 className="mb-0 text-blue-color font-28 montserrat-semibold">
+                                  {campaign?.program_name}
+                                </h5>
+                                {/* {/* <p className="mb-1 text-muted small">
                               {campaign.subtitle}
                             </p> */}
-                            <p
-                              className="mb-0 text-muted"
-                              style={{ fontSize: "12px" }}
-                            >
-                              {campaign?.base_url}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="col-auto mx-auto">
-                          <div className="text-center text-blue-color">
-                            <div className="font-32 montserrat-semibold mb-0">
-                              {campaign?.total_participants}
+                                <p
+                                  className="mb-0 text-muted"
+                                  style={{ fontSize: "12px" }}
+                                >
+                                  {campaign?.base_url}
+                                </p>
+                              </div>
                             </div>
-                            <div className="small font-16 montserrat-medium">
-                              Total Participations
-                            </div>
-                          </div>
-                        </div>
 
-                        <div className="col-auto">
-                          <div className="d-flex gap-2">
-                            <NavLink to="/dashboard">
-                              <button
-                                onClick={() => {
-                                  sessionStorage.setItem("Prgid", campaign?.program_id);
-                                  sessionStorage.setItem("campaignName", campaign?.program_name);
-                                  setLogo(campaign?.image);
-                                  localStorage.setItem("logo", campaign?.image);
-                                }}
-                                className="rounded-pill bg-purple-color border-0 px-4 py-2 font-14 montserrat-medium text-white"
-                              >
-                                Dashboard
-                              </button>
-                            </NavLink>
-                            <NavLink to={"/campaignform"}>
-                              <button
-                                className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
-                                onClick={()=>setContextToEditForm(true)}
-                              >
-                                Edit
-                              </button>
-                            </NavLink>
-                            {/* </div> */}
+                            <div className="col-auto mx-auto">
+                              <div className="text-center text-blue-color">
+                                <div className="font-32 montserrat-semibold mb-0">
+                                  {campaign?.total_participants}
+                                </div>
+                                <div className="small font-16 montserrat-medium">
+                                  Total Participations
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="col-auto">
+                              <div className="d-flex gap-2">
+                                <NavLink to="/dashboard">
+                                  <button
+                                    onClick={() => {
+                                      sessionStorage.setItem("Prgid", campaign?.program_id);
+                                      sessionStorage.setItem("campaignName", campaign?.program_name);
+                                      setLogo(campaign?.image);
+                                      localStorage.setItem("logo", campaign?.image);
+                                    }}
+                                    className="rounded-pill bg-purple-color border-0 px-4 py-2 font-14 montserrat-medium text-white"
+                                  >
+                                    Dashboard
+                                  </button>
+                                </NavLink>
+                                <NavLink to={"/campaignform"}>
+                                  <button
+                                    className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
+                                    onClick={() => setContextToEditForm(true)}
+                                  >
+                                    Edit
+                                  </button>
+                                </NavLink>
+                                {/* </div> */}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </>
+              ) : (
+                <div className="d-flex flex-column align-items-center justify-content-center pt-5">
+                  <img src={Astronut} className="pt-5" alt="Loading" />
+                  <p className="font-18 montserrat-medium text-gray-color text-center mt-3">Looks like you haven’t created any campaigns yet.
+                    <br />
+                    Let’s add one to move forward!</p>
+                </div>
+
+              )}
+
             </div>
           </div>
         </main >

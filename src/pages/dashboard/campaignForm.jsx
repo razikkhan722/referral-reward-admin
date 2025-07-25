@@ -57,7 +57,7 @@ const CampaignForm = () => {
 
   const GetAdminUid = sessionStorage.getItem("Auth");
   const NewMilestone = watch("addnewmilestone");
-const navigate = useNavigate()
+  const navigate = useNavigate()
   // ==============
   // useStates
   // =================
@@ -205,70 +205,70 @@ const navigate = useNavigate()
       const getAuth = await postData("/admin/auths", {
         admin_uid: GetAdminUid,
       });
-    const payload = {
-      admin_uid: GetAdminUid,
-      mode: getAuth?.mode,
-      log_alt: getAuth?.log_alt,
-      campaign_name: data?.name,
-      subtitle: data?.subtitle,
-      image: CampLogo,
-      url: data?.url,
-      galaxies :data?.galaxies,
-      // referrer_reward: 400,
-      // invitee_reward: 400,
-      conversion_rates: {
-        meteors_to_stars: Number(data?.meteor),
-        stars: Number(data?.y_star),
-        stars_to_currency: Number(data?.star),
-        currency: Number(data?.point),
-      },
-      start_date: new Date(data?.start_date)?.toLocaleDateString("en-GB"),
-      end_date: new Date(data?.end_date)?.toLocaleDateString("en-GB"),
-      link: data?.invite_link,
-      referrer_reward_type: data?.referrer_reward_type,
-      referrer_reward_value: Number(data?.referrer_reward_value),
-      referee_reward_type: data?.referee_reward_type,
-      referee_reward_value: Number(data?.referee_reward_value),
-      reward_condition: data?.reward_condition,
-      success_reward: data?.success_reward,
-      platforms: [
-        {
-          platform: "linkedIn",
-          message: data?.ln,
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+        campaign_name: data?.name,
+        subtitle: data?.subtitle,
+        image: CampLogo,
+        url: data?.url,
+        galaxies: data?.galaxies,
+        // referrer_reward: 400,
+        // invitee_reward: 400,
+        conversion_rates: {
+          meteors_to_stars: Number(data?.meteor),
+          stars: Number(data?.y_star),
+          stars_to_currency: Number(data?.star),
+          currency: Number(data?.point),
         },
-        {
-          platform: "twitter",
-          message: data?.tw,
-        },
-        {
-          platform: "whatsapp",
-          message: data?.messagewithinvite,
-        },
-        {
-          platform: "telegram",
-          message: data?.tl,
-        },
-        {
-          platform: "facebook",
-          message: data?.fb,
-        },
-      ],
-      primary_platform: primaryShare,
-      signup_reward: Number(data?.signup_reward_value),
-      signup_reward_type: data?.signup_reward_type,
-      login_reward: Number(data?.login_reward_value),
-      login_reward_type: data?.login_reward_type,
-      referrer_reward: Number(data?.refer_reward),
-      refer_reward_type: data?.refer_reward_type,
-      invitee_reward: Number(data?.invitee_reward),
-      invitee_reward_type: data?.invitee_reward_type,
-    };
-    console.log("payload: ", payload);
+        start_date: new Date(data?.start_date)?.toLocaleDateString("en-GB"),
+        end_date: new Date(data?.end_date)?.toLocaleDateString("en-GB"),
+        link: data?.invite_link,
+        referrer_reward_type: data?.referrer_reward_type,
+        referrer_reward_value: Number(data?.referrer_reward_value),
+        referee_reward_type: data?.referee_reward_type,
+        referee_reward_value: Number(data?.referee_reward_value),
+        reward_condition: data?.reward_condition,
+        success_reward: data?.success_reward,
+        platforms: [
+          {
+            platform: "linkedIn",
+            message: data?.ln,
+          },
+          {
+            platform: "twitter",
+            message: data?.tw,
+          },
+          {
+            platform: "whatsapp",
+            message: data?.messagewithinvite,
+          },
+          {
+            platform: "telegram",
+            message: data?.tl,
+          },
+          {
+            platform: "facebook",
+            message: data?.fb,
+          },
+        ],
+        primary_platform: primaryShare,
+        signup_reward: Number(data?.signup_reward_value),
+        signup_reward_type: data?.signup_reward_type,
+        login_reward: Number(data?.login_reward_value),
+        login_reward_type: data?.login_reward_type,
+        referrer_reward: Number(data?.refer_reward),
+        refer_reward_type: data?.refer_reward_type,
+        invitee_reward: Number(data?.invitee_reward),
+        invitee_reward_type: data?.invitee_reward_type,
+      };
+      console.log("payload: ", payload);
       const response = await postData("/admin/create-campaign", payload);
       console.log('response: ', response);
-      // if(response?.success){
-      //   Navigate("/")
-      // }
+      if(response?.success){
+        navigate("/")
+      }
       // const Decrpt = await DecryptFunction(response?.data);
       toastSuccess(response?.message);
     } catch (error) {
@@ -363,7 +363,7 @@ const navigate = useNavigate()
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="campaign-tab-bg d-flex justify-content-between align-items-center">
             {/* <p className='mb-0 text-blue-color font-16'>Info</p> */}
-            <div className="container">
+            <div className="container ps-5">
               {!ContextToEditForm ? (
                 <Nav
                   // className="mt-2"
@@ -415,7 +415,7 @@ const navigate = useNavigate()
               )}
             </div>
             {!ContextToEditForm ? (
-               <>
+              <>
                 {activeTab === "tab4" ? (
                   <button
                     // onClick={goToNextTab}
@@ -434,9 +434,9 @@ const navigate = useNavigate()
                   </button>
                 )}
               </>
-              
+
             ) : (
-             <button
+              <button
                 // onClick={goToNextTab}
                 type="submit"
                 className="border-0 bg-blue-color text-white px-4 py-2"
@@ -450,9 +450,9 @@ const navigate = useNavigate()
             {/* Tab1 content Start here */}
             {activeTab === "tab1" && (
               <>
-                <div className="camp-form row border-radius-16 p-4">
+                <div className="camp-form row border-radius-16 py-4">
                   {/* <h2 className="text-center"> CAMPAIGN FORM</h2> */}
-                  <div className="col-lg-6 pt-3">
+                  <div className="col-lg-6">
                     {/* Campaign Name */}
                     <div className="mb-3">
                       <label
@@ -578,7 +578,7 @@ const navigate = useNavigate()
             {/* Tab2 content Start here */}
             {activeTab === "tab2" && (
               <>
-                <div className="">
+                <div className="pt-4">
                   <Button
                     type="button"
                     onClick={() => SetNoGalaxy((prev) => prev + 1)}
@@ -611,7 +611,7 @@ const navigate = useNavigate()
                               <input
                                 type="text"
                                 className="form-control login-input rounded-3 border-0 py-2 text-blue-color montserrat-medium"
-                                {...register(`galaxies.${galaxyIndex}.title`, {
+                                {...register(`galaxies.${galaxyIndex}.galaxy_name`, {
                                   required: "Galaxy Title is required",
                                 })}
                               />
@@ -631,7 +631,7 @@ const navigate = useNavigate()
                                 type="text"
                                 placeholder="X Meteors"
                                 className="form-control login-input rounded-3 border-0 py-2 text-blue-color montserrat-medium"
-                                {...register(`galaxies.${galaxyIndex}.reward`)}
+                                {...register(`galaxies.${galaxyIndex}.highest_reward`)}
                               />
                               {/* {errors?.galaxies.$[galaxyIndex].reward && (
                                                                         <div className="text-danger">
@@ -665,7 +665,7 @@ const navigate = useNavigate()
                               </label>
                               <select
                                 {...register(
-                                  `galaxies.${galaxyIndex}.milestoneCount`
+                                  `galaxies.${galaxyIndex}.total_milestones`
                                 )}
                                 className="form-select login-input text-border-gray-color"
                                 defaultValue=""
@@ -681,9 +681,8 @@ const navigate = useNavigate()
                             {/* Submit Button */}
                             <div className="col-lg-6 mt-4">
                               {/* <Button
-                                                                onClick={()=>SetNoGalaxy(NoGalaxy +1)}
-                                                            btn_class={
-                                                             "border-purple bg-transparent px-4 w-100 text-purple-color"
+                                      onClick={()=>SetNoGalaxy(NoGalaxy +1)}
+                                                btn_class={"border-purple bg-transparent px-4 w-100 text-purple-color"
                                                                     }
                                                                    btn_title={"Create New"}
                                                                       /> */}
@@ -713,7 +712,7 @@ const navigate = useNavigate()
                           {Array.from({
                             length: Number(
                               watch(`galaxies.${galaxyIndex}.milestoneCount`) ||
-                                1
+                              1
                             ),
                           }).map((_, milestoneIndex) => (
                             <div
@@ -721,9 +720,8 @@ const navigate = useNavigate()
                               className="milestone-form row"
                             >
                               <hr
-                                className={`${
-                                  milestoneIndex == 0 ? "d-none" : ""
-                                }`}
+                                className={`${milestoneIndex == 0 ? "d-none" : ""
+                                  }`}
                               />
                               <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
                                 Milestone {milestoneIndex + 1}
@@ -744,7 +742,7 @@ const navigate = useNavigate()
                                 <input
                                   id="milestoneTitle"
                                   {...register(
-                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.title`,
+                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_name`,
                                     {
                                       required: "Milestone Title is required",
                                     }
@@ -770,7 +768,7 @@ const navigate = useNavigate()
                                 <input
                                   id="milestoneReward"
                                   {...register(
-                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.reward`,
+                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_reward`,
                                     {
                                       required: "Milestone Reward is required",
                                     }
@@ -796,7 +794,7 @@ const navigate = useNavigate()
                                 <input
                                   id="meteorsRequired"
                                   {...register(
-                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.meteors`,
+                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.meteors_required_to_unlock`,
                                     {
                                       required: "Meteors required is required",
                                       pattern: {
@@ -826,7 +824,7 @@ const navigate = useNavigate()
                                 <textarea
                                   id="milestoneDescription"
                                   {...register(
-                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.description`
+                                    `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_description`
                                   )}
                                   className="form-control login-input border-0"
                                   rows={3}
@@ -1026,7 +1024,7 @@ const navigate = useNavigate()
                             <label className="form-label font-12 montserrat-medium text-blue-color">
                               Message with{" "}
                               <span className="montserrat-semibold text-uppercase">
-                              Telegram
+                                Telegram
                               </span>{" "}
                               invite
                             </label>
