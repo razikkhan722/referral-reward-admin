@@ -102,7 +102,7 @@ const NavBar = () => {
               {logo !== "undefined" ? (
                 <img src={logo} alt="Logo" className="logo" />
               ) : (
-                <div className="mb-0 text-blue-color font-20 montserrat-semibold text-uppercase h-32 w-32 bg-border-gray-color rounded-circle d-flex align-items-center justify-content-center box-shadow">
+                <div className="nav-user-text mb-0 text-white font-20 montserrat-semibold text-uppercase bg-border-gray-color rounded-circle d-flex align-items-center justify-content-center shadow">
                   <span className="font-20"> {campaignName?.slice(0, 2) || "CAM"}</span>
                 </div>
               )}

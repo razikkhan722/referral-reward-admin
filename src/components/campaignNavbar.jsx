@@ -127,14 +127,14 @@ const CampaignNavbar = () => {
                             <div className="dropdown">
                                 <button
                                     className="btn nav-link border-0 bg-transparent p-0"
-                                    id="userDropdown"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
+                                    // id="userDropdown"
+                                    // data-bs-toggle="dropdown"
+                                    // aria-expanded="false"
                                 >
                                     <img src={User} alt="User" className="user-icon" />
                                 </button>
 
-                                <ul
+                                {/* <ul
                                     className="dropdown-menu dropdown-menu-end border-0 border-radius-16 custom-dropdown-width p-0"
                                     aria-labelledby="userDropdown"
                                 >
@@ -190,7 +190,7 @@ const CampaignNavbar = () => {
                                             </span>
                                         </button>
                                     </li>
-                                </ul>
+                                </ul> */}
                             </div>
                         </Nav>
 

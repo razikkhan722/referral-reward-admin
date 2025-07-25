@@ -25,47 +25,53 @@ const AppRoutes = () => {
   const { AuthLocal, setAuthLocal } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const getValue = sessionStorage.getItem("Auth");
-  //     setAuthLocal(getValue);
-  //     setLoading(false);
-    
-  // }, []);
+  useEffect(() => {
+    const getValue = sessionStorage.getItem("Auth");
+      setAuthLocal(getValue);
+      setLoading(false);
 
-  // if (loading) return null;
+  }, []);
+
+  if (loading) return null;
 
   return (
     <Router>
       <Routes>
-        {/* {!AuthLocal && (
+        {!AuthLocal && (
           <Route path="/" element={<Navigate to="/login" replace />} />
         )}
-        {AuthLocal && <Route path="/" element={<Dashboard />} />} */}
+        {AuthLocal && <Route path="/" element={<Dashboarcampaigns />} />}
 
         {/* Public Routes */}
-        {/* <Route
+        <Route
           path="/login"
           element={AuthLocal ? <Navigate to="/" replace /> : <Login />}
         />
         <Route
           path="/forgot"
           element={AuthLocal ? <Navigate to="/" replace /> : <Forgot />}
-        /> */}
+        />
 
         {/* Protected Routes */}
-        {/* <Route
-          path="/referral"
+        <Route
+          path="/dashboard"
           element={
-            AuthLocal ? <ReferralsRewards /> : <Navigate to="/login" replace />
+            AuthLocal ? <Dashboard /> : <Navigate to="/login" replace />
           }
         />
         <Route
-          path="/earning"
+          path="/campaignform"
           element={
-            AuthLocal ? <EarningRedemption /> : <Navigate to="/login" replace />
+            AuthLocal ? <CampaignForm /> : <Navigate to="/login" replace />
           }
-        /> */}
-        {/* <Route
+        />
+         <Route
+          path="/specialoffer"
+          element={
+            AuthLocal ? <SpecialOfferForm /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
           path="/pushup"
           element={
             AuthLocal ? (
@@ -74,11 +80,11 @@ const AppRoutes = () => {
               <Navigate to="/login" replace />
             )
           }
-        /> */}
+        />
         {/* Catch-all route */}
-        {/* <Route path="*" element={<Error />} /> */}
+        <Route path="*" element={<Error />} />
 
-        <Route path="/" element={<Dashboarcampaigns />} />
+        {/* <Route path="/" element={<Dashboarcampaigns />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/referral" element={<ReferralsRewards />} />
         <Route path="/earning" element={<EarningRedemption />} />
@@ -87,7 +93,7 @@ const AppRoutes = () => {
         <Route path="/forgot" element={<Forgot />} /> 
         <Route path="/mainform" element={<MainForm />} /> 
         <Route path="/specialoffer" element={<SpecialOfferForm />} /> 
-        <Route path="/campaignform" element={<CampaignForm />} /> 
+        <Route path="/campaignform" element={<CampaignForm />} />  */}
       </Routes>
     </Router>
   );
