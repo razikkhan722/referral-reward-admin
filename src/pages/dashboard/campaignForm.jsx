@@ -276,6 +276,16 @@ const CampaignForm = () => {
     }
   };
 
+const handleUrlBlur = (e) => {
+    try {
+      const inputUrl = new URL(e.target.value);
+      const baseUrl = inputUrl.origin;
+      setValue("url", baseUrl, { shouldValidate: true });
+    } catch (error) {
+      // Optional: you can handle invalid URLs here if needed
+    }
+  };
+
   // dummy data json
   let dumy = {
     name: "camp",
@@ -490,6 +500,7 @@ const CampaignForm = () => {
                             message: "Enter a valid URL",
                           },
                         })}
+                          onBlur={handleUrlBlur}
                         className="form-control border-0 border-radiu-8 login-input"
                         placeholder="https://pages.viral-loops.com/..."
                       />
