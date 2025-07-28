@@ -18,7 +18,13 @@ import { RxCross1 } from "react-icons/rx";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { GrAttachment } from "react-icons/gr";
 import { PiPencilSimple } from "react-icons/pi";
-import { FaFacebookSquare, FaLinkedin, FaTelegram, FaTwitterSquare, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookSquare,
+  FaLinkedin,
+  FaTelegram,
+  FaTwitterSquare,
+  FaYoutube,
+} from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { UserContext } from "../../utils/UseContext/useContext";
 import { useNavigate } from "react-router-dom";
@@ -51,13 +57,14 @@ const CampaignForm = () => {
     setValue,
     formState: { errors, isSubmitting },
     watch,
+    trigger,
   } = useForm();
   const { ContextToEditForm } = useContext(UserContext);
   console.log("ContextToEditForm: ", ContextToEditForm);
 
   const GetAdminUid = sessionStorage.getItem("Auth");
   const NewMilestone = watch("addnewmilestone");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // ==============
   // useStates
   // =================
@@ -197,7 +204,7 @@ const CampaignForm = () => {
       setPlatforms([...platforms, platform]);
     }
   };
-  const onAddGalaxySubmit = (data) => { };
+  const onAddGalaxySubmit = (data) => {};
 
   const onSubmit = async (data) => {
     console.log("data: ", data);
@@ -265,9 +272,9 @@ const CampaignForm = () => {
       };
       console.log("payload: ", payload);
       const response = await postData("/admin/create-campaign", payload);
-      console.log('response: ', response);
-      if(response?.success){
-        navigate("/")
+      console.log("response: ", response);
+      if (response?.success) {
+        navigate("/");
       }
       // const Decrpt = await DecryptFunction(response?.data);
       toastSuccess(response?.message);
@@ -276,7 +283,7 @@ const CampaignForm = () => {
     }
   };
 
-const handleUrlBlur = (e) => {
+  const handleUrlBlur = (e) => {
     try {
       const inputUrl = new URL(e.target.value);
       const baseUrl = inputUrl.origin;
@@ -388,8 +395,9 @@ const handleUrlBlur = (e) => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                          }`}
+                        className={`font-16 montserrat-semibold text-border-gray-color ${
+                          !enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                        }`}
                         disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
@@ -412,9 +420,10 @@ const handleUrlBlur = (e) => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-blue-color ${enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                          }`}
-                      // disabled={!enabledTabs.includes(tab.key)}
+                        className={`font-16 montserrat-semibold text-blue-color ${
+                          enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                        }`}
+                        // disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
                         <IoIosArrowForward className="mx-1 font-20" />
@@ -444,7 +453,6 @@ const handleUrlBlur = (e) => {
                   </button>
                 )}
               </>
-
             ) : (
               <button
                 // onClick={goToNextTab}
@@ -492,18 +500,23 @@ const handleUrlBlur = (e) => {
                       >
                         Campaign URL
                       </label>
+
                       <input
                         id="campaignUrl"
                         {...register("url", {
                           pattern: {
-                            value: /^https?:\/\/.+$/,
-                            message: "Enter a valid URL",
+                            value: /^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                            message:
+                              "Enter a valid base URL starting with https:// end .com or .in",
                           },
                         })}
-                          onBlur={handleUrlBlur}
+                        onInput={(e) => {
+                          trigger("url");
+                        }}
                         className="form-control border-0 border-radiu-8 login-input"
-                        placeholder="https://pages.viral-loops.com/..."
+                        placeholder="https://example.com"
                       />
+
                       {errors.url && (
                         <p className="text-danger">{errors.url.message}</p>
                       )}
@@ -535,7 +548,7 @@ const handleUrlBlur = (e) => {
                                 width: "24px",
                                 height: "24px",
                               }}
-                            //   onClick={handleRemoveLogo}
+                              //   onClick={handleRemoveLogo}
                             >
                               <IoClose size={14} />
                             </button>
@@ -560,7 +573,7 @@ const handleUrlBlur = (e) => {
                               id="formFile"
                               {...register("logo")}
                               onChange={(e) => handleCampLogoUpload(e)}
-                            // onChange={(e) => HandleMailImg(e)}
+                              // onChange={(e) => HandleMailImg(e)}
                             />
                           </label>
                           <div className="form-text font-12 montserrat-medium text-gray-color">
@@ -622,9 +635,12 @@ const handleUrlBlur = (e) => {
                               <input
                                 type="text"
                                 className="form-control login-input rounded-3 border-0 py-2 text-blue-color montserrat-medium"
-                                {...register(`galaxies.${galaxyIndex}.galaxy_name`, {
-                                  required: "Galaxy Title is required",
-                                })}
+                                {...register(
+                                  `galaxies.${galaxyIndex}.galaxy_name`,
+                                  {
+                                    required: "Galaxy Title is required",
+                                  }
+                                )}
                               />
                               {/* {errors?.galaxies?.[galaxyIndex]?.title && (
                                                                   <div className="text-danger">
@@ -642,7 +658,9 @@ const handleUrlBlur = (e) => {
                                 type="text"
                                 placeholder="X Meteors"
                                 className="form-control login-input rounded-3 border-0 py-2 text-blue-color montserrat-medium"
-                                {...register(`galaxies.${galaxyIndex}.highest_reward`)}
+                                {...register(
+                                  `galaxies.${galaxyIndex}.highest_reward`
+                                )}
                               />
                               {/* {errors?.galaxies.$[galaxyIndex].reward && (
                                                                         <div className="text-danger">
@@ -722,8 +740,9 @@ const handleUrlBlur = (e) => {
                           {/* MileStone Form */}
                           {Array.from({
                             length: Number(
-                              watch(`galaxies.${galaxyIndex}.milestoneCount`) ||
-                              1
+                              watch(
+                                `galaxies.${galaxyIndex}.total_milestones`
+                              ) || 1
                             ),
                           }).map((_, milestoneIndex) => (
                             <div
@@ -731,8 +750,9 @@ const handleUrlBlur = (e) => {
                               className="milestone-form row"
                             >
                               <hr
-                                className={`${milestoneIndex == 0 ? "d-none" : ""
-                                  }`}
+                                className={`${
+                                  milestoneIndex == 0 ? "d-none" : ""
+                                }`}
                               />
                               <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
                                 Milestone {milestoneIndex + 1}
