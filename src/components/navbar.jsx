@@ -283,7 +283,7 @@ const NavBar = () => {
       </Navbar>
       {/* Edit  Right Side Panel */}
       <div
-        className="offcanvas px-3 offcanvas-end bg-light-blue-color right-sidepanel"
+        className="offcanvas px-3 offcanvas-end bg-light-white-3-color right-sidepanel"
         tabIndex="-1"
         id="profileEditPanel"
         aria-labelledby="profileEditPanelLabel"
@@ -315,7 +315,7 @@ const NavBar = () => {
               </label>
               <input
                 type="text"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter name"
                 {...register("name")}
               />
@@ -329,7 +329,7 @@ const NavBar = () => {
               </label>
               <input
                 type="number"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Mobile No."
                 {...register("mobile"
                   //   , {
@@ -347,7 +347,7 @@ const NavBar = () => {
               </label>
               <input
                 type="email"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Email"
                 {...register("email", {
                   // required: "Email is required",
@@ -367,7 +367,7 @@ const NavBar = () => {
               </label>
               <input
                 type="password"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Password"
                 {...register("password", {
                   required: "Password is required",
@@ -386,7 +386,7 @@ const NavBar = () => {
               <label className="form-label text-blue-color font-12 montserrat-semibold">
                 Upload Picture
               </label>
-              <label class="upload-box d-flex text-center bg-light-white-3-color px-4 py-5 rounded-3 text-blue-color font-12 width-40 justify-content-center flex-column montserrat-medium">
+              <label class="upload-box d-flex text-center login-input px-4 py-5 rounded-3 text-blue-color font-12 width-40 justify-content-center flex-column montserrat-medium">
                 <div class="upload-icon mx-auto text-center">
                   <PiUploadSimpleBold className="font-16" />
                 </div>
