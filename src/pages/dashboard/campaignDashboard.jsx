@@ -562,7 +562,7 @@ import Astronut from "../../assets/images/Dashboard-img/astronut.svg";
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
   const [campList, setcampList] = useState();
-  console.log('campList: ', campList);
+
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -572,7 +572,7 @@ const CampaignDashboard = () => {
   });
   const [logoPreview, setLogoPreview] = useState(null);
   const GetAdminUid = sessionStorage.getItem("Auth");
-  const { setLogo, ContextToEditForm, setContextToEditForm } = useContext(UserContext);
+  const { setLogo, ContextToEditForm, setContextToEditForm,ContextCampEditDataAPI, setContextCampEditDataAPI } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -641,6 +641,30 @@ const CampaignDashboard = () => {
       console.log("error: ", error);
     }
   };
+
+  // Handle Camp Form Edit 
+  const HandleCampEdit = async(prid)=>{
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+      };
+      const response = await postData(`/admin/edit-campaign/${prid}`, payload);
+      if(response?.success){
+        setContextCampEditDataAPI(response?.data)
+         setContextToEditForm(true)
+      }
+    } catch (error) {
+      console.log('error: ', error);
+      
+    }
+
+  }
+
   useEffect(() => {
     HandleMainDashdAPI();
   }, []);
@@ -718,7 +742,7 @@ const CampaignDashboard = () => {
                                 <NavLink to={"/campaignform"}>
                                   <button
                                     className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
-                                    onClick={() => setContextToEditForm(true)}
+                                    onClick={() => HandleCampEdit(campaign?.program_id)}
                                   >
                                     Edit
                                   </button>

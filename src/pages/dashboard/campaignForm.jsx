@@ -59,8 +59,8 @@ const CampaignForm = () => {
     watch,
     trigger,
   } = useForm();
-  const { ContextToEditForm } = useContext(UserContext);
-  console.log("ContextToEditForm: ", ContextToEditForm);
+  const { ContextToEditForm,ContextCampEditDataAPI } = useContext(UserContext);
+  console.log('ContextCampEditDataAPI: ', ContextCampEditDataAPI);
 
   const GetAdminUid = sessionStorage.getItem("Auth");
   const NewMilestone = watch("addnewmilestone");
@@ -221,8 +221,6 @@ const CampaignForm = () => {
         image: CampLogo,
         url: data?.url,
         galaxies: data?.galaxies,
-        // referrer_reward: 400,
-        // invitee_reward: 400,
         conversion_rates: {
           meteors_to_stars: Number(data?.meteor),
           stars: Number(data?.y_star),
@@ -270,7 +268,6 @@ const CampaignForm = () => {
         invitee_reward: Number(data?.invitee_reward),
         invitee_reward_type: data?.invitee_reward_type,
       };
-      console.log("payload: ", payload);
       const response = await postData("/admin/create-campaign", payload);
       console.log("response: ", response);
       if (response?.success) {
@@ -293,74 +290,64 @@ const CampaignForm = () => {
     }
   };
 
-  // dummy data json
-  let dumy = {
-    name: "camp",
-    subtitle: "sub",
-    url: "https://www.rumeno.in/home",
-    logo: {},
-    // "galaxies": [
-    //     {
-    //         "title": "title",
-    //         "reward": "me1",
-    //         "stars": "st1",
-    //         "milestoneCount": "2",
-    //         "milestones": [
-    //             {
-    //                 "title": "mt 1",
-    //                 "reward": "mr1",
-    //                 "meteors": "mu 1",
-    //                 "description": "md 1"
-    //             },
-    //             {
-    //                 "title": "mt2",
-    //                 "reward": "mr2",
-    //                 "meteors": "mu2",
-    //                 "description": "md2"
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         "title": "gt2",
-    //         "reward": "m2",
-    //         "stars": "s2",
-    //         "milestoneCount": "1",
-    //         "milestones": [
-    //             {
-    //                 "title": "mt3",
-    //                 "reward": "mr3",
-    //                 "meteors": "mu3",
-    //                 "description": "md3"
-    //             }
-    //         ]
-    //     }
-    // ],
-    // "messagewithinvite": "main link",
-    // "fb": "fb",
-    // "insta": "inst",
-    // "yt": "you",
-    // "tw": "tw",
-    // "start_date": "2025-07-24",
-    // "end_date": "2025-08-02",
-    // "invite_link": "link",
-    // "referrer_reward_type": "Meteor",
-    // "referrer_reward_value": "77",
-    // "referee_reward_type": "Star",
-    // "referee_reward_value": "88",
-    // "reward_condition": "On 10 referrals",
-    // "success_reward": "Early access to a sale or product drop",
-    // "referrer": "reffer",
-    // "reward": "invite",
-    // "meteor": "22",
-    // "y_star": "22",
-    // "star": "111",
-    // "point": "111"
-  };
   useEffect(() => {
     if (ContextToEditForm) {
-      setValue("name", dumy?.name);
-      setValue("url", dumy?.url);
+      console.log('ContextToEditForm: ', ContextToEditForm);
+      console.log('ContextCampEditDataAPI: ', ContextCampEditDataAPI);
+      setValue("name", ContextCampEditDataAPI?.campaign?.program_name);
+      setValue("url", ContextCampEditDataAPI?.campaign?.base_url);
+      // CampLogo,ContextCampEditDataAPI?.campaign?.image);
+      // setValue("galaxies", dumy?.galaxies);
+
+      setValue("meteor", ContextCampEditDataAPI?.referral_reward?.conversion_rates?.meteors_to_stars);
+      setValue("y_star", ContextCampEditDataAPI?.referral_reward?.conversion_rates?.stars);
+      setValue("star", ContextCampEditDataAPI?.referral_reward?.conversion_rates?.stars_to_currency);
+      setValue("point", ContextCampEditDataAPI?.referral_reward?.conversion_rates?.currency);
+
+      // setValue("start_date", dumy?.start_date);
+      // setValue("end_date", dumy?.end_date);
+      // setValue("invite_link", dumy?.invite_link);
+      setValue("referrer_reward_type", ContextCampEditDataAPI?.referral_reward?.referrer_reward_type);
+      // setValue("referrer_reward_value", dumy?.referrer_reward);
+      // setValue("referee_reward_type", dumy?.referee_reward_type);
+      // setValue("referee_reward_value", dumy?.referee_reward_value);
+      // setValue("reward_condition", dumy?.reward_condition);
+      // setValue("success_reward", dumy?.success_reward);
+
+      // setValue("ln", dumy?.ln);
+
+      // setValue("tw", dumy?.tw);
+
+      // setValue("messagewithinvite", dumy?.messagewithinvite);
+
+      // setValue("tl", dumy?.tl);
+
+      // setValue("fb", dumy?.fb);
+
+      // primaryShare,
+     setValue("signup_reward_value", ContextCampEditDataAPI?.referral_reward?.signup_reward);
+      setValue("signup_reward_type", ContextCampEditDataAPI?.referral_reward?.signup_reward_type);
+      setValue("login_reward_value", ContextCampEditDataAPI?.referral_reward?.login_reward);
+      setValue("login_reward_type", ContextCampEditDataAPI?.referral_reward?.login_reward_type);
+      // setValue("refer_reward", dumy?.referrer_reward);
+      // setValue("refer_reward_type", dumy?.refer_reward_type);
+      // setValue("invitee_reward", dumy?.invitee_reward);
+      // setValue("invitee_reward_type", dumy?.invitee_reward_type);
     }
+    // galaxay
+     ContextCampEditDataAPI?.galaxy_data?.galaxies?.forEach((galaxy, galaxyIndex) => {
+      setValue(`galaxies.${galaxyIndex}.galaxy_name`, galaxy.galaxy_name);
+      setValue(`galaxies.${galaxyIndex}.highest_reward`, galaxy.highest_reward);
+      setValue(`galaxies.${galaxyIndex}.stars`, galaxy.stars);
+      setValue(`galaxies.${galaxyIndex}.total_milestones`, galaxy.total_milestones);
+
+      galaxy?.milestones?.forEach((milestone, milestoneIndex) => {
+        setValue(`galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_name`, milestone.milestone_name);
+        setValue(`galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_reward`, milestone.milestone_reward);
+        setValue(`galaxies.${galaxyIndex}.milestones.${milestoneIndex}.meteors_required_to_unlock`, milestone.meteors_required_to_unlock);
+        setValue(`galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_description`, milestone.milestone_description);
+      });
+    });
   }, []);
 
   return (
