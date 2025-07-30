@@ -102,7 +102,7 @@ const PushupNotification = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-light-blue-color py-5 min-vh-100">
+      <div className="bg-light-white-3-color py-5 min-vh-100">
         <div className="container mb-5">
           <div>
             <p className="mb-0 text-blue-color montserrat-semibold font-24">

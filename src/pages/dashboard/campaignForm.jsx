@@ -17,7 +17,7 @@ import Button from "../../components/button";
 import { RxCross1 } from "react-icons/rx";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { GrAttachment } from "react-icons/gr";
-import { PiPencilSimple } from "react-icons/pi";
+import { PiPencilSimple, PiUploadSimpleBold } from "react-icons/pi";
 import {
   FaFacebookSquare,
   FaLinkedin,
@@ -28,15 +28,14 @@ import {
 import { AiFillInstagram } from "react-icons/ai";
 import { UserContext } from "../../utils/UseContext/useContext";
 import { useNavigate } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
 
 const tabs = [
   { key: "tab1", label: "Basic Info" },
   { key: "tab2", label: "Create Galaxy" },
   { key: "tab3", label: "Refer" },
   { key: "tab4", label: "Rewards" },
-  // { key: "tab5", label: "Exclusive Offers" },
-  // { key: "tab6", label: "Exciting Prizes" },
-  // { key: "tab7", label: "Miscellaneous" },
+  { key: "tab5", label: "Miscellaneous" },
 ];
 // Add Icons
 const platformIcons = {
@@ -204,7 +203,7 @@ const CampaignForm = () => {
       setPlatforms([...platforms, platform]);
     }
   };
-  const onAddGalaxySubmit = (data) => {};
+  const onAddGalaxySubmit = (data) => { };
 
   const onSubmit = async (data) => {
     console.log("data: ", data);
@@ -291,6 +290,12 @@ const CampaignForm = () => {
     } catch (error) {
       // Optional: you can handle invalid URLs here if needed
     }
+  };
+
+  const [faqList, setFaqList] = useState([{ question: "", answer: "" }]);
+
+  const handleAddFAQ = () => {
+    setFaqList([...faqList, { question: "", answer: "" }]);
   };
 
   // dummy data json
@@ -395,9 +400,8 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-border-gray-color ${
-                          !enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
+                        className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
                         disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
@@ -420,10 +424,9 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-blue-color ${
-                          enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
-                        // disabled={!enabledTabs.includes(tab.key)}
+                        className={`font-16 montserrat-semibold text-blue-color ${enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
+                      // disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
                         <IoIosArrowForward className="mx-1 font-20" />
@@ -435,7 +438,7 @@ const CampaignForm = () => {
             </div>
             {!ContextToEditForm ? (
               <>
-                {activeTab === "tab4" ? (
+                {activeTab === "tab5" ? (
                   <button
                     // onClick={goToNextTab}
                     type="submit"
@@ -548,7 +551,7 @@ const CampaignForm = () => {
                                 width: "24px",
                                 height: "24px",
                               }}
-                              //   onClick={handleRemoveLogo}
+                            //   onClick={handleRemoveLogo}
                             >
                               <IoClose size={14} />
                             </button>
@@ -573,7 +576,7 @@ const CampaignForm = () => {
                               id="formFile"
                               {...register("logo")}
                               onChange={(e) => handleCampLogoUpload(e)}
-                              // onChange={(e) => HandleMailImg(e)}
+                            // onChange={(e) => HandleMailImg(e)}
                             />
                           </label>
                           <div className="form-text font-12 montserrat-medium text-gray-color">
@@ -750,9 +753,8 @@ const CampaignForm = () => {
                               className="milestone-form row"
                             >
                               <hr
-                                className={`${
-                                  milestoneIndex == 0 ? "d-none" : ""
-                                }`}
+                                className={`${milestoneIndex == 0 ? "d-none" : ""
+                                  }`}
                               />
                               <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
                                 Milestone {milestoneIndex + 1}
@@ -1424,6 +1426,7 @@ const CampaignForm = () => {
               </>
             )}
 
+            {/* Tab4 content Start here */}
             {activeTab === "tab4" && (
               <>
                 <div className="row py-4">
@@ -1780,9 +1783,310 @@ const CampaignForm = () => {
                 </div>
               </>
             )}
+
+            {/* Tab5 content Start here */}
+            {activeTab === "tab5" && (
+              <>
+                <div className="row py-4">
+                  <div className="col-lg-6">
+                    <div
+                      class="accordion accordion-flush mb-2 border-0"
+                      id="accordionFlushExample"
+                    >
+                      {/* Add How It's Work */}
+                      <div className="accordion-item bg-white box-shadow border-light-gray border-radius-12 mb-3">
+                        <h2 className="accordion-header" id="flush-headingOne">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne"
+                            aria-expanded="true"
+                            aria-controls="flush-collapseOne"
+                          >
+                            How It Works
+                          </button>
+                          <p className="px-3 font-12 montserrat-medium text-blue-color">
+                            {" "}
+                            This will contain all the steps to explain the users how the program will work. Edit the data according to your need.
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseOne"
+                          className="accordion-collapse collapse show"
+                          aria-labelledby="flush-headingOne"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          {/* Accordian Body */}
+                          <div className="accordion-body text-blue-color">
+
+                            <div className="row">
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Title 1
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Title 1"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Add Description (25-30 words)
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Title 2
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Title 2"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Add Description (25-30 words)
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Title 3
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Title 3"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Add Description (25-30 words)
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                />
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Add Advertisement Banner 1 */}
+                      <div className="accordion-item bg-white box-shadow border-light-gray border-radius-12 mb-3">
+                        <h2 className="accordion-header" id="flush-headingTwo">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseTwo"
+                          >
+                            Advertisement Banner 1
+                          </button>
+                          <p className="ps-3 font-12 montserrat-medium text-blue-color">
+                            Customize this card to highlight your latest offer or referral perk.
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseTwo"
+                          className="accordion-collapse collapse text-blue-color"
+                          aria-labelledby="flush-headingTwo"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div className="accordion-body text-blue-color">
+                            <div className="row">
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Title 1
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Title 1"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Add Description (25-30 words)
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label
+                                  className="form-label font-14 montserrat-regular text-border-gray-color"
+                                >
+                                  Button text
+                                </label>
+                                <input type="text" className="form-control border-0 login-input"
+                                  placeholder="Enter Button text"
+                                />
+                              </div>
+                              <div className='col-lg-6 mb-3'>
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">Attach Image/Icon</label>
+                                <div class="upload-box d-flex text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
+                                  <div class="upload-icon"><PiUploadSimpleBold className='font-16 me-3 mb-1' /></div>
+                                  Upload
+                                  <input type="file" id="formFile" />
+                                </div>
+                              </div>
+
+
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Add Frequently Asked Questions */}
+                      <div class="accordion-item bg-white box-shadow border-light-gray border-radius-12 mb-3">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseThree"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseThree"
+                          >
+                            Frequently Asked Questions
+                          </button>
+                          <p className="px-3 font-12 montserrat-medium text-blue-color">
+                            Edit questions and answers to keep your users informed and confident.
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseThree"
+                          className="accordion-collapse collapse text-blue-color"
+                          aria-labelledby="flush-headingThree"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div className="accordion-body text-blue-color">
+                            {faqList.map((item, index) => (
+                              <React.Fragment key={index}>
+                                <div className="col-lg-12 mb-3">
+                                  <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                    Question {index + 1}
+                                  </label>
+                                  <div className="d-flex gap-3 justify-content-between">
+                                    <input type="text" className="form-control login-input border-0"
+                                      {...register(`faq.${index}.question`)}
+                                    />
+                                    <div className="login-input rounded-circle faq-add-btn d-flex align-items-center justify-content-center">
+                                      <GoPlus className="font-24" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="col-lg-12 mb-3">
+                                  <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                    Answer
+                                  </label>
+                                  <textarea
+                                    className="form-control login-input rounded-3 border-0 py-2"
+                                    rows="3"
+                                    {...register(`faq.${index}.answer`)}
+                                    placeholder="Enter answer"
+                                  ></textarea>
+                                </div>
+
+                                <hr />
+                              </React.Fragment>
+                            ))}
+
+                            <div className="text-start">
+                              <button
+                                type="button"
+                                onClick={handleAddFAQ}
+                                className="border-0 bg-purple-color text-white font-14 montserrat-medium rounded-pill px-4 py-2"
+                              >
+                                + Add Faq
+                              </button>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Add Frequently Asked Questions */}
+                      <div class="accordion-item bg-white box-shadow border-light-gray border-radius-12">
+                        <h2 class="accordion-header" id="flush-headingFour">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFour"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseFour"
+                          >
+                            Footer Section
+                          </button>
+                          <p className="px-3 font-12 montserrat-medium text-blue-color">
+                            Edit the content you want to display on your footer section
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseFour"
+                          className="accordion-collapse collapse text-blue-color"
+                          aria-labelledby="flush-headingFour"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div className="accordion-body text-blue-color">
+                            <div className="col-lg-12 mb-3">
+                              <label
+                                className="form-label font-14 montserrat-regular text-border-gray-color"
+                              >
+                                Select or type the content
+                              </label>
+                              <input type="text" className="form-control border-0 login-input"
+                                placeholder="Enter Footer Text"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-lg-6">
+
+                  </div>
+
+                </div>
+              </>
+            )}
           </div>
-        </form>
-      </div>
+        </form >
+      </div >
     </>
   );
 };
