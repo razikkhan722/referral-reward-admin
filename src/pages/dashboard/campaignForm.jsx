@@ -40,7 +40,7 @@ const tabs = [
   { key: "tab2", label: "Create Galaxy" },
   { key: "tab3", label: "Refer" },
   { key: "tab4", label: "Rewards" },
-  { key: "tab5", label: "Miscellaneous" },
+  // { key: "tab5", label: "Miscellaneous" },
 ];
 // Add Icons
 const platformIcons = {
@@ -539,7 +539,7 @@ const CampaignForm = () => {
             </div>
             {!ContextToEditForm ? (
               <>
-                {activeTab === "tab5" ? (
+                {activeTab === "tab4" ? (
                   <button
                     // onClick={goToNextTab}
                     type="submit"
@@ -2156,7 +2156,7 @@ const CampaignForm = () => {
                               <div className="col-lg-6 mb-3">
                                 <label className="form-label font-14 montserrat-regular text-border-gray-color">
                                   Attach Image/Icon
-                                  <div className="upload-box d-flex text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
+                                  <div className="upload-box d-flex flex-wrap text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
                                     <div className="upload-icon">
                                       <PiUploadSimpleBold className="font-16 me-3 mb-1" />
                                     </div>
@@ -2256,7 +2256,7 @@ const CampaignForm = () => {
                         </div>
                       </div>
 
-                      {/* Add Frequently Asked Questions */}
+                      {/* Add Footer Section */}
                       <div class="accordion-item bg-white box-shadow border-light-gray border-radius-12">
                         <h2 class="accordion-header" id="flush-headingFour">
                           <button
