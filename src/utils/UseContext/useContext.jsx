@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const [ContextFaqsDataAPI, setContextFaqsDataAPI] = useState();
   const [ContextMyRewardDataAPI, setContextMyRewardDataAPI] = useState();
   const [ContextInviteRefferAPI, setContextInviteRefferAPI] = useState();
+  const [ContextCampEditDataAPI, setContextCampEditDataAPI] = useState();
   const [ContextToEditForm, setContextToEditForm] = useState();
   const [AuthLocal, setAuthLocal] = useState();
   const [MeterUpdateData, setMeterUpdateData] = useState();
@@ -28,6 +29,7 @@ export const UserProvider = ({ children }) => {
         setMeterUpdateData,
          logo, setLogo,
          ContextToEditForm, setContextToEditForm,
+         ContextCampEditDataAPI, setContextCampEditDataAPI,
       }}
     >
       {children}
