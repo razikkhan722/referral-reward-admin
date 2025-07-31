@@ -557,6 +557,7 @@ import Logo1 from "../../assets/images/Dashboard-img/group 1.svg";
 import Logo2 from "../../assets/images/Dashboard-img/TrendUp.svg"
 import CampaignNavbar from "../../components/campaignNavbar";
 import Astronut from "../../assets/images/Dashboard-img/astronut.svg";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 
 const CampaignDashboard = () => {
@@ -725,7 +726,7 @@ const CampaignDashboard = () => {
                             </div>
 
                             <div className="col-auto">
-                              <div className="d-flex gap-2">
+                              <div className="d-flex gap-3 align0items-center">
                                 <NavLink to="/dashboard">
                                   <button
                                     onClick={() => {
@@ -748,6 +749,9 @@ const CampaignDashboard = () => {
                                   </button>
                                 </NavLink>
                                 {/* </div> */}
+                                <div>
+                                  <RiDeleteBin5Fill className="font-24 text-danger mt-2" />
+                                </div>
                               </div>
                             </div>
                           </div>
