@@ -60,7 +60,7 @@ const Product = () => {
                 <div className='row py-4'>
                     <div className='col-lg-6'>
                         <>
-                            <div className='border-radius-12 bg-white p-3 mb-3'>
+                            <div className='border-radius-12 bg-white border-light-gray p-3 mb-3'>
                                 <div className='d-flex flex-wrap gap-2 gap-md-3 align-items-center text-end justify-content-end'>
                                     <div className='pause-btn text-muted-blue-color rounded-3 p-2 px-4 font-12 montserrat-medium'>
                                         <span className='live-circle d-inline-block rounded-circle bg-muted-blue-color me-1'></span>
@@ -216,12 +216,20 @@ const Product = () => {
                                                 ))}
                                             </div>
 
-                                            <div className='col-lg-5'>
-                                                <Button
-                                                    btn_title={"Create New"}
-                                                    btn_class={"text-purple-color w-100 bg-transparent border-purple mt-3 px-5"}
-                                                    onClick={handleAddDiscount}
-                                                />
+                                            <div className='row'>
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title={"Save Changes"}
+                                                        btn_class={"text-white w-100 bg-purple-color border-purple mt-3 px-5"}
+                                                    />
+                                                </div>
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title={"Create New"}
+                                                        btn_class={"text-purple-color w-100 bg-transparent border-purple mt-3 px-5"}
+                                                        onClick={handleAddDiscount}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
 
@@ -322,12 +330,20 @@ const Product = () => {
                                                 </div>
                                             ))}
 
-                                            <div className='col-lg-5'>
-                                                <Button
-                                                    btn_title={"Create New"}
-                                                    btn_class={"text-purple-color w-100 bg-transparent border-purple mt-3 px-5"}
-                                                    onClick={handleAddOffer}
-                                                />
+                                            <div className='row'>
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title={"Save Changes"}
+                                                        btn_class={"text-white w-100 bg-purple-color border-purple mt-3 px-5"}
+                                                    />
+                                                </div>
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title={"Create New"}
+                                                        btn_class={"text-purple-color w-100 bg-transparent border-purple mt-3 px-5"}
+                                                        onClick={handleAddOffer}
+                                                    />
+                                                </div>
                                             </div>
 
                                         </div>
@@ -409,6 +425,12 @@ const Product = () => {
                                             ))}
                                             {/* Create New Button */}
                                             <div className="row">
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title={"Save Changes"}
+                                                        btn_class={"text-white w-100 bg-purple-color border-purple mt-3 px-5"}
+                                                    />
+                                                </div>
                                                 <div className="col-lg-5">
                                                     <Button
                                                         btn_title="Create New"
@@ -491,12 +513,21 @@ const Product = () => {
 
                                                 </div>
                                             ))}
-                                            <div className='col-lg-5'>
-                                                <Button
-                                                    btn_title="Create New"
-                                                    btn_class="text-purple-color w-100 bg-transparent border-purple mt-3 px-5"
-                                                    onClick={handleAddExcitingPrize}
-                                                />
+
+                                            <div className='row'>
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title={"Save Changes"}
+                                                        btn_class={"text-white w-100 bg-purple-color border-purple mt-3 px-5"}
+                                                    />
+                                                </div>
+                                                <div className='col-lg-5'>
+                                                    <Button
+                                                        btn_title="Create New"
+                                                        btn_class="text-purple-color w-100 bg-transparent border-purple mt-3 px-5"
+                                                        onClick={handleAddExcitingPrize}
+                                                    />
+                                                </div>
                                             </div>
 
                                         </div>
@@ -510,7 +541,7 @@ const Product = () => {
                         {showAddProduct && (
                             <>
                                 {/* Add New Products Section Start Here */}
-                                <div className='border-radius-12 bg-white p-3'>
+                                <div className='border-radius-12 border-light-gray bg-white p-3'>
                                     <p className='font-24 montserrat-semibold text-blue-color mb-0'>Add  New product</p>
                                     <p className='text-blue-color font-12 montserrat-medium'>Fill the details below to add a new product to your list</p>
                                     <form className='row'>
