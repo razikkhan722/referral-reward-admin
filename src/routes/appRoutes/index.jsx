@@ -17,6 +17,7 @@ import Error from "../../pages/Errror/error";
 import MainForm from "../../pages/dashboard/mainForm";
 import SpecialOfferForm from "../../pages/specialOffer/specialOfferForm";
 import CampaignForm from "../../pages/dashboard/campaignForm";
+import Product from "../../pages/product/product";
 
 // import ProtectedRoute from "./ProtectedRoute";
 
@@ -69,6 +70,12 @@ const AppRoutes = () => {
           path="/specialoffer"
           element={
             AuthLocal ? <SpecialOfferForm /> : <Navigate to="/login" replace />
+          }
+        />
+         <Route
+          path="/product"
+          element={
+            AuthLocal ? <Product /> : <Navigate to="/login" replace />
           }
         />
         <Route
