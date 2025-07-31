@@ -35,6 +35,7 @@ const NotificationData = [
   },
 ];
 const PushupNotification = () => {
+  const [activeTab, setActiveTab] = useState("tab1");
   const [NotifTable, setNotifTable] = useState();
   console.log('NotifTable: ', NotifTable);
   const {
@@ -116,11 +117,42 @@ const PushupNotification = () => {
             <p className="font-14 montserrat-medium text-blue-color">Existing Notification List  <IoIosArrowForward className="font-20" /></p>
           </div>
         </div>
-        
+        {/* <div className="nav-tab-bg d-flex align-items-center px-5">
+          <Nav
+            className="container"
+            variant="underline"
+            activeKey={activeTab}
+            onSelect={(selectedKey) => setActiveTab(selectedKey)}
+          >
+            <Nav.Item>
+              <Nav.Link
+                eventKey="tab1"
+                className="font-16 montserrat-semibold text-border-gray-color"
+              >
+                Create new notification
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                eventKey="tab2"
+                className="font-16 montserrat-semibold text-border-gray-color"
+              >
+                Existing Notification list
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+          <div className="bg-light-white-1-color filter-btn px-3 py-2 d-flex justify-content-between align-items-center me-5">
+            <p className="mb-0 text-blue-color montserrat-medium font-14 me-2">
+              Filter{" "}
+            </p>
+            <img src={Filter} alt="Filter" />
+          </div>
+        </div> */}
         <div className="container py-5">
           {/* Tab Content */}
 
-          {/*(Exclusive Offer) Start Here */}
+          {/* tab 1 (Exclusive Offer) Start Here */}
+          {activeTab === "tab1" && (
             <div className="row gy-3">
               <div className="col-lg-7">
                 <p className="font-14 montserrat-medium text-border-gray-color">
@@ -248,72 +280,75 @@ const PushupNotification = () => {
                 </div>
               </div>
             </div>
+          )}
 
-          {/* Content (Exciting Prizes) Start Here */}
-          <div className="row gy-3">
-            <div className="col-lg-7">
-              <div className="table-responsive">
-                <table className="table text-center notification-table earning-table middle-align border-radius-16">
-                  <thead className="position-sticky top-0">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="font-16 montserrat-medium text-blue-color ps-3 text-start py-3"
-                      >
-                        Notification Titles
-                      </th>
-                      <th
-                        scope="col"
-                        className="font-16 montserrat-medium text-blue-color ps-5 py-3"
-                      >
-                        Message
-                      </th>
-                      <th
-                        scope="col"
-                        className="font-16 montserrat-medium text-blue-color ps-5 py-3"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {NotifTable?.map((item, index) => (
-                      <tr key={index}>
-                        <td className="font-14 montserrat-medium ps-3 text-capitalize text-start py-3">
-                          {item?.title}
-                        </td>
-                        <td className="font-14 montserrat-medium py-3">
-                          {item?.message}
-                        </td>
-                        <td className="font-14 montserrat-medium py-3">
-                          <div className="d-flex justify-content-center align-items-center gap-3">
-                            <button className="icon-btn border-0 width-32 height-32 push-edit-icon rounded-circle">
-                              <PiPencilSimple className="font-16" />
-                            </button>
-                            <button className="icon-btn border-0 width-32 height-32 copy-icon rounded-circle">
-                              <PiCopySimpleLight className="font-16" />
-                            </button>
-                            <button className="icon-btn border-0 width-32 height-32 pause-btn rounded-circle">
-                              <PiPauseCircle className="font-16" />
-                            </button>
-                            <button onClick={() => HandleDeleteNotify()} className="icon-btn border-0 width-32 height-32 reward-delete-icon rounded-circle">
-                              <PiTrashSimple className="font-16" />
-                            </button>
-                          </div>
-                        </td>
+          {/* Tab 2 Content (Exciting Prizes) Start Here */}
+          {activeTab === "tab2" && (
+            <div className="row gy-3">
+              <div className="col-lg-7">
+                <div className="table-responsive">
+                  <table className="table text-center notification-table earning-table middle-align border-radius-16">
+                    <thead className="position-sticky top-0">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="font-16 montserrat-medium text-blue-color ps-3 text-start py-3"
+                        >
+                          Notification Titles
+                        </th>
+                        <th
+                          scope="col"
+                          className="font-16 montserrat-medium text-blue-color ps-5 py-3"
+                        >
+                          Message
+                        </th>
+                        <th
+                          scope="col"
+                          className="font-16 montserrat-medium text-blue-color ps-5 py-3"
+                        >
+                          Action
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {NotifTable?.map((item, index) => (
+                        <tr key={index}>
+                          <td className="font-14 montserrat-medium ps-3 text-capitalize text-start py-3">
+                            {item?.title}
+                          </td>
+                          <td className="font-14 montserrat-medium py-3">
+                            {item?.message}
+                          </td>
+                          <td className="font-14 montserrat-medium py-3">
+                            <div className="d-flex justify-content-center align-items-center gap-3">
+                              <button className="icon-btn border-0 width-32 height-32 push-edit-icon rounded-circle">
+                                <PiPencilSimple className="font-16" />
+                              </button>
+                              <button className="icon-btn border-0 width-32 height-32 copy-icon rounded-circle">
+                                <PiCopySimpleLight className="font-16" />
+                              </button>
+                              <button className="icon-btn border-0 width-32 height-32 pause-btn rounded-circle">
+                                <PiPauseCircle className="font-16" />
+                              </button>
+                              <button onClick={() => HandleDeleteNotify()} className="icon-btn border-0 width-32 height-32 reward-delete-icon rounded-circle">
+                                <PiTrashSimple className="font-16" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
 
-            <div className="col-lg-5 d-flex justify-content-center">
-              <div className="pushup-preview-box w-100 bg-white p-3 border-radius-16 d-flex align-items-center justify-content-center">
-                s
+              <div className="col-lg-5 d-flex justify-content-center">
+                <div className="pushup-preview-box w-100 bg-white p-3 border-radius-16 d-flex align-items-center justify-content-center">
+                  s
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
