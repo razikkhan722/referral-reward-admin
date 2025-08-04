@@ -563,6 +563,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
   const [campList, setcampList] = useState();
+  console.log('campList: ', campList);
 
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
