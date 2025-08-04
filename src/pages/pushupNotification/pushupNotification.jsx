@@ -95,15 +95,15 @@ const PushupNotification = () => {
     }
   };
 
-    useEffect(() => {
-      GetNotfiData();
-    }, []);
+  useEffect(() => {
+    GetNotfiData();
+  }, []);
 
   return (
     <>
       <NavBar />
-      <div className="bg-light-blue-color py-5 min-vh-100">
-        <div className="container mb-5">
+      <div className="bg-light-white-3-color py-5 min-vh-100">
+        <div className="container mb-5 d-flex align-items-center justify-content-between">
           <div>
             <p className="mb-0 text-blue-color montserrat-semibold font-24">
               Pushup Notification
@@ -113,8 +113,11 @@ const PushupNotification = () => {
               the right moments.
             </p>
           </div>
+          <div>
+            <p className="font-14 montserrat-medium text-blue-color">Existing Notification List  <IoIosArrowForward className="font-20" /></p>
+          </div>
         </div>
-        <div className="nav-tab-bg d-flex align-items-center px-5">
+        {/* <div className="nav-tab-bg d-flex align-items-center px-5">
           <Nav
             className="container"
             variant="underline"
@@ -144,7 +147,7 @@ const PushupNotification = () => {
             </p>
             <img src={Filter} alt="Filter" />
           </div>
-        </div>
+        </div> */}
         <div className="container py-5">
           {/* Tab Content */}
 
@@ -162,7 +165,7 @@ const PushupNotification = () => {
                     </label>
                     <input
                       type="text"
-                      className="form-control rounded-3 font-14 montserrat-medium border-0 py-2 "
+                      className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2 "
                       {...register("notifyTitle")}
                     />
                   </div>
@@ -172,7 +175,7 @@ const PushupNotification = () => {
                     </label>
                     <input
                       type="text"
-                      className="form-control rounded-3 font-14 montserrat-medium border-0 py-2 "
+                      className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2 "
                       {...register("message")}
                     />
                   </div>
@@ -182,7 +185,7 @@ const PushupNotification = () => {
                     </label>
                     <input
                       type="text"
-                      className="form-control rounded-3 font-14 montserrat-medium border-0 py-2 "
+                      className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2 "
                       {...register("buttonText")}
                     />
                   </div>
@@ -193,7 +196,7 @@ const PushupNotification = () => {
                     </label>
                     <input
                       type="text"
-                      className="form-control rounded-3 font-14 montserrat-medium border-0 py-2 "
+                      className="form-control login-input rounded-3 font-14 montserrat-medium border-0 py-2 "
                       {...register("buttonUrl")}
                     />
                   </div>
@@ -206,7 +209,7 @@ const PushupNotification = () => {
                       Select from segment
                     </label>
                     <select
-                      class="form-select border-0"
+                      class="form-select login-input border-0"
                       aria-label="Default select example"
                       {...register("segment")}
                     >
@@ -221,7 +224,7 @@ const PushupNotification = () => {
                       Specific user
                     </label>
                     <select
-                      class="form-select border-0"
+                      class="form-select login-input border-0"
                       aria-label="Default select example"
                       {...register("specific_users")}
                     >
@@ -246,7 +249,7 @@ const PushupNotification = () => {
                     </label>
                     <input
                       type="date"
-                      className="form-control rounded-3 text-blue-color font-14 montserrat-medium border-0 py-2"
+                      className="form-control login-input rounded-3 text-blue-color font-14 montserrat-medium border-0 py-2"
                       {...register("date")}
                     />
                   </div>
@@ -256,13 +259,13 @@ const PushupNotification = () => {
                     </label>
                     <input
                       type="time"
-                      className="form-control rounded-3 text-blue-color font-14 montserrat-medium border-0 py-2"
+                      className="form-control login-input rounded-3 text-blue-color font-14 montserrat-medium border-0 py-2"
                       {...register("time")}
                     />
                   </div>
                   <div className="col-lg-6 mt-3">
                     <Button
-                      btn_class={"text-white bg-blue-color border-0"}
+                      btn_class={"text-white bg-blue-color border-0 px-5"}
                       btn_title={"Save & Send"}
                     />
                   </div>
@@ -327,7 +330,7 @@ const PushupNotification = () => {
                               <button className="icon-btn border-0 width-32 height-32 pause-btn rounded-circle">
                                 <PiPauseCircle className="font-16" />
                               </button>
-                              <button onClick={()=>HandleDeleteNotify()} className="icon-btn border-0 width-32 height-32 reward-delete-icon rounded-circle">
+                              <button onClick={() => HandleDeleteNotify()} className="icon-btn border-0 width-32 height-32 reward-delete-icon rounded-circle">
                                 <PiTrashSimple className="font-16" />
                               </button>
                             </div>

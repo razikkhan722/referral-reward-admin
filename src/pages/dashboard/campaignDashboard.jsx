@@ -557,12 +557,13 @@ import Logo1 from "../../assets/images/Dashboard-img/group 1.svg";
 import Logo2 from "../../assets/images/Dashboard-img/TrendUp.svg"
 import CampaignNavbar from "../../components/campaignNavbar";
 import Astronut from "../../assets/images/Dashboard-img/astronut.svg";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
   const [campList, setcampList] = useState();
-  console.log('campList: ', campList);
+
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -572,7 +573,7 @@ const CampaignDashboard = () => {
   });
   const [logoPreview, setLogoPreview] = useState(null);
   const GetAdminUid = sessionStorage.getItem("Auth");
-  const { setLogo, ContextToEditForm, setContextToEditForm } = useContext(UserContext);
+  const { setLogo, ContextToEditForm, setContextToEditForm, ContextCampEditDataAPI, setContextCampEditDataAPI } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -634,13 +635,65 @@ const CampaignDashboard = () => {
         log_alt: getAuth?.log_alt,
       };
       const response = await postData("/admin/list-all-campaigns", payload);
+      console.log('response:-list ', response);
       setcampList(response?.all_campaigns);
+   
       // const Decrpt = await DecryptFunction(response?.data);
     } catch (error) {
       // toastError();
       console.log("error: ", error);
     }
   };
+
+  // Handle Camp Form Edit 
+  const HandleCampEdit = async (prid) => {
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+      };
+      const response = await postData(`/admin/edit-campaign/${prid}`, payload);
+      console.log('response-edit: ', response);
+      if (response?.success) {
+        setContextCampEditDataAPI(response)
+        setContextToEditForm(true)
+      }
+    } catch (error) {
+      console.log('error: ', error);
+
+    }
+
+  }
+
+  // Handle Camp Delete 
+  const HandleCampDelete = async (prid) => {
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.mode,
+        log_alt: getAuth?.log_alt,
+      };
+      const response = await postData(`/admin/delete-campaign/${prid}`, payload);
+      console.log('response-delete: ', response);
+      if (response?.success) {
+        toastSuccess(response?.message);
+
+        // Remove from state
+     setcampList((prev) => prev.filter((item) => item.program_id !== prid));
+      }
+    } catch (error) {
+      console.log('error: ', error);
+      toastError(error?.message);
+
+    }
+  }
   useEffect(() => {
     HandleMainDashdAPI();
   }, []);
@@ -701,7 +754,7 @@ const CampaignDashboard = () => {
                             </div>
 
                             <div className="col-auto">
-                              <div className="d-flex gap-2">
+                              <div className="d-flex gap-3 align0items-center">
                                 <NavLink to="/dashboard">
                                   <button
                                     onClick={() => {
@@ -718,12 +771,35 @@ const CampaignDashboard = () => {
                                 <NavLink to={"/campaignform"}>
                                   <button
                                     className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
-                                    onClick={() => setContextToEditForm(true)}
+                                    onClick={() => HandleCampEdit(campaign?.program_id)}
                                   >
                                     Edit
                                   </button>
                                 </NavLink>
                                 {/* </div> */}
+                                <div data-bs-toggle="modal"  data-bs-target={`#deleteModal-${campaign?.program_id}`} style={{ cursor: "pointer" }}>
+                                  <RiDeleteBin5Fill className="font-24 text-danger mt-2" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        {/* Delete Modal Start here */}
+                        <div class="modal fade" id={`deleteModal-${campaign?.program_id}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                Are you sure you want to delete this campaign?
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => HandleCampDelete(campaign?.program_id)}>Delete</button>
                               </div>
                             </div>
                           </div>

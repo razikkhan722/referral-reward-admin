@@ -3,6 +3,8 @@ import CampaignNavbar from "../../components/campaignNavbar";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { Dropdown, Nav } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import moment from "moment";
+
 import {
   IoClose,
   IoLogoFacebook,
@@ -17,7 +19,7 @@ import Button from "../../components/button";
 import { RxCross1 } from "react-icons/rx";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { GrAttachment } from "react-icons/gr";
-import { PiPencilSimple } from "react-icons/pi";
+import { PiPencilSimple, PiUploadSimpleBold } from "react-icons/pi";
 import {
   FaFacebookSquare,
   FaLinkedin,
@@ -28,15 +30,18 @@ import {
 import { AiFillInstagram } from "react-icons/ai";
 import { UserContext } from "../../utils/UseContext/useContext";
 import { useNavigate } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
+import Planet1 from "../../assets/images/campForm/HIW-planet-1.svg";
+import Planet2 from "../../assets/images/campForm/HIW-planet-2.svg";
+import Planet3 from "../../assets/images/campForm/HIW-planet-3.svg";
+import Rocketgif from "../../assets/images/campForm/racketgif.gif";
 
 const tabs = [
   { key: "tab1", label: "Basic Info" },
   { key: "tab2", label: "Create Galaxy" },
   { key: "tab3", label: "Refer" },
   { key: "tab4", label: "Rewards" },
-  // { key: "tab5", label: "Exclusive Offers" },
-  // { key: "tab6", label: "Exciting Prizes" },
-  // { key: "tab7", label: "Miscellaneous" },
+  // { key: "tab5", label: "Miscellaneous" },
 ];
 // Add Icons
 const platformIcons = {
@@ -59,8 +64,9 @@ const CampaignForm = () => {
     watch,
     trigger,
   } = useForm();
-  const { ContextToEditForm } = useContext(UserContext);
-  console.log("ContextToEditForm: ", ContextToEditForm);
+  const { ContextToEditForm, ContextCampEditDataAPI } = useContext(UserContext);
+  console.log('ContextCampEditDataAPI: ', ContextCampEditDataAPI);
+  console.log('ContextToEditForm: ', ContextToEditForm);
 
   const GetAdminUid = sessionStorage.getItem("Auth");
   const NewMilestone = watch("addnewmilestone");
@@ -83,6 +89,18 @@ const CampaignForm = () => {
     "Telegram",
     "Twitter",
   ]);
+
+  // =========================
+  // Show Values In Preview
+  // =========================
+
+  const title1 = watch("title1");
+  const title2 = watch("title2");
+  const title3 = watch("title3");
+  const desc1 = watch("desc1");
+  const desc2 = watch("desc2");
+  const desc3 = watch("desc3");
+
   //=============
   // Function
   //=============
@@ -204,7 +222,7 @@ const CampaignForm = () => {
       setPlatforms([...platforms, platform]);
     }
   };
-  const onAddGalaxySubmit = (data) => {};
+  const onAddGalaxySubmit = (data) => { };
 
   const onSubmit = async (data) => {
     console.log("data: ", data);
@@ -221,8 +239,6 @@ const CampaignForm = () => {
         image: CampLogo,
         url: data?.url,
         galaxies: data?.galaxies,
-        // referrer_reward: 400,
-        // invitee_reward: 400,
         conversion_rates: {
           meteors_to_stars: Number(data?.meteor),
           stars: Number(data?.y_star),
@@ -269,18 +285,64 @@ const CampaignForm = () => {
         refer_reward_type: data?.refer_reward_type,
         invitee_reward: Number(data?.invitee_reward),
         invitee_reward_type: data?.invitee_reward_type,
+        //how it work and footer
+        title1: data?.title1,
+        desc1: data?.desc1,
+        title2: data?.title2,
+        desc2: data?.desc2,
+        title3: data?.title3,
+        desc3: data?.desc3,
+        footer_text: data?.footer_text,
+
+        // addvertise
+        advertisement_cards: [
+          {
+            title: data?.title,
+            description: data?.description,
+            image: "",
+            button_txt: data?.button_txt,
+          },
+        ],
+        faqs: [
+          {
+            category: "Basic",
+            faq_list: data?.faq,
+          },
+        ],
       };
       console.log("payload: ", payload);
-      const response = await postData("/admin/create-campaign", payload);
+
+      let response;
+      if (ContextToEditForm) {
+
+        const program_id = ContextCampEditDataAPI?.campaign_info?.program_id;
+        
+        // Update campaign logic
+        const updateUrl = `/admin/update-campaign/${program_id}`;
+        response = await postData(updateUrl, payload);
+      } else {
+        // Create campaign logic
+        response = await postData("/admin/create-campaign", payload);
+      }
+
       console.log("response: ", response);
       if (response?.success) {
+        toastSuccess(response?.message);
         navigate("/");
       }
-      // const Decrpt = await DecryptFunction(response?.data);
-      toastSuccess(response?.message);
     } catch (error) {
       toastError(error?.message);
     }
+    //   const response = await postData("/admin/create-campaign", payload);
+    //   console.log("response: ", response);
+    //   if (response?.success) {
+    //     navigate("/");
+    //   }
+    //   // const Decrpt = await DecryptFunction(response?.data);
+    //   toastSuccess(response?.message);
+    // } catch (error) {
+    //   toastError(error?.message);
+    // }
   };
 
   const handleUrlBlur = (e) => {
@@ -293,75 +355,171 @@ const CampaignForm = () => {
     }
   };
 
-  // dummy data json
-  let dumy = {
-    name: "camp",
-    subtitle: "sub",
-    url: "https://www.rumeno.in/home",
-    logo: {},
-    // "galaxies": [
-    //     {
-    //         "title": "title",
-    //         "reward": "me1",
-    //         "stars": "st1",
-    //         "milestoneCount": "2",
-    //         "milestones": [
-    //             {
-    //                 "title": "mt 1",
-    //                 "reward": "mr1",
-    //                 "meteors": "mu 1",
-    //                 "description": "md 1"
-    //             },
-    //             {
-    //                 "title": "mt2",
-    //                 "reward": "mr2",
-    //                 "meteors": "mu2",
-    //                 "description": "md2"
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         "title": "gt2",
-    //         "reward": "m2",
-    //         "stars": "s2",
-    //         "milestoneCount": "1",
-    //         "milestones": [
-    //             {
-    //                 "title": "mt3",
-    //                 "reward": "mr3",
-    //                 "meteors": "mu3",
-    //                 "description": "md3"
-    //             }
-    //         ]
-    //     }
-    // ],
-    // "messagewithinvite": "main link",
-    // "fb": "fb",
-    // "insta": "inst",
-    // "yt": "you",
-    // "tw": "tw",
-    // "start_date": "2025-07-24",
-    // "end_date": "2025-08-02",
-    // "invite_link": "link",
-    // "referrer_reward_type": "Meteor",
-    // "referrer_reward_value": "77",
-    // "referee_reward_type": "Star",
-    // "referee_reward_value": "88",
-    // "reward_condition": "On 10 referrals",
-    // "success_reward": "Early access to a sale or product drop",
-    // "referrer": "reffer",
-    // "reward": "invite",
-    // "meteor": "22",
-    // "y_star": "22",
-    // "star": "111",
-    // "point": "111"
+  const [faqList, setFaqList] = useState([{ question: "", answer: "" }]);
+
+  const handleAddFAQ = () => {
+    setFaqList([...faqList, { question: "", answer: "" }]);
   };
+
+
+  // Set Edit Form Data
   useEffect(() => {
     if (ContextToEditForm) {
-      setValue("name", dumy?.name);
-      setValue("url", dumy?.url);
+      console.log("ContextToEditForm: ", ContextToEditForm);
+      console.log("ContextCampEditDataAPI: ", ContextCampEditDataAPI);
+      // Set Camp Details 
+      setValue("name", ContextCampEditDataAPI?.campaign_info?.program_name);
+      setValue("url", ContextCampEditDataAPI?.campaign_info?.base_url);
+      // CampLogo,ContextCampEditDataAPI?.campaign?.image);
+      // setValue("galaxies", dumy?.galaxies);
+
+      // Set Conversion rate Data
+      setValue(
+        "meteor",
+        ContextCampEditDataAPI?.referral_info?.conversion_rates
+          ?.meteors_to_stars
+      );
+      setValue(
+        "y_star",
+        ContextCampEditDataAPI?.referral_info?.conversion_rates?.stars
+      );
+      setValue(
+        "star",
+        ContextCampEditDataAPI?.referral_info?.conversion_rates
+          ?.stars_to_currency
+      );
+      setValue(
+        "point",
+        ContextCampEditDataAPI?.referral_info?.conversion_rates?.currency
+      );
+
+      // Set Special Link Data
+      setValue("start_date", moment(ContextCampEditDataAPI?.link_info?.start_date).format("YYYY-MM-DD"));
+      setValue("end_date", moment(ContextCampEditDataAPI?.link_info?.end_date).format("YYYY-MM-DD"));
+      setValue("invite_link", ContextCampEditDataAPI?.link_info?.invitation_link);
+      setValue(
+        "referrer_reward_type",
+        ContextCampEditDataAPI?.link_info?.referrer_reward_type
+      );
+      setValue("referrer_reward_value", ContextCampEditDataAPI?.link_info?.referee_reward_value);
+      setValue("referee_reward_type", ContextCampEditDataAPI?.link_info?.referee_reward_type);
+      setValue("referee_reward_value", ContextCampEditDataAPI?.link_info?.referee_reward_value);
+      setValue("reward_condition", ContextCampEditDataAPI?.link_info?.reward_condition);
+      setValue("success_reward", ContextCampEditDataAPI?.link_info?.success_reward);
+
+      // Set Social icons Data
+      // setValue("ln", ContextCampEditDataAPI?.sharing_apps_info?.platform);
+
+      // setValue("tw", ContextCampEditDataAPI?.sharing_apps_info?.platform);
+
+      // // setValue("messagewithinvite", ContextCampEditDataAPI?.sharing_apps_info?.messagewithinvite);
+
+      // setValue("tl", ContextCampEditDataAPI?.sharing_apps_info?.platform);
+
+      // setValue("fb", ContextCampEditDataAPI?.sharing_apps_info?.platform);
+
+      const sharingInfo = ContextCampEditDataAPI?.sharing_apps_info || [];
+
+      // Platform name to field key mapping
+      const fieldMap = {
+        facebook: "fb",
+        telegram: "tl",
+        linkedIn: "ln",
+        twitter: "tw",
+      };
+
+      // Set each platform's message to the right form field
+      sharingInfo.forEach(item => {
+        const fieldName = fieldMap[item.platform];
+        if (fieldName) {
+          setValue(fieldName, item.message);
+        }
+      });
+
+      // For Whatsapp Text
+      if (sharingInfo.length > 0) {
+        setValue("messagewithinvite", sharingInfo[0].message);
+      }
+
+      // primaryShare,
+      setValue(
+        "signup_reward_value",
+        ContextCampEditDataAPI?.participant_info?.signup_reward
+      );
+      setValue(
+        "signup_reward_type",
+        ContextCampEditDataAPI?.participant_info?.signup_reward_type
+      );
+      setValue(
+        "login_reward_value",
+        ContextCampEditDataAPI?.participant_info?.login_reward
+      );
+      setValue(
+        "login_reward_type",
+        ContextCampEditDataAPI?.participant_info?.login_reward_type
+      );
+      setValue("refer_reward", ContextCampEditDataAPI?.referral_info?.referrer_reward);
+      setValue("refer_reward_type", ContextCampEditDataAPI?.referral_info?.referrer_reward_type);
+      setValue("invitee_reward", ContextCampEditDataAPI?.referral_info?.invitee_reward);
+      setValue("invitee_reward_type", ContextCampEditDataAPI?.referral_info?.invitee_reward_type);
     }
+    // galaxay
+    ContextCampEditDataAPI?.galaxy_info?.galaxies?.forEach(
+      (galaxy, galaxyIndex) => {
+        setValue(`galaxies.${galaxyIndex}.galaxy_name`, galaxy.galaxy_name);
+        setValue(
+          `galaxies.${galaxyIndex}.highest_reward`,
+          galaxy.highest_reward
+        );
+        setValue(`galaxies.${galaxyIndex}.stars`, galaxy.stars_to_be_achieved);
+        setValue(
+          `galaxies.${galaxyIndex}.total_milestones`,
+          galaxy.total_milestones
+        );
+
+        galaxy?.milestones?.forEach((milestone, milestoneIndex) => {
+          setValue(
+            `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_name`,
+            milestone.milestone_name
+          );
+          setValue(
+            `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_reward`,
+            milestone.milestone_reward
+          );
+          setValue(
+            `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.meteors_required_to_unlock`,
+            milestone.meteors_required_to_unlock
+          );
+          setValue(
+            `galaxies.${galaxyIndex}.milestones.${milestoneIndex}.milestone_description`,
+            milestone.milestone_description
+          );
+        });
+      }
+    );
   }, []);
+
+  //
+  const [activeAccordion, setActiveAccordion] = useState("flush-collapseOne");
+
+  const handleAccordionToggle = (id) => {
+    setActiveAccordion((prev) => (prev === id ? "" : id));
+  };
+
+  const getHeadingText = () => {
+    switch (activeAccordion) {
+      case "flush-collapseOne":
+        return "How It Works";
+      case "flush-collapseTwo":
+        return "Advertisement Banner 1";
+      case "flush-collapseThree":
+        return "Frequently Asked Questions";
+      case "flush-collapseFour":
+        return "Footer Section";
+      default:
+        return "";
+    }
+  };
 
   return (
     <>
@@ -395,9 +553,8 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-border-gray-color ${
-                          !enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
+                        className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
                         disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
@@ -420,10 +577,9 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-blue-color ${
-                          enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
-                        // disabled={!enabledTabs.includes(tab.key)}
+                        className={`font-16 montserrat-semibold text-blue-color ${enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
+                      // disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
                         <IoIosArrowForward className="mx-1 font-20" />
@@ -548,7 +704,7 @@ const CampaignForm = () => {
                                 width: "24px",
                                 height: "24px",
                               }}
-                              //   onClick={handleRemoveLogo}
+                            //   onClick={handleRemoveLogo}
                             >
                               <IoClose size={14} />
                             </button>
@@ -573,7 +729,7 @@ const CampaignForm = () => {
                               id="formFile"
                               {...register("logo")}
                               onChange={(e) => handleCampLogoUpload(e)}
-                              // onChange={(e) => HandleMailImg(e)}
+                            // onChange={(e) => HandleMailImg(e)}
                             />
                           </label>
                           <div className="form-text font-12 montserrat-medium text-gray-color">
@@ -675,7 +831,7 @@ const CampaignForm = () => {
                                 Star
                               </label>
                               <input
-                                type="text"
+                                type="number"
                                 placeholder="Y Stars"
                                 className="form-control login-input rounded-3 border-0 py-2 text-blue-color montserrat-medium"
                                 {...register(`galaxies.${galaxyIndex}.stars`)}
@@ -750,9 +906,8 @@ const CampaignForm = () => {
                               className="milestone-form row"
                             >
                               <hr
-                                className={`${
-                                  milestoneIndex == 0 ? "d-none" : ""
-                                }`}
+                                className={`${milestoneIndex == 0 ? "d-none" : ""
+                                  }`}
                               />
                               <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
                                 Milestone {milestoneIndex + 1}
@@ -804,7 +959,7 @@ const CampaignForm = () => {
                                       required: "Milestone Reward is required",
                                     }
                                   )}
-                                  type="text"
+                                  type="number"
                                   className="form-control login-input border-0"
                                 />
                                 {/* {errors.milestoneReward && (
@@ -834,7 +989,7 @@ const CampaignForm = () => {
                                       },
                                     }
                                   )}
-                                  type="text"
+                                  type="number"
                                   className="form-control login-input border-0"
                                 />
                                 {/* {errors.meteorsRequired && (
@@ -1424,6 +1579,7 @@ const CampaignForm = () => {
               </>
             )}
 
+            {/* Tab4 content Start here */}
             {activeTab === "tab4" && (
               <>
                 <div className="row py-4">
@@ -1776,6 +1932,516 @@ const CampaignForm = () => {
                         </ul>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Tab5 content Start here */}
+            {activeTab === "tab5" && (
+              <>
+                <div className="row py-4">
+                  <div className="col-lg-6">
+                    <div
+                      class="accordion accordion-flush mb-2 border-0"
+                      id="accordionFlushExample"
+                    >
+                      {/* Add How It's Work */}
+                      <div className="accordion-item bg-white box-shadow border-light-gray border-radius-12 mb-3">
+                        <h2 className="accordion-header" id="flush-headingOne">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne"
+                            aria-expanded="true"
+                            aria-controls="flush-collapseOne"
+                            onClick={() =>
+                              handleAccordionToggle("flush-collapseOne")
+                            }
+                          >
+                            How It Works
+                          </button>
+                          <p className="px-3 font-12 montserrat-medium text-blue-color">
+                            {" "}
+                            This will contain all the steps to explain the users
+                            how the program will work. Edit the data according
+                            to your need.
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseOne"
+                          className="accordion-collapse collapse show"
+                          aria-labelledby="flush-headingOne"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          {/* Accordian Body */}
+                          <div className="accordion-body text-blue-color">
+                            <div className="row">
+                              {/* Title 1 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Title 1
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Title 1"
+                                  {...register("title1")}
+                                />
+                              </div>
+
+                              {/* Description 1 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Add Description (25-30 words)
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                  {...register("desc1")}
+                                />
+                              </div>
+
+                              {/* Title 2 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Title 2
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Title 2"
+                                  {...register("title2")}
+                                />
+                              </div>
+
+                              {/* Description 2 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Add Description (25-30 words)
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                  {...register("desc2")}
+                                />
+                              </div>
+
+                              {/* Title 3 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Title 3
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Title 3"
+                                  {...register("title3")}
+                                />
+                              </div>
+
+                              {/* Description 3 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Add Description (25-30 words)
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                  {...register("desc3")}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Add Advertisement Banner 1 */}
+                      <div className="accordion-item bg-white box-shadow border-light-gray border-radius-12 mb-3">
+                        <h2 className="accordion-header" id="flush-headingTwo">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseTwo"
+                            onClick={() =>
+                              handleAccordionToggle("flush-collapseTwo")
+                            }
+                          >
+                            Advertisement Banner 1
+                          </button>
+                          <p className="ps-3 font-12 montserrat-medium text-blue-color">
+                            Customize this card to highlight your latest offer
+                            or referral perk.
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseTwo"
+                          className="accordion-collapse collapse text-blue-color"
+                          aria-labelledby="flush-headingTwo"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div className="accordion-body text-blue-color">
+                            {/* <div className="row">
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Title 1
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Title 1"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Add Description (25-30 words)
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                />
+                              </div>
+
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Button text
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Button text"
+                                />
+                              </div>
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Attach Image/Icon
+                                </label>
+                                <div class="upload-box d-flex text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
+                                  <div class="upload-icon">
+                                    <PiUploadSimpleBold className="font-16 me-3 mb-1" />
+                                  </div>
+                                  Upload
+                                  <input type="file" id="formFile" />
+                                </div>
+                              </div>
+                            </div> */}
+                            <div className="row">
+                              {/* Title 1 */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Title 1
+                                </label>
+                                <input
+                                  type="text"
+                                  {...register("title", {
+                                    required: "Title is required",
+                                  })}
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Title 1"
+                                />
+                                {errors.title && (
+                                  <small className="text-danger">
+                                    {errors.title.message}
+                                  </small>
+                                )}
+                              </div>
+
+                              {/* Description */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Add Description (25-30 words)
+                                </label>
+                                <input
+                                  type="text"
+                                  {...register("description", {
+                                    required: "Description is required",
+                                    minLength: {
+                                      value: 25,
+                                      message: "Minimum 25 characters required",
+                                    },
+                                    maxLength: {
+                                      value: 300,
+                                      message: "Maximum 300 characters allowed",
+                                    },
+                                  })}
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Description"
+                                />
+                                {errors.description && (
+                                  <small className="text-danger">
+                                    {errors.description.message}
+                                  </small>
+                                )}
+                              </div>
+
+                              {/* Button Text */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Button text
+                                </label>
+                                <input
+                                  type="text"
+                                  {...register("button_txt", {
+                                    required: "Button text is required",
+                                  })}
+                                  className="form-control border-0 login-input"
+                                  placeholder="Enter Button text"
+                                />
+                                {errors.button_txt && (
+                                  <small className="text-danger">
+                                    {errors.button_txt.message}
+                                  </small>
+                                )}
+                              </div>
+
+                              {/* File Upload */}
+                              <div className="col-lg-6 mb-3">
+                                <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                  Attach Image/Icon
+                                  <div className="upload-box d-flex flex-wrap text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
+                                    <div className="upload-icon">
+                                      <PiUploadSimpleBold className="font-16 me-3 mb-1" />
+                                    </div>
+                                    Upload
+                                    <input
+                                      type="file"
+                                      className="ms-2"
+                                      {...register("image", {
+                                        required: "Image is required",
+                                      })}
+                                    />
+                                  </div>
+                                </label>
+                                {errors.image && (
+                                  <small className="text-danger">
+                                    {errors.image.message}
+                                  </small>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Add Frequently Asked Questions */}
+                      <div class="accordion-item bg-white box-shadow border-light-gray border-radius-12 mb-3">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseThree"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseThree"
+                            onClick={() =>
+                              handleAccordionToggle("flush-collapseThree")
+                            }
+                          >
+                            Frequently Asked Questions
+                          </button>
+                          <p className="px-3 font-12 montserrat-medium text-blue-color">
+                            Edit questions and answers to keep your users
+                            informed and confident.
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseThree"
+                          className="accordion-collapse collapse text-blue-color"
+                          aria-labelledby="flush-headingThree"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div className="accordion-body text-blue-color">
+                            {faqList.map((item, index) => (
+                              <React.Fragment key={index}>
+                                <div className="col-lg-12 mb-3">
+                                  <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                    Question {index + 1}
+                                  </label>
+                                  <div className="d-flex gap-3 justify-content-between">
+                                    <input
+                                      type="text"
+                                      className="form-control login-input border-0"
+                                      {...register(`faq.${index}.question`)}
+                                    />
+                                    <div className="login-input rounded-circle faq-add-btn d-flex align-items-center justify-content-center">
+                                      <GoPlus className="font-24" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="col-lg-12 mb-3">
+                                  <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                    Answer
+                                  </label>
+                                  <textarea
+                                    className="form-control login-input rounded-3 border-0 py-2"
+                                    rows="3"
+                                    {...register(`faq.${index}.answer`)}
+                                    placeholder="Enter answer"
+                                  ></textarea>
+                                </div>
+
+                                <hr />
+                              </React.Fragment>
+                            ))}
+
+                            <div className="text-start">
+                              <button
+                                type="button"
+                                onClick={handleAddFAQ}
+                                className="border-0 bg-purple-color text-white font-14 montserrat-medium rounded-pill px-4 py-2"
+                              >
+                                + Add Faq
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Add Footer Section */}
+                      <div class="accordion-item bg-white box-shadow border-light-gray border-radius-12">
+                        <h2 class="accordion-header" id="flush-headingFour">
+                          <button
+                            className="accordion-button collapsed font-18 montserrat-semibold text-gray-color border-radius-12 pb-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFour"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseFour"
+                            onClick={() =>
+                              handleAccordionToggle("flush-collapseFour")
+                            }
+                          >
+                            Footer Section
+                          </button>
+                          <p className="px-3 font-12 montserrat-medium text-blue-color">
+                            Edit the content you want to display on your footer
+                            section
+                          </p>
+                        </h2>
+                        <div
+                          id="flush-collapseFour"
+                          className="accordion-collapse collapse text-blue-color"
+                          aria-labelledby="flush-headingFour"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div className="accordion-body text-blue-color">
+                            <div className="col-lg-12 mb-3">
+                              <label className="form-label font-14 montserrat-regular text-border-gray-color">
+                                Select or type the content
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control border-0 login-input"
+                                placeholder="Enter Footer Text"
+                                {...register(`footer_text`)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-lg-6">
+                    {activeAccordion && (
+                      <div className="bg-light p-4 rounded shadow">
+                        <h4 className="text-blue-color font-18 montserrat-semibold">
+                          {getHeadingText()}
+                        </h4>
+                        {activeAccordion == "flush-collapseOne" && <div
+                          className="howitwork-second h-100 d-flex align-items-center justify-content-center"
+                          data-aos="zoom-in-up"
+                        >
+                          <div className="row text-center position-relative inner-row-index">
+                            <div className={`col-4 howitworks-step visible`}>
+                              <h6 className="montserrat-bold font-10 mb-22">
+                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.title1} */}
+                                {title1}
+                              </h6>
+                              <p className="montserrat-regular font-8">
+                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.desc1} */}
+                                {desc1}
+                              </p>
+                            </div>
+
+                            <div
+                              className={`col-4 d-flex align-items-end justify-content-center howitworks-step visible`}
+                            >
+                              <img
+                                src={Planet2}
+                                className="planet-width mb-3 w-25"
+                                alt="Planet 2"
+                              />
+                            </div>
+
+                            <div className={`col-4 howitworks-step visible`}>
+                              <h6 className="montserrat-bold font-10 mb-22">
+                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.title3} */}
+                                {title2}
+                              </h6>
+                              <p className="montserrat-regular font-8">
+                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.desc3} */}
+                                {desc2}
+                              </p>
+                            </div>
+
+                            <div className="col-12 my-4 position-relative">
+                              <div className={`timeline-dot visible`} />
+                              <div className={`timeline-dot visible`} />
+                              <div className={`timeline-dot visible`} />
+                              <div className="timeline-border" />
+                              <img
+                                src={Rocketgif}
+                                alt="Rocket"
+                                className="rocket-gif"
+                              />
+                            </div>
+
+                            <div className={`col-4 howitworks-step visible`}>
+                              <img
+                                src={Planet1}
+                                className="planet-width mt-3 w-25"
+                                alt="Planet 1"
+                              />
+                            </div>
+
+                            <div className={`col-4 howitworks-step visible`}>
+                              <h6 className="montserrat-bold font-10 mb-22">
+                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.title2} */}
+                                {title3}
+                              </h6>
+                              <p className="montserrat-regular font-8">
+                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.desc2} */}
+                                {desc3}
+                              </p>
+                            </div>
+
+                            <div className={`col-4 howitworks-step visible`}>
+                              <img
+                                src={Planet3}
+                                className="planet-width mt-3 w-25"
+                                alt="Planet 3"
+                              />
+                            </div>
+                          </div>
+                        </div>}
+                        {
+                          <div>
+
+                          </div>
+                        }
+                      </div>
+                    )}
                   </div>
                 </div>
               </>
