@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 🔧 Base URL setup
 // const ApiURL = 'https://elite.intelligence-world.com'; // Replace with your actual API base URL
-const ApiURL = 'https://44f8c5203fdc.ngrok-free.app'; // Replace with your actual API base URL
+const ApiURL = 'https://ab2db7f66952.ngrok-free.app'; // Replace with your actual API base URL
 
 
 // 🌐 Axios instance
