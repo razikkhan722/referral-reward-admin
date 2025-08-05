@@ -528,10 +528,27 @@ const CampaignForm = () => {
         <CampaignNavbar />
         <div className="container pt-5">
           <p className="text-blue-color font-24 montserrat-semibold mb-0">
-            Create Campaign
+            {ContextToEditForm ? (
+              <>
+              Edit Campaign
+              </>
+            ):(
+              <>
+              Create Campaign
+              </>
+            )}
+            
           </p>
           <p className="text-blue-color font-12 montserrat-medium">
-            Start a new campaign by filling out the details below.
+            {ContextToEditForm ?(
+              <>
+              Edit the fields below to update your campaign
+              </>
+            ):(
+              <>
+              Start a new campaign by filling out the details below.
+              </>
+            )}
           </p>
         </div>
 
