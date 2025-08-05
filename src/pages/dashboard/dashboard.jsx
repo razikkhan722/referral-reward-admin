@@ -514,7 +514,6 @@ const Dashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Refers & Acceptances");
   const [ErrorTableData, setErrorTableData] = useState();
   const [PrtcpntTableData, setPrtcpntTableData] = useState();
-  console.log('PrtcpntTableData: ', PrtcpntTableData);
   const [DashStatData, setDashStatData] = useState();
   const [RwdHstryTable, setRwdHstryTable] = useState();
   const [ReferralData, setReferralData] = useState();
