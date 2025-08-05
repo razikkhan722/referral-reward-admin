@@ -855,12 +855,20 @@ const CampaignForm = () => {
                                 className="form-select login-input text-border-gray-color"
                                 defaultValue=""
                               >
-                                <option value="" disabled>
+                                <option value=""  >
                                   Choose the numbers
                                 </option>
-                                <option value="1">One</option>
+                                {/* <option value="1">One</option>
                                 <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option value="3">Three</option> */}
+                                {[...Array(8)].map((_, i) => {
+                                  const value = i + 3; // 3 to 10
+                                  return (
+                                    <option key={value} value={value}>
+                                      {value}
+                                    </option>
+                                  );
+                                })}
                               </select>
                             </div>
                             {/* Submit Button */}
