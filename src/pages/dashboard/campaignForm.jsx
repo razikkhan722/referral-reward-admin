@@ -29,6 +29,9 @@ import { AiFillInstagram } from "react-icons/ai";
 import { UserContext } from "../../utils/UseContext/useContext";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import Planet1 from "../../assets/images/campForm/HIW-planet-1.svg";
 import Planet2 from "../../assets/images/campForm/HIW-planet-2.svg";
@@ -86,6 +89,14 @@ const CampaignForm = () => {
     "Telegram",
     "Twitter",
   ]);
+
+    const AddbanerSlider = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
 
   // =========================
   // Show Values In Preview
@@ -2307,86 +2318,98 @@ const CampaignForm = () => {
                         <h4 className="text-blue-color font-18 montserrat-semibold">
                           {getHeadingText()}
                         </h4>
-                        { activeAccordion == "flush-collapseOne"  && <div
-                          className="howitwork-second h-100 d-flex align-items-center justify-content-center"
-                          data-aos="zoom-in-up"
-                        >
-                          <div className="row text-center position-relative inner-row-index">
-                            <div className={`col-4 howitworks-step visible`}>
-                              <h6 className="montserrat-bold font-10 mb-22">
-                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.title1} */}
-                                {title1}
-                              </h6>
-                              <p className="montserrat-regular font-8">
-                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.desc1} */}
-                                {desc1}
-                              </p>
-                            </div>
+                        {/* {activeAccordion == "flush-collapseOne" && (
+                          <div
+                            className="howitwork-second h-100 d-flex align-items-center justify-content-center"
+                            data-aos="zoom-in-up"
+                          >
+                            <div className="row text-center position-relative inner-row-index">
+                              <div className={`col-4 howitworks-step visible`}>
+                                <h6 className="montserrat-bold font-10 mb-22">
+                                  {title1}
+                                </h6>
+                                <p className="montserrat-regular font-8">
+                                  {desc1}
+                                </p>
+                              </div>
 
-                            <div
-                              className={`col-4 d-flex align-items-end justify-content-center howitworks-step visible`}
-                            >
-                              <img
-                                src={Planet2}
-                                className="planet-width mb-3 w-25"
-                                alt="Planet 2"
-                              />
-                            </div>
+                              <div
+                                className={`col-4 d-flex align-items-end justify-content-center howitworks-step visible`}
+                              >
+                                <img
+                                  src={Planet2}
+                                  className="planet-width mb-3 w-25"
+                                  alt="Planet 2"
+                                />
+                              </div>
 
-                            <div className={`col-4 howitworks-step visible`}>
-                              <h6 className="montserrat-bold font-10 mb-22">
-                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.title3} */}
-                                {title2}
-                              </h6>
-                              <p className="montserrat-regular font-8">
-                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.desc3} */}
-                                {desc2}
-                              </p>
-                            </div>
+                              <div className={`col-4 howitworks-step visible`}>
+                                <h6 className="montserrat-bold font-10 mb-22">
+                                  {title2}
+                                </h6>
+                                <p className="montserrat-regular font-8">
+                                  {desc2}
+                                </p>
+                              </div>
 
-                            <div className="col-12 my-4 position-relative">
-                              <div className={`timeline-dot visible`} />
-                              <div className={`timeline-dot visible`} />
-                              <div className={`timeline-dot visible`} />
-                              <div className="timeline-border" />
-                              <img
-                                src={Rocketgif}
-                                alt="Rocket"
-                                className="rocket-gif"
-                              />
-                            </div>
+                              <div className="col-12 my-4 position-relative">
+                                <div className={`timeline-dot visible`} />
+                                <div className={`timeline-dot visible`} />
+                                <div className={`timeline-dot visible`} />
+                                <div className="timeline-border" />
+                                <img
+                                  src={Rocketgif}
+                                  alt="Rocket"
+                                  className="rocket-gif"
+                                />
+                              </div>
 
-                            <div className={`col-4 howitworks-step visible`}>
-                              <img
-                                src={Planet1}
-                                className="planet-width mt-3 w-25"
-                                alt="Planet 1"
-                              />
-                            </div>
+                              <div className={`col-4 howitworks-step visible`}>
+                                <img
+                                  src={Planet1}
+                                  className="planet-width mt-3 w-25"
+                                  alt="Planet 1"
+                                />
+                              </div>
 
-                            <div className={`col-4 howitworks-step visible`}>
-                              <h6 className="montserrat-bold font-10 mb-22">
-                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.title2} */}
-                                {title3}
-                              </h6>
-                              <p className="montserrat-regular font-8">
-                                {/* {ContextFaqsDataAPI?.how_it_works?.[0]?.desc2} */}
-                                {desc3}
-                              </p>
-                            </div>
+                              <div className={`col-4 howitworks-step visible`}>
+                                <h6 className="montserrat-bold font-10 mb-22">
+                                  {title3}
+                                </h6>
+                                <p className="montserrat-regular font-8">
+                                  {desc3}
+                                </p>
+                              </div>
 
-                            <div className={`col-4 howitworks-step visible`}>
-                              <img
-                                src={Planet3}
-                                className="planet-width mt-3 w-25"
-                                alt="Planet 3"
-                              />
+                              <div className={`col-4 howitworks-step visible`}>
+                                <img
+                                  src={Planet3}
+                                  className="planet-width mt-3 w-25"
+                                  alt="Planet 3"
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>}
+                        )} */}
                         {
                           <div>
-                            
+                            <div className="slider-container">
+                              <Slider {...AddbanerSlider}>
+                                <div className="add-card d-flex justify-content-between" style={{backgroundImage:Rocketgif}}>
+                                <div className="">
+                                  <h2>heelo</h2>
+                                  <p>descr</p>
+                                  <button>
+                                    link
+                                  </button>
+                                </div>
+                                <div className="">
+                                  <img className="w-25" src={Rocketgif} alt="" />
+                                </div>
+                                </div>
+                                
+                              </Slider>
+                            </div>
                           </div>
                         }
                       </div>
