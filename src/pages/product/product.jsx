@@ -482,7 +482,7 @@ const Product = () => {
                                                     </div>
 
                                                     <div className='col-lg-3 mb-3'>
-                                                        <label className="form-label font-14 montserrat-regular text-border-gray-color">Upload Image</label>
+                                                        <label className="form-label font-14 montserrat-regular text-border-gray-color" htmlFor={`image_${index}`}>Upload Image</label>
                                                         <div className="upload-box d-flex justify-content-center flex-column text-center rounded-3 form-control bg-light-white-3-color border-light-gray px-4 py-4 text-blue-color font-12 montserrat-medium">
                                                             <div className="upload-icon mx-auto text-center">
                                                                 <PiUploadSimpleBold className='font-16 mb-2' />

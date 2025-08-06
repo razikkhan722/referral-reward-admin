@@ -3,6 +3,8 @@ import CampaignNavbar from "../../components/campaignNavbar";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { Dropdown, Nav } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import moment from "moment";
+
 import {
   IoClose,
   IoLogoFacebook,
@@ -43,7 +45,7 @@ const tabs = [
   { key: "tab2", label: "Create Galaxy" },
   { key: "tab3", label: "Refer" },
   { key: "tab4", label: "Rewards" },
-  { key: "tab5", label: "Miscellaneous" },
+  // { key: "tab5", label: "Miscellaneous" },
 ];
 // Add Icons
 const platformIcons = {
@@ -67,6 +69,8 @@ const CampaignForm = () => {
     trigger,
   } = useForm();
   const { ContextToEditForm, ContextCampEditDataAPI } = useContext(UserContext);
+  console.log('ContextCampEditDataAPI: ', ContextCampEditDataAPI);
+  console.log('ContextToEditForm: ', ContextToEditForm);
 
   const GetAdminUid = sessionStorage.getItem("Auth");
   const NewMilestone = watch("addnewmilestone");
@@ -230,7 +234,7 @@ const CampaignForm = () => {
       setPlatforms([...platforms, platform]);
     }
   };
-  const onAddGalaxySubmit = (data) => {};
+  const onAddGalaxySubmit = (data) => { };
 
   const onSubmit = async (data) => {
     console.log("data: ", data);
@@ -319,16 +323,38 @@ const CampaignForm = () => {
         ],
       };
       console.log("payload: ", payload);
-      const response = await postData("/admin/create-campaign", payload);
+
+      let response;
+      if (ContextToEditForm) {
+
+        const program_id = ContextCampEditDataAPI?.campaign_info?.program_id;
+
+        // Update campaign logic
+        const updateUrl = `/admin/update-campaign/${program_id}`;
+        response = await postData(updateUrl, payload);
+      } else {
+        // Create campaign logic
+        response = await postData("/admin/create-campaign", payload);
+      }
+
       console.log("response: ", response);
-      // if (response?.success) {
-      //   navigate("/");
-      // }
-      // const Decrpt = await DecryptFunction(response?.data);
-      // toastSuccess(response?.message);
+      if (response?.success) {
+        toastSuccess(response?.message);
+        navigate("/");
+      }
     } catch (error) {
       toastError(error?.message);
     }
+    //   const response = await postData("/admin/create-campaign", payload);
+    //   console.log("response: ", response);
+    //   if (response?.success) {
+    //     navigate("/");
+    //   }
+    //   // const Decrpt = await DecryptFunction(response?.data);
+    //   toastSuccess(response?.message);
+    // } catch (error) {
+    //   toastError(error?.message);
+    // }
   };
 
   const handleUrlBlur = (e) => {
@@ -347,88 +373,117 @@ const CampaignForm = () => {
     setFaqList([...faqList, { question: "", answer: "" }]);
   };
 
+
+  // Set Edit Form Data
   useEffect(() => {
     if (ContextToEditForm) {
       console.log("ContextToEditForm: ", ContextToEditForm);
       console.log("ContextCampEditDataAPI: ", ContextCampEditDataAPI);
-      setValue("name", ContextCampEditDataAPI?.campaign?.program_name);
-      setValue("url", ContextCampEditDataAPI?.campaign?.base_url);
+      // Set Camp Details 
+      setValue("name", ContextCampEditDataAPI?.campaign_info?.program_name);
+      setValue("url", ContextCampEditDataAPI?.campaign_info?.base_url);
       // CampLogo,ContextCampEditDataAPI?.campaign?.image);
       // setValue("galaxies", dumy?.galaxies);
 
+      // Set Conversion rate Data
       setValue(
         "meteor",
-        ContextCampEditDataAPI?.referral_reward?.conversion_rates
+        ContextCampEditDataAPI?.referral_info?.conversion_rates
           ?.meteors_to_stars
       );
       setValue(
         "y_star",
-        ContextCampEditDataAPI?.referral_reward?.conversion_rates?.stars
+        ContextCampEditDataAPI?.referral_info?.conversion_rates?.stars
       );
       setValue(
         "star",
-        ContextCampEditDataAPI?.referral_reward?.conversion_rates
+        ContextCampEditDataAPI?.referral_info?.conversion_rates
           ?.stars_to_currency
       );
       setValue(
         "point",
-        ContextCampEditDataAPI?.referral_reward?.conversion_rates?.currency
+        ContextCampEditDataAPI?.referral_info?.conversion_rates?.currency
       );
 
-      // setValue("start_date", dumy?.start_date);
-      // setValue("end_date", dumy?.end_date);
-      // setValue("invite_link", dumy?.invite_link);
+      // Set Special Link Data
+      setValue("start_date", moment(ContextCampEditDataAPI?.link_info?.start_date).format("YYYY-MM-DD"));
+      setValue("end_date", moment(ContextCampEditDataAPI?.link_info?.end_date).format("YYYY-MM-DD"));
+      setValue("invite_link", ContextCampEditDataAPI?.link_info?.invitation_link);
       setValue(
         "referrer_reward_type",
-        ContextCampEditDataAPI?.referral_reward?.referrer_reward_type
+        ContextCampEditDataAPI?.link_info?.referrer_reward_type
       );
-      // setValue("referrer_reward_value", dumy?.referrer_reward);
-      // setValue("referee_reward_type", dumy?.referee_reward_type);
-      // setValue("referee_reward_value", dumy?.referee_reward_value);
-      // setValue("reward_condition", dumy?.reward_condition);
-      // setValue("success_reward", dumy?.success_reward);
+      setValue("referrer_reward_value", ContextCampEditDataAPI?.link_info?.referee_reward_value);
+      setValue("referee_reward_type", ContextCampEditDataAPI?.link_info?.referee_reward_type);
+      setValue("referee_reward_value", ContextCampEditDataAPI?.link_info?.referee_reward_value);
+      setValue("reward_condition", ContextCampEditDataAPI?.link_info?.reward_condition);
+      setValue("success_reward", ContextCampEditDataAPI?.link_info?.success_reward);
 
-      // setValue("ln", dumy?.ln);
+      // Set Social icons Data
+      // setValue("ln", ContextCampEditDataAPI?.sharing_apps_info?.platform);
 
-      // setValue("tw", dumy?.tw);
+      // setValue("tw", ContextCampEditDataAPI?.sharing_apps_info?.platform);
 
-      // setValue("messagewithinvite", dumy?.messagewithinvite);
+      // // setValue("messagewithinvite", ContextCampEditDataAPI?.sharing_apps_info?.messagewithinvite);
 
-      // setValue("tl", dumy?.tl);
+      // setValue("tl", ContextCampEditDataAPI?.sharing_apps_info?.platform);
 
-      // setValue("fb", dumy?.fb);
+      // setValue("fb", ContextCampEditDataAPI?.sharing_apps_info?.platform);
+
+      const sharingInfo = ContextCampEditDataAPI?.sharing_apps_info || [];
+
+      // Platform name to field key mapping
+      const fieldMap = {
+        facebook: "fb",
+        telegram: "tl",
+        linkedIn: "ln",
+        twitter: "tw",
+      };
+
+      // Set each platform's message to the right form field
+      sharingInfo.forEach(item => {
+        const fieldName = fieldMap[item.platform];
+        if (fieldName) {
+          setValue(fieldName, item.message);
+        }
+      });
+
+      // For Whatsapp Text
+      if (sharingInfo.length > 0) {
+        setValue("messagewithinvite", sharingInfo[0].message);
+      }
 
       // primaryShare,
       setValue(
         "signup_reward_value",
-        ContextCampEditDataAPI?.referral_reward?.signup_reward
+        ContextCampEditDataAPI?.participant_info?.signup_reward
       );
       setValue(
         "signup_reward_type",
-        ContextCampEditDataAPI?.referral_reward?.signup_reward_type
+        ContextCampEditDataAPI?.participant_info?.signup_reward_type
       );
       setValue(
         "login_reward_value",
-        ContextCampEditDataAPI?.referral_reward?.login_reward
+        ContextCampEditDataAPI?.participant_info?.login_reward
       );
       setValue(
         "login_reward_type",
-        ContextCampEditDataAPI?.referral_reward?.login_reward_type
+        ContextCampEditDataAPI?.participant_info?.login_reward_type
       );
-      // setValue("refer_reward", dumy?.referrer_reward);
-      // setValue("refer_reward_type", dumy?.refer_reward_type);
-      // setValue("invitee_reward", dumy?.invitee_reward);
-      // setValue("invitee_reward_type", dumy?.invitee_reward_type);
+      setValue("refer_reward", ContextCampEditDataAPI?.referral_info?.referrer_reward);
+      setValue("refer_reward_type", ContextCampEditDataAPI?.referral_info?.referrer_reward_type);
+      setValue("invitee_reward", ContextCampEditDataAPI?.referral_info?.invitee_reward);
+      setValue("invitee_reward_type", ContextCampEditDataAPI?.referral_info?.invitee_reward_type);
     }
     // galaxay
-    ContextCampEditDataAPI?.galaxy_data?.galaxies?.forEach(
+    ContextCampEditDataAPI?.galaxy_info?.galaxies?.forEach(
       (galaxy, galaxyIndex) => {
         setValue(`galaxies.${galaxyIndex}.galaxy_name`, galaxy.galaxy_name);
         setValue(
           `galaxies.${galaxyIndex}.highest_reward`,
           galaxy.highest_reward
         );
-        setValue(`galaxies.${galaxyIndex}.stars`, galaxy.stars);
+        setValue(`galaxies.${galaxyIndex}.stars`, galaxy.stars_to_be_achieved);
         setValue(
           `galaxies.${galaxyIndex}.total_milestones`,
           galaxy.total_milestones
@@ -485,10 +540,27 @@ const CampaignForm = () => {
         <CampaignNavbar />
         <div className="container pt-5">
           <p className="text-blue-color font-24 montserrat-semibold mb-0">
-            Create Campaign
+            {ContextToEditForm ? (
+              <>
+              Edit Campaign
+              </>
+            ):(
+              <>
+              Create Campaign
+              </>
+            )}
+            
           </p>
           <p className="text-blue-color font-12 montserrat-medium">
-            Start a new campaign by filling out the details below.
+            {ContextToEditForm ?(
+              <>
+              Edit the fields below to update your campaign
+              </>
+            ):(
+              <>
+              Start a new campaign by filling out the details below.
+              </>
+            )}
           </p>
         </div>
 
@@ -510,9 +582,8 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-border-gray-color ${
-                          !enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
+                        className={`font-16 montserrat-semibold text-border-gray-color ${!enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
                         disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
@@ -535,10 +606,9 @@ const CampaignForm = () => {
                     <Nav.Item key={tab.key}>
                       <Nav.Link
                         eventKey={tab.key}
-                        className={`font-16 montserrat-semibold text-blue-color ${
-                          enabledTabs.includes(tab.key) ? "disabled-tab" : ""
-                        }`}
-                        // disabled={!enabledTabs.includes(tab.key)}
+                        className={`font-16 montserrat-semibold text-blue-color ${enabledTabs.includes(tab.key) ? "disabled-tab" : ""
+                          }`}
+                      // disabled={!enabledTabs.includes(tab.key)}
                       >
                         {tab.label}{" "}
                         <IoIosArrowForward className="mx-1 font-20" />
@@ -550,7 +620,7 @@ const CampaignForm = () => {
             </div>
             {!ContextToEditForm ? (
               <>
-                {activeTab === "tab5" ? (
+                {activeTab === "tab4" ? (
                   <button
                     // onClick={goToNextTab}
                     type="submit"
@@ -663,7 +733,7 @@ const CampaignForm = () => {
                                 width: "24px",
                                 height: "24px",
                               }}
-                              //   onClick={handleRemoveLogo}
+                            //   onClick={handleRemoveLogo}
                             >
                               <IoClose size={14} />
                             </button>
@@ -688,7 +758,7 @@ const CampaignForm = () => {
                               id="formFile"
                               {...register("logo")}
                               onChange={(e) => handleCampLogoUpload(e)}
-                              // onChange={(e) => HandleMailImg(e)}
+                            // onChange={(e) => HandleMailImg(e)}
                             />
                           </label>
                           <div className="form-text font-12 montserrat-medium text-gray-color">
@@ -814,12 +884,20 @@ const CampaignForm = () => {
                                 className="form-select login-input text-border-gray-color"
                                 defaultValue=""
                               >
-                                <option value="" disabled>
+                                <option value=""  >
                                   Choose the numbers
                                 </option>
-                                <option value="1">One</option>
+                                {/* <option value="1">One</option>
                                 <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option value="3">Three</option> */}
+                                {[...Array(8)].map((_, i) => {
+                                  const value = i + 3; // 3 to 10
+                                  return (
+                                    <option key={value} value={value}>
+                                      {value}
+                                    </option>
+                                  );
+                                })}
                               </select>
                             </div>
                             {/* Submit Button */}
@@ -865,9 +943,8 @@ const CampaignForm = () => {
                               className="milestone-form row"
                             >
                               <hr
-                                className={`${
-                                  milestoneIndex == 0 ? "d-none" : ""
-                                }`}
+                                className={`${milestoneIndex == 0 ? "d-none" : ""
+                                  }`}
                               />
                               <p className="font-18 montserrat-semibold text-border-gray-color mb-0">
                                 Milestone {milestoneIndex + 1}
@@ -2167,7 +2244,7 @@ const CampaignForm = () => {
                               <div className="col-lg-6 mb-3">
                                 <label className="form-label font-14 montserrat-regular text-border-gray-color">
                                   Attach Image/Icon
-                                  <div className="upload-box d-flex text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
+                                  <div className="upload-box d-flex flex-wrap text-center login-input rounded-2 form-control border-0 py-2 text-blue-color font-12 montserrat-medium">
                                     <div className="upload-icon">
                                       <PiUploadSimpleBold className="font-16 me-3 mb-1" />
                                     </div>
@@ -2267,7 +2344,7 @@ const CampaignForm = () => {
                         </div>
                       </div>
 
-                      {/* Add Frequently Asked Questions */}
+                      {/* Add Footer Section */}
                       <div class="accordion-item bg-white box-shadow border-light-gray border-radius-12">
                         <h2 class="accordion-header" id="flush-headingFour">
                           <button

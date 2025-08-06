@@ -783,6 +783,8 @@ const Dashboard = () => {
         "/admin/dashboard/participant-table",
         payload
       );
+        console.log('prtcpResp: ', prtcpResp);
+
       if (prtcpResp?.data) {
         const Decrpt = await DecryptFunction(prtcpResp?.data);
         setPrtcpntTableData(Decrpt);
@@ -798,7 +800,7 @@ const Dashboard = () => {
       if (rewardHistory?.top_referrers) {
         setEarnerData(rewardHistory?.top_referrers)
       }
-    
+
     } catch (error) {
       console.log("error: ", error);
     }
@@ -1786,48 +1788,61 @@ const Dashboard = () => {
               <p className="font-24 montserrat-medium text-blue-color">
                 Top 5 Referrers
               </p>
-              <div className="row justify-content-start justify-content-lg-around g-2">
-                {ReferralData?.map((item, index) => (
-                  <div
-                    key={index}
-                    className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
-                  >
-                    <div className="reffer-card bg-white border-bright-gray border-radius-12 text-center px-2 d-flex flex-column align-items-center justify-content-center py-3 h-100">
-                      <img src={User} className="mb-3" alt="User" />
-                      <p className="font-14 montserrat-semibold text-blue-color mb-0">
-                        {item?.name}
-                      </p>
-                      <p className="text-blue-color w-100 font-12 montserrat-medium text-truncate mb-1">{item?.email}</p>
-                      <p className="font-16 montserrat-semibold text-blue-color mb-0">
-                        {item?.total_meteors_earned} Referrals
-                      </p>
-                    </div>
+              {ReferralData?.length > 0 ? (
+                <>
+                  <div className="row justify-content-start g-2">
+                    {ReferralData?.map((item, index) => (
+                      <div
+                        key={index}
+                        className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
+                      >
+                        <div className="reffer-card bg-white border-bright-gray border-radius-12 text-center px-2 d-flex flex-column align-items-center justify-content-center py-3 h-100">
+                          <img src={User} className="mb-3" alt="User" />
+                          <p className="font-14 montserrat-semibold text-blue-color mb-0">
+                            {item?.name}
+                          </p>
+                          <p className="text-blue-color w-100 font-12 montserrat-medium text-truncate mb-1">{item?.email}</p>
+                          <p className="font-16 montserrat-semibold text-blue-color mb-0">
+                            {item?.total_meteors_earned} Referrals
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+
+                </>
+              ) : (
+                <p className="text-muted font-18 mt-3 text-center">No referrals Data found.</p>
+              )}
 
               <p className="font-24 montserrat-medium text-blue-color">
                 Top 5 Earners
               </p>
-              <div className="row justify-content-start justify-content-lg-around g-2">
-                {EarnerData?.map((item, index) => (
-                  <div
-                    key={index}
-                    className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
-                  >
-                    <div className="reffer-card border-bright-gray bg-white border-radius-12 text-center d-flex px-2 flex-column align-items-center justify-content-center py-3 h-100">
-                      <img src={User} className="mb-3" alt="User" />
-                      <p className="font-14 montserrat-semibold text-blue-color mb-0">
-                        {item?.name}
-                      </p>
-                      <p className="text-blue-color w-100 font-12 montserrat-medium text-truncate mb-1">{item?.email}</p>
-                      <p className="font-16 montserrat-semibold text-blue-color mb-0">
-                        {item?.total_referrals} Stars
-                      </p>
-                    </div>
+              {EarnerData?.length > 0 ? (
+                <>
+                  <div className="row justify-content-start g-2">
+                    {EarnerData?.map((item, index) => (
+                      <div
+                        key={index}
+                        className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 d-flex align-items-center justify-content-center"
+                      >
+                        <div className="reffer-card border-bright-gray bg-white border-radius-12 text-center d-flex px-2 flex-column align-items-center justify-content-center py-3 h-100">
+                          <img src={User} className="mb-3" alt="User" />
+                          <p className="font-14 montserrat-semibold text-blue-color mb-0">
+                            {item?.name}
+                          </p>
+                          <p className="text-blue-color w-100 font-12 montserrat-medium text-truncate mb-1">{item?.email}</p>
+                          <p className="font-16 montserrat-semibold text-blue-color mb-0">
+                            {item?.total_referrals} Stars
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </>
+              ) : (
+                <p className="text-muted font-18 mt-3 text-center">No Earners Data found.</p>
+              )}
             </div>
             <div className="col-lg-7">
               <div className="bg-light-white-color border-bright-gray border-radius-12 px-3 py-1">
