@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -33,10 +33,18 @@ const CampaignNavbar = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const { setLogo, setContextToEditForm , setAuthLocal } = useContext(UserContext);
+    const { setLogo, setContextToEditForm, setAuthLocal } = useContext(UserContext);
 
     const isMyCampaignsActive = location.pathname === "/";
     const isCreateCampaignActive = location.pathname === "/campaignform";
+
+    const [passwords, setPasswords] = useState({
+        newPassword: '',
+        rePassword: '',
+    });
+    const handlePasswordChange = (e) => {
+        setPasswords({ ...passwords, [e.target.name]: e.target.value });
+    };
 
 
     // const HandleImgUpld =()=>{}
@@ -58,15 +66,17 @@ const CampaignNavbar = () => {
             const getAuth = await postData("/admin/auths", {
                 admin_uid: GetAdminUid,
             });
+            console.log('getAuth: ', getAuth);
             const payload = {
                 admin_uid: GetAdminUid,
-                mode: getAuth?.access_token,
-                log_alt: getAuth?.session_id,
+                mode: getAuth?.mode,
+                log_alt: getAuth?.log_alt,
                 username: data?.name,
                 email: data?.email,
                 mobile_number: data?.mobile,
                 image: image,
-                password: data?.password,
+                password: data?.currentPassword,
+                new_password: data?.newPassword,
             };
             const response = await postData("/admin/edit-profile", payload);
             if (response?.success) {
@@ -78,12 +88,12 @@ const CampaignNavbar = () => {
     };
 
     // ------Logout Functionailty
-  const HandleLogout = () => {
-    sessionStorage.removeItem('Auth');
-    setAuthLocal('');
-    console.log('check auth');
-    navigate('/login');
-  };
+    const HandleLogout = () => {
+        sessionStorage.removeItem('Auth');
+        setAuthLocal('');
+        console.log('check auth');
+        navigate('/login');
+    };
     return (
         <>
             <Navbar
@@ -117,8 +127,8 @@ const CampaignNavbar = () => {
                                     icon={<GoPlus className="font-18" />}
                                     onClick={() => setContextToEditForm(false)}
                                     btn_class={`px-5 ${isCreateCampaignActive
-                                            ? "bg-blue-color text-white border-0"
-                                            : "bg-transparent border-blue text-blue-color"
+                                        ? "bg-blue-color text-white border-0"
+                                        : "bg-transparent border-blue text-blue-color"
                                         }`}
                                 />
                             </NavLink>
@@ -195,7 +205,7 @@ const CampaignNavbar = () => {
                                         <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                                             <HiOutlineLogout className="font-20 text-border-gray-color" />
                                             <span className="text-blue-color font-16 montserrat-medium"
-                                            onClick={() => HandleLogout()}
+                                                onClick={() => HandleLogout()}
                                             >
                                                 Logout
                                             </span>
@@ -289,7 +299,7 @@ const CampaignNavbar = () => {
                 <small className="text-danger">{errors.email.message}</small>
               )} */}
                         </div>
-                        <div className="mb-3 col-lg-12">
+                        {/* <div className="mb-3 col-lg-12">
                             <label className="form-label text-blue-color font-12 montserrat-semibold">
                                 Password
                             </label>
@@ -307,6 +317,66 @@ const CampaignNavbar = () => {
                             />
                             {errors.password && (
                                 <small className="text-danger">{errors.password.message}</small>
+                            )}
+                        </div> */}
+
+                        <hr />
+                        <div className="mb-3 col-lg-12">
+                            <label className="form-label text-blue-color font-12 montserrat-semibold">
+                                Existing Password
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="Current Password"
+                                className="form-control font-14 login-input border-0 text-blue-color montserrat-medium"
+                                {...register('currentPassword')}
+                            />
+                            {errors.currentPassword && (
+                                <p className="text-danger">
+                                    {errors.currentPassword.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Change Password Section */}
+                        <div className="mb-3 col-lg-12">
+                            <label className="form-label text-blue-color font-12 montserrat-semibold">
+                                Change Password
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="New Password"
+                                className="form-control font-14 login-input border-0 text-blue-color montserrat-medium mb-4"
+                                {...register('newPassword', {
+                                    minLength: { value: 6, message: 'Minimum 6 characters' },
+                                })}
+                                value={passwords.newPassword}
+                                onChange={handlePasswordChange}
+                            />
+                            {errors.newPassword && (
+                                <p className="text-danger">
+                                    {errors.newPassword.message}
+                                </p>
+                            )}
+                            <label className="form-label text-blue-color font-12 montserrat-semibold">
+                                Re-enter Password
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="Re-enter Password"
+                                className="form-control font-14 login-input border-0 text-blue-color montserrat-medium"
+                                {...register('rePassword', {
+                                    validate: (value) =>
+                                        value === passwords.newPassword ||
+                                        'Passwords do not match',
+                                })}
+                                value={passwords.rePassword}
+                                onChange={handlePasswordChange}
+                            />
+                            {errors.rePassword && (
+                                <p className="text-danger">
+                                    {errors.rePassword.message}
+                                </p>
                             )}
                         </div>
 

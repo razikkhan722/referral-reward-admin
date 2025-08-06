@@ -551,6 +551,7 @@ import { postData } from "../../services/api";
 import { DecryptFunction } from "../../utils/decryptFunction";
 import { toastError, toastSuccess } from "../../utils/toster";
 import { UserContext } from "../../utils/UseContext/useContext";
+import { useNavigate } from 'react-router-dom';
 
 // Images
 import Logo1 from "../../assets/images/Dashboard-img/group 1.svg";
@@ -563,8 +564,9 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 const CampaignDashboard = () => {
   const [activeTab, setActiveTab] = useState("My Campaigns");
   const [campList, setcampList] = useState();
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
   console.log('campList: ', campList);
-
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -638,7 +640,7 @@ const CampaignDashboard = () => {
       const response = await postData("/admin/list-all-campaigns", payload);
       console.log('response:-list ', response);
       setcampList(response?.all_campaigns);
-   
+
       // const Decrpt = await DecryptFunction(response?.data);
     } catch (error) {
       // toastError();
@@ -648,6 +650,7 @@ const CampaignDashboard = () => {
 
   // Handle Camp Form Edit 
   const HandleCampEdit = async (prid) => {
+    setIsBtnLoading(prid);
     try {
       const getAuth = await postData("/admin/auths", {
         admin_uid: GetAdminUid,
@@ -662,6 +665,8 @@ const CampaignDashboard = () => {
       if (response?.success) {
         setContextCampEditDataAPI(response)
         setContextToEditForm(true)
+
+        navigate("/campaignform");
       }
     } catch (error) {
       console.log('error: ', error);
@@ -687,7 +692,7 @@ const CampaignDashboard = () => {
         toastSuccess(response?.message);
 
         // Remove from state
-     setcampList((prev) => prev.filter((item) => item.program_id !== prid));
+        setcampList((prev) => prev.filter((item) => item.program_id !== prid));
       }
     } catch (error) {
       console.log('error: ', error);
@@ -769,16 +774,25 @@ const CampaignDashboard = () => {
                                     Dashboard
                                   </button>
                                 </NavLink>
-                                <NavLink to={"/campaignform"}>
+                                {/* <NavLink to={"/campaignform"}>
                                   <button
                                     className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2"
                                     onClick={() => HandleCampEdit(campaign?.program_id)}
                                   >
                                     Edit
                                   </button>
-                                </NavLink>
+                                </NavLink> */}
+                                <button
+                                  className="border-purple text-purple-color font-14 montserrat-medium rounded-pill bg-transparent px-4 py-2 d-flex align-items-center gap-2"
+                                  onClick={() => HandleCampEdit(campaign?.program_id)}
+                                  disabled={isBtnLoading === campaign?.program_id}
+                                >
+                                  {isBtnLoading === campaign?.program_id ? "Loading..." : "Edit"}
+                                </button>
+
+
                                 {/* </div> */}
-                                <div data-bs-toggle="modal"  data-bs-target={`#deleteModal-${campaign?.program_id}`} style={{ cursor: "pointer" }}>
+                                <div data-bs-toggle="modal" data-bs-target={`#deleteModal-${campaign?.program_id}`} style={{ cursor: "pointer" }}>
                                   <RiDeleteBin5Fill className="font-24 text-danger mt-2" />
                                 </div>
                               </div>
