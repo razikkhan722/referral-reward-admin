@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-const DonutChart = () => {
+const DonutChart = ({grpData}) => {
+    // (Number(grpData?.part9)/grpData?.part13 *100)/grpData?.part13
+    // console.log('(Number(grpData?.part9)/grpData?.part13 *100)/grpData?.part13: ', (Number(grpData?.part9) * 100)/grpData?.part13);
     // console.log('DonutChartData: ', DonutChartData);
 
     //   const weeklyData = DonutChartData?.week?.data || [];
@@ -15,6 +17,7 @@ const DonutChart = () => {
     const chartRef = useRef(null);
 
     useEffect(() => {
+        if (!grpData) return;
         if (chartRef.current) {
             const chart = Highcharts.chart(chartRef.current, {
                 chart: {
@@ -32,9 +35,9 @@ const DonutChart = () => {
                             if (!customLabel) {
                                 customLabel = chart.options.chart.custom.label =
                                     chart.renderer.label(
-                                        `<div style="text-align: center;">
-                                    <span style="font-size: 22px; font-weight: bold;">96,715,28</span><br/>
-                                    <span style="font-size: 14px; color: grey;">weekly visits</span>
+                                        `<div className="text-center" style="text-align: center; text-align: center;">
+                                        <span style="font-size: 28px;font-weight: bold; ">${grpData?.part13}</span>
+                                        <span className="text-center" style="font-size: 22px; font-weight: bold ; text-align:center;"></span><br/>
                                 </div>`, 0,
                                         0,
                                         'html'
@@ -87,21 +90,21 @@ const DonutChart = () => {
                     colorByPoint: true,
                     data: [{
                         name: 'Purchases',
-                        y: 12.6
+                        y: Number(grpData?.part9)
                     }, {
                         name: 'Signups',
-                        y: 20.6
+                        y: Number(grpData?.part10)
                     }, {
                         name: 'Milestones',
-                        y: 12.0
+                        y: Number(grpData?.part11)
                     }, {
                         name: 'Referrals',
-                        y: 30.4
+                        y: Number(grpData?.part12)
                     }]
                 }]
             });
         }
-    }, []);
+    }, [grpData]);
 
     return (
         <div className="highcharts-figure">

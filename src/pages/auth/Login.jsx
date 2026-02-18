@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // Image
 import Logo from "../../assets/images/Logo-img/wealth-Elite-Logo.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../../components/button";
+import { postData } from "../../services/api";
+import { toastError, toastSuccess } from "../../utils/toster";
+import { UserContext } from "../../utils/UseContext/useContext";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
   const {
@@ -13,8 +17,30 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+  const { setAuthLocal, AuthLocal } = useContext(UserContext)
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setloading] = useState(false)
+
+  const onSubmit = async (data) => {
+    try {
+      setloading(true)
+      const payload = {
+        email: data?.email,
+        password: data?.password,
+      };
+      let response = await postData("/admin/login", payload);
+      if (response?.admin_uid) {
+        toastSuccess(response?.message);
+        sessionStorage.setItem("Auth", response?.admin_uid);
+        setAuthLocal(response?.admin_uid)
+        setloading(false)
+        navigate("/")
+      }
+    } catch (error) {
+      toastError(error?.message);
+      setloading(false)
+    }
   };
 
   return (
@@ -53,12 +79,13 @@ const Login = () => {
           </div>
 
           {/* Password Field */}
-          <div className="mb-2">
             <label className="form-label font-14 montserrat-medium text-border-gray-color">
               Password
             </label>
+          <div className="mb-2 position-relative">
             <input
-              type="password"
+              // type="password"
+              type={showPassword ? 'text' : 'password'}
               className="form-control login-input rounded-3 border-0 py-2"
               placeholder="Enter your password"
               {...register("password", {
@@ -69,6 +96,17 @@ const Login = () => {
                 },
               })}
             />
+            <span
+              className="position-absolute end-0 top-50 translate-middle-y me-3"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{ cursor: 'pointer' }}
+            >
+              {showPassword ? (
+                <FaEye size={20} />
+              ) : (
+                <FaEyeSlash size={20} />
+              )}
+            </span>
             {errors.password && (
               <div className="text-danger">{errors.password.message}</div>
             )}
@@ -97,8 +135,9 @@ const Login = () => {
           </div>
           {/* Submit Button */}
           <Button
+            disabled={loading}
             btn_class={"text-white bg-blue-color border-0 w-100 mt-5"}
-            btn_title={"Login"}
+            btn_title={loading ? "loging..." : "Login"}
           />
         </form>
       </div>

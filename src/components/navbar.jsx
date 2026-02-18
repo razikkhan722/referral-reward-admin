@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -22,6 +22,9 @@ import { useForm } from "react-hook-form";
 
 // Components
 import Button from "./button";
+import { toastError, toastSuccess } from "../utils/toster";
+import { postData } from "../services/api";
+import { UserContext } from "../utils/UseContext/useContext";
 
 const NavBar = () => {
   const {
@@ -30,8 +33,61 @@ const NavBar = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Submitted Data:", data);
+  const navigate = useNavigate();
+  const campaignName = sessionStorage.getItem("campaignName");
+  const { logo, setLogo, setAuthLocal } = useContext(UserContext);
+
+  useEffect(() => {
+    const storedLogo = localStorage.getItem("logo");
+    if (storedLogo) {
+      setLogo(storedLogo);
+    }
+  }, []);
+
+  // const HandleImgUpld =()=>{}
+  const GetAdminUid = sessionStorage.getItem("Auth");
+  const onSubmit = async (data) => {
+    const file = data?.file[0];
+    let image;
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        image = base64String;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      console.log("No file provided");
+    }
+    try {
+      const getAuth = await postData("/admin/auths", {
+        admin_uid: GetAdminUid,
+      });
+      const payload = {
+        admin_uid: GetAdminUid,
+        mode: getAuth?.access_token,
+        log_alt: getAuth?.session_id,
+        username: data?.name,
+        email: data?.email,
+        mobile_number: data?.mobile,
+        image: image,
+        password: data?.password,
+      };
+      const response = await postData("/admin/edit-profile", payload);
+      if (response?.success) {
+        toastSuccess(response?.message);
+      }
+    } catch (error) {
+      toastError(error?.message);
+    }
+  };
+
+  // ------Logout Functionailty
+  const HandleLogout = () => {
+    sessionStorage.removeItem('Auth');
+    setAuthLocal('');
+    console.log('check auth');
+    navigate('/login');
   };
   return (
     <>
@@ -39,87 +95,113 @@ const NavBar = () => {
         collapseOnSelect
         expand="lg"
         sticky="top"
-        className="bg-light-blue-color pt-4"
+        className="bg-light-white-3-color pt-4 box-shadow"
       >
         <Container>
-          <Navbar.Brand href="/">
-            <img src={Logo} alt="Logo" />
-          </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mx-auto box-shadow bg-white rounded-pill px-4 py-lg-0 py-3 mt-md-3 justify-content-center flex-wrap">
+          <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-between mt-60">
+            <Navbar.Brand href="/" className="width-26">
+              {/* {logo && (
+                <img src={logo} alt="Logo" className="logo" />
+              )} */}
+              {logo !== "undefined" ? (
+                <img src={logo} alt="Logo" className="logo" />
+              ) : (
+                <div className="nav-user-text mb-0 text-white font-20 montserrat-semibold text-uppercase bg-border-gray-color rounded-circle d-flex align-items-center justify-content-center shadow">
+                  <span className="font-20"> {campaignName?.slice(0, 2) || "CAM"}</span>
+                </div>
+              )}
+
+            </Navbar.Brand>
+
+            {/* <Nav className="flex-wrap d-flex justify-content-center align-items-center">
+              <div className="box-shadow d-flex w-100 bg-white rounded-pill px-1 py-2">
+
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${isActive ? "active-nav" : ""
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <img
+                          src={Home}
+                          alt="Active"
+                          className="active-icon me-2"
+                        />
+                      )}
+                      <span> Dashboard</span>
+                    </>
+                  )}
+                </NavLink>
+                <NavLink
+                  to="/referral"
+                  className={({ isActive }) =>
+                    `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-3 ${isActive ? "active-nav" : ""
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <img
+                          src={Reward}
+                          alt="Active"
+                          className="active-icon me-2"
+                        />
+                      )}
+                      <span> Referrals & Rewards</span>
+                    </>
+                  )}
+                </NavLink>
+                <NavLink
+                  to="/earning"
+                  className={({ isActive }) =>
+                    `nav-link text-blue-color d-flex align-itmes-center justify-content-center font-14 montserrat-semibold px-3 ${isActive ? "active-nav" : ""
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <img
+                          src={Earning}
+                          alt="Active"
+                          className="active-icon me-2"
+                        />
+                      )}
+                      <span> Earning & Redemptions</span>
+                    </>
+                  )}
+                </NavLink>
+              </div>
+              
+              </Nav> */}
+
+            <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
+              {/* <NavLink
+                to="/campaignform"
+                className={`nav-link text-white bg-blue-color mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-5`}
+              >
+                <span>Loyalty Program</span>
+              </NavLink> */}
               <NavLink
                 to="/"
-                className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center my-2 font-14 montserrat-semibold me-3 px-3 ${
-                    isActive ? "active-nav" : ""
-                  }`
-                }
+                className={`nav-link text-blue-color bg-transparent border-blue mt-lg-0 mt-2 rounded-pill py-2 d-flex align-itmes-center justify-content-center font-14 montserrat-semibold me-3 px-5`}
               >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <img
-                        src={Home}
-                        alt="Active"
-                        className="active-icon me-2"
-                      />
-                    )}
-                    <span> Dashboard</span>
-                  </>
-                )}
+                <span>My Campaigns</span>
               </NavLink>
-              <NavLink
-                to="/referral"
-                className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center my-2 font-14 montserrat-semibold me-3 px-3 ${
-                    isActive ? "active-nav" : ""
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <img
-                        src={Reward}
-                        alt="Active"
-                        className="active-icon me-2"
-                      />
-                    )}
-                    <span> Referrals & Rewards</span>
-                  </>
-                )}
-              </NavLink>
-              <NavLink
-                to="/earning"
-                className={({ isActive }) =>
-                  `nav-link text-blue-color d-flex align-itmes-center justify-content-center my-2 font-14 montserrat-semibold px-3 ${
-                    isActive ? "active-nav" : ""
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <img
-                        src={Earning}
-                        alt="Active"
-                        className="active-icon me-2"
-                      />
-                    )}
-                    <span> Earning & Redemptions</span>
-                  </>
-                )}
-              </NavLink>
-            </Nav>
-            <Nav className="d-flex align-items-center justify-content-center gap-3 flex-row mt-3 mt-lg-0 ms-auto">
-              <Nav.Link href="#deets" className="font-32 text-blue-color">
+              <Nav.Link href="#deets" className="font-32 text-border-gray-color pe-none">
                 <GoBell />
               </Nav.Link>
               <Nav.Link
                 eventKey={2}
                 href="#memes"
-                className="font-32 text-blue-color"
+                className="font-32 text-border-gray-color pe-none"
               >
                 <IoSettingsOutline />
               </Nav.Link>
@@ -158,27 +240,26 @@ const NavBar = () => {
                       Adity Sharma
                     </h6>
                   </li>
-                  {/* <li><hr className="dropdown-divider" /></li> */}
-                  <li className="border-bottom  pt-3 px-3">
+                  <li className="border-bottom pt-3 px-3 pe-none">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <FaLanguage className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-border-gray-color font-16 montserrat-medium">
                         Languages
                       </span>
                     </button>
                   </li>
-                  <li className="border-bottom px-3">
+                  <li className="border-bottom px-3 pe-none">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <IoColorPalette className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-border-gray-color font-16 montserrat-medium">
                         Themes
                       </span>
                     </button>
                   </li>
-                  <li className="border-bottom px-3">
+                  <li className="border-bottom px-3 pe-none">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <BiSolidCheckShield className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-border-gray-color font-16 montserrat-medium">
                         Security
                       </span>
                     </button>
@@ -186,7 +267,9 @@ const NavBar = () => {
                   <li className="border-bottom px-3">
                     <button className="dropdown-item d-flex align-items-center gap-2 py-3">
                       <HiOutlineLogout className="font-20 text-border-gray-color" />
-                      <span className="text-blue-color font-16 montserrat-medium">
+                      <span className="text-blue-color font-16 montserrat-medium"
+                        onClick={() => HandleLogout()}
+                      >
                         Logout
                       </span>
                     </button>
@@ -194,12 +277,13 @@ const NavBar = () => {
                 </ul>
               </div>
             </Nav>
+
           </Navbar.Collapse>
         </Container>
       </Navbar>
       {/* Edit  Right Side Panel */}
       <div
-        className="offcanvas px-3 offcanvas-end bg-light-blue-color right-sidepanel"
+        className="offcanvas px-3 offcanvas-end bg-light-white-3-color right-sidepanel"
         tabIndex="-1"
         id="profileEditPanel"
         aria-labelledby="profileEditPanelLabel"
@@ -231,13 +315,13 @@ const NavBar = () => {
               </label>
               <input
                 type="text"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter name"
-                {...register("name", { required: "Name is required" })}
+                {...register("name")}
               />
-              {errors.name && (
+              {/* {errors.name && (
                 <small className="text-danger">{errors.name.message}</small>
-              )}
+              )} */}
             </div>
             <div className="mb-3 col-lg-12">
               <label className="form-label text-blue-color font-12 montserrat-semibold">
@@ -245,15 +329,17 @@ const NavBar = () => {
               </label>
               <input
                 type="number"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Mobile No."
-                {...register("mobile", {
-                  required: "Mobile number is required",
-                })}
+                {...register("mobile"
+                  //   , {
+                  //   required: "Mobile number is required",
+                  // }
+                )}
               />
-              {errors.mobile && (
+              {/* {errors.mobile && (
                 <small className="text-danger">{errors.mobile.message}</small>
-              )}
+              )} */}
             </div>
             <div className="mb-3 col-lg-12">
               <label className="form-label text-blue-color font-12 montserrat-semibold">
@@ -261,19 +347,19 @@ const NavBar = () => {
               </label>
               <input
                 type="email"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Email"
                 {...register("email", {
-                  required: "Email is required",
+                  // required: "Email is required",
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: "Invalid email address",
                   },
                 })}
               />
-              {errors.email && (
+              {/* {errors.email && (
                 <small className="text-danger">{errors.email.message}</small>
-              )}
+              )} */}
             </div>
             <div className="mb-3 col-lg-12">
               <label className="form-label text-blue-color font-12 montserrat-semibold">
@@ -281,7 +367,7 @@ const NavBar = () => {
               </label>
               <input
                 type="password"
-                className="form-control font-14 montserrat-medium text-blue-color border-0"
+                className="form-control login-input font-14 montserrat-medium text-blue-color border-0"
                 placeholder="Enter Password"
                 {...register("password", {
                   required: "Password is required",
@@ -300,12 +386,12 @@ const NavBar = () => {
               <label className="form-label text-blue-color font-12 montserrat-semibold">
                 Upload Picture
               </label>
-              <label class="upload-box d-flex text-center bg-light-white-3-color p-2 rounded-3 text-blue-color font-12 montserrat-medium">
-                <div class="upload-icon">
-                  <PiUploadSimpleBold className="font-16 me-3" />
+              <label class="upload-box d-flex text-center login-input px-4 py-5 rounded-3 text-blue-color font-12 width-40 justify-content-center flex-column montserrat-medium">
+                <div class="upload-icon mx-auto text-center">
+                  <PiUploadSimpleBold className="font-16" />
                 </div>
                 Upload
-                <input type="file" id="formFile" />
+                <input type="file" id="formFile" {...register("file")} />
               </label>
             </div>
             <Button

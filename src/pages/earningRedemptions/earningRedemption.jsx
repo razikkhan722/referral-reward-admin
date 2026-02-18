@@ -98,16 +98,88 @@ const StatusFilter = [
     { label: "Pause" },
 ];
 
+
+
 const EarningRedemption = () => {
     const {
         register,
-        // handleSubmit,
-        // formState: { errors },
+        handleSubmit,
+        formState: { errors },
     } = useForm();
+
+      const {
+        register: registerHowItWork,
+        handleSubmit: handleSubmitHowItWork,
+        formState: { errors: errorsHowItWork, isSubmitting: isHowItWorkSubmitting },
+        watch: watchHowItWork,
+      } = useForm();
+
+      const cards = [
+    {
+        id: 'how-it-works',
+        title: 'How it Works',
+        description: 'This will contain all the steps to explain the users how the program will work. Edit the data according to your need.',
+        fields: ['Title 1', 'Add Description (25-30 words)', 'Title 2', 'Add Description (25-30 words)', 'Title 3', 'Add Description (25-30 words)'],
+    },
+    {
+        id: 'advertisement',
+        title: 'Advertisement Card 1',
+        description: 'Customize this card to highlight your latest offer or referral perk.',
+        fields: ['Title 1', 'Add Description (25-30 words)', 'Button Text', 'Add Image/illustration'],
+    },
+    {
+        id: 'faq',
+        title: 'Frequently Asked Questions',
+        description: 'Edit questions and answers to keep your users informed and confident.',
+        isFAQ: true,
+    },
+    {
+        id: 'footer',
+        title: 'Footer Section',
+        description: 'Edit the content you want to display on your footer section',
+        fields: ['Select or type the content'],
+    },
+];
+
+
     const [activeTab, setActiveTab] = useState('tab1');
     const [activeCardId, setActiveCardId] = useState('how-it-works');
     const [showAddProduct, setShowAddProduct] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+
+
+      // ======================
+  // API FUNCTIONALITY
+  // ======================
+
+    const HandleFormSubmit = async (data) => {
+    //   try {
+    //     const getAuth = await postData("/admin/auths", {
+    //       admin_uid: GetAdminUid,
+    //     });
+    //     const payload = {
+    //       admin_uid: GetAdminUid,
+    //       mode: getAuth?.access_token,
+    //       log_alt: getAuth?.session_id,
+    //       start_date: new Date(data?.start_date)?.toLocaleDateString("en-GB"),
+    //       end_date: new Date(data?.end_date)?.toLocaleDateString("en-GB"),
+    //       referrer_reward_type: data?.referrer_reward_type,
+    //       referrer_reward_value: data?.referrer_reward_value,
+    //       referee_reward_type: data?.referee_reward_type,
+    //       referee_reward_value: data?.referee_reward_value,
+    //       reward_condition: data?.reward_condition,
+    //       success_reward: data?.success_reward,
+    //       invite_link: data?.invite_link,
+    //       active: data?.active,
+    //     };
+    //     const response = await postData("/admin/special-referral-link", payload);
+    //     if (response?.success) {
+    //       toastSuccess(response?.message);
+    //     }
+    //   } catch (error) {
+    //     toastError(error?.error);
+    //   }
+    };
 
     return (
         <>
@@ -631,7 +703,7 @@ const EarningRedemption = () => {
                                             <p className="font-18 montserrat-semibold text-border-gray-color mb-0">{card.title}</p>
                                             <p className="font-12 montserrat-medium text-blue-color">{card.description}</p>
 
-                                            <form className="row">
+                                            <form className="row" onSubmit={handleSubmitHowItWork(HandleFormSubmit)}>
                                                 {card.isFAQ ? (
                                                     <>
                                             
@@ -640,7 +712,9 @@ const EarningRedemption = () => {
                                                                 <div className="col-lg-12 mb-3">
                                                                     <label className="form-label font-14 montserrat-regular text-border-gray-color">Question {q}</label>
                                                                     <div className="d-flex gap-3 justify-content-between">
-                                                                        <input type="text" className="form-control login-input border-0" />
+                                                                        <input type="text" className="form-control login-input border-0" 
+                                                                        {...register("value")}
+                                                                        />
                                                                         <div className="login-input rounded-circle faq-add-btn d-flex align-items-center justify-content-center">
                                                                             <GoPlus className="font-24" />
                                                                         </div>
@@ -663,7 +737,9 @@ const EarningRedemption = () => {
                                                                     } mb-3`}
                                                             >
                                                                 <label className="form-label font-14 montserrat-regular text-border-gray-color">{label}</label>
-                                                                <input type="text" className="form-control login-input border-0" />
+                                                                <input type="text" className="form-control login-input border-0" 
+                                                                {...register("va")}
+                                                                />
                                                             </div>
                                                         ))}
                                                     </>
@@ -671,6 +747,7 @@ const EarningRedemption = () => {
                                                 <div className="col-lg-4 my-3">
                                                     <Button
                                                         btn_class={"text-white w-100 px-3 bg-blue-color border-0 mt-3"}
+                                                        type="submit"
                                                         btn_title={"Save Changes"}
                                                     />
                                                 </div>
